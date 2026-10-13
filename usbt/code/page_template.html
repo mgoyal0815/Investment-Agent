@@ -1,0 +1,250 @@
+<title>v5 vs India Backtest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~760px) with wide figures; summary first, evidence after. */
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --ink: #14171c; --ink-2: #4a505b; --ink-3: #7a808b;
+  --rule: #dde1e7; --grid: #eceef2; --accent: #1f5fae;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #b07a00;
+  --i1: #8a8f99; --i2: #6b707a; --i3: #3f434a;
+  --win: #e5f2ea; --win-ink: #146c3c; --lose: transparent;
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121418; --surface: #1a1d22; --ink: #eceef2; --ink-2: #b7bcc6; --ink-3: #8a909b;
+  --rule: #2c3038; --grid: #23262d; --accent: #6ea4ea;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --i1: #7d828c; --i2: #a3a8b2; --i3: #d0d4db; --win: #173826; --win-ink: #7fd3a2; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121418; --surface: #1a1d22; --ink: #eceef2; --ink-2: #b7bcc6; --ink-3: #8a909b;
+  --rule: #2c3038; --grid: #23262d; --accent: #6ea4ea;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500;
+  --i1: #7d828c; --i2: #a3a8b2; --i3: #d0d4db; --win: #173826; --win-ink: #7fd3a2; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 15px/1.6 var(--body); margin: 0 }
+.wrap { max-width: 1000px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 44px }
+.col { max-width: 720px }
+h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; letter-spacing: -0.01em }
+h1 { font-size: clamp(30px, 5vw, 42px); line-height: 1.1 }
+h2 { font-size: 24px; line-height: 1.25; margin-bottom: 10px }
+p { margin: 0 0 12px }
+.eyebrow { font: 500 12px/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin-bottom: 14px }
+.lede { font-size: 18px; color: var(--ink-2); margin-top: 14px }
+.verdict { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; font-size: 17px }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums }
+.tblwrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { padding: 7px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--grid) }
+th { font: 500 12px/1.3 var(--body); color: var(--ink-3); text-align: right; vertical-align: bottom }
+th:first-child, td:first-child { text-align: left }
+td { font-family: var(--mono); font-variant-numeric: tabular-nums }
+td.name { font-family: var(--body); font-weight: 500 }
+tr.sub td { color: var(--ink-3) }
+td.win { background: var(--win); color: var(--win-ink); font-weight: 500 }
+tr.partial td { color: var(--ink-3); font-style: italic }
+.note { font-size: 13px; color: var(--ink-3); margin-top: 8px }
+.chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 14px 14px 8px; position: relative }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-bottom: 8px }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 5px; overflow: hidden }
+.seg button { font: 500 13px var(--body); background: transparent; color: var(--ink-2); border: 0; padding: 6px 12px; cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--surface) }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--ink-2) }
+.legend span { display: inline-flex; align-items: center; gap: 6px }
+.legend i { width: 18px; height: 0; border-top: 2px solid; display: inline-block }
+svg text { fill: var(--ink-3); font: 11px var(--mono) }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 5px;
+  padding: 8px 10px; font: 12px/1.5 var(--mono); color: var(--ink); box-shadow: 0 4px 16px rgba(0,0,0,.12); min-width: 170px }
+.tip b { font-family: var(--body); font-weight: 600 }
+.tip div { display: flex; justify-content: space-between; gap: 12px }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 16px; min-width: 0 }
+.card h3 { font: 600 15px var(--body); margin: 0 0 6px }
+.card p { font-size: 14px; color: var(--ink-2); margin: 0 }
+.cov { display: grid; grid-template-columns: 44px 1fr 44px; gap: 4px 10px; align-items: center; font-size: 12px }
+.cov .bar { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden }
+.cov .bar span { display: block; height: 100%; background: var(--accent); border-radius: 4px }
+ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
+@media (max-width: 520px) { .wrap { padding-inline: 16px } body { font-size: 14.5px } }
+</style>
+
+<div class="wrap">
+  <header class="col">
+    <div class="eyebrow">US momentum study · 2000 to 12 Oct 2026 · $10,000, whole shares</div>
+    <h1>Can India v8's rules make US v5 beat SPY, QQQ and SMH every year?</h1>
+    <p class="lede">No. No combination does it once tested on years it was not tuned on. Three changes do make the US system better, and one of them was chosen strictly on training data.</p>
+  </header>
+
+  <section class="col">
+    <p class="verdict">The years that break every version are semiconductor booms: SMH returned +64% in 2019, +73% in 2023 and +39% in 2024. A diversified stock book does not keep pace with that, however it ranks or sizes.</p>
+    <p>The study ran the live US v5 code, India v8 ported to US data, each of the 15 differences one at a time, and about 600 combinations. Choices were made on 2012 to 2018 only, then tested on 2019 to October 2026 and on 2000 to 2011.</p>
+  </section>
+
+  <section>
+    <div class="col"><h2>Three windows, five start dates each</h2>
+    <p>Median return a year, deepest fall across the five paths, and share of full calendar years beating all three indexes.</p></div>
+    <div class="tblwrap"><table id="win"></table></div>
+    <p class="note">A green worst fall is smaller than the worst fall of SPY, QQQ and SMH in that window. Index worst falls: 2012-18 SPY −19%, QQQ −23%, SMH −27%. 2019-26 SPY −34%, QQQ −35%, SMH −45%. 2000-11 SPY −55%, QQQ −83%, SMH −84%. The 2000-11 window is survivorship-biased in every system's favour.</p>
+  </section>
+
+  <section>
+    <div class="col"><h2>Growth of $10,000</h2></div>
+    <div class="chart">
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Period">
+          <button id="b2012" aria-pressed="true">Jan 2012 to Oct 2026</button>
+          <button id="b2000" aria-pressed="false">2000 to 2011</button>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <svg id="svg" width="100%" height="380" role="img" aria-label="Growth of $10,000, log scale"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <p class="note">Log scale, weekly points. One path from the first session of the period; the table above uses five.</p>
+  </section>
+
+  <section>
+    <div class="col"><h2>Year by year</h2>
+    <p>Green marks a year the system beat SPY, QQQ and SMH together. The 2012 rows come from a run started in January 2012, the 2000 rows from one started in January 2000.</p></div>
+    <div class="tblwrap"><table id="yrs"></table></div>
+  </section>
+
+  <section>
+    <div class="col"><h2>What changed the US system, and what did not</h2></div>
+    <div class="grid3">
+      <div class="card"><h3>Candidate 3 (chosen on training data)</h3><p>The v5 stock engine with India's top-500 universe, India's buy pause instead of the regime overlay, decisions twice a month, and a sell when a holding ranks outside the top 45. Slightly lower returns than v5 in 2019-26, much smaller falls, and 12.9% a year in 2000-11 against 1.6%.</p></div>
+      <div class="card"><h3>Twice a month beats daily</h3><p>Deciding on the 11th and the last session instead of every day helped v5 in all three windows. It is the single most consistent change found, but it was identified after the test years were seen.</p></div>
+      <div class="card"><h3>The tuned winner failed</h3><p>"Hybrid A" (12 equal slots, India ranking, gold) beat all three indexes in 84% of training years. On 2019-26 it managed 32% with a −51% fall. That gap is overfitting, and it is why the plainer Candidate 3 is the recommendation.</p></div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2>How far to trust each window</h2>
+    <p>FMP on this plan has almost no stocks delisted before about 2012, so failed companies are missing from the early years. Share of each year's S&amp;P 500 members the data can price:</p>
+    <div class="cov" id="cov"></div>
+    <p class="note" style="margin-top:12px">2019-2026 is close to survivorship-free. 2000-2011 flatters every system and should be read for direction only.</p>
+  </section>
+
+  <section class="col">
+    <h2>Next steps</h2>
+    <ul>
+      <li>Paper-test Candidate 3 beside the live v5 system. Nothing in the live repositories was changed.</li>
+      <li>A survivorship-free dataset (MarketParquet, Norgate or Sharadar) would turn 2000-2018 into a real test. The code reruns unchanged on it.</li>
+      <li>Beating SMH every year needs semiconductor exposure rather than better stock selection. If that is the goal, decide how much of the book should follow the leading index ETF.</li>
+    </ul>
+    <p class="note">Code, data builder and every result file: Investment-Agent repository, branch claude/usa-india-backtest-optimization-fr5gs8, folder usbt/.</p>
+  </section>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const SYS = ["v5 live", "Candidate 3", "Cand. 3 + adds", "v5 twice-monthly"];
+const COLORS = {"v5 live": "--s1", "Candidate 3": "--s2", "Cand. 3 + adds": "--s3", "v5 twice-monthly": "--s4", SPY: "--i1", QQQ: "--i2", SMH: "--i3"};
+const DASH = {SPY: "5 4", QQQ: "2 3", SMH: "8 3 2 3"};
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmtUSD = v => v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "m" : "$" + Math.round(v).toLocaleString("en-US");
+
+// ---- windows table
+(function () {
+  const per = [["train", "2012-18 train"], ["test", "2019-26 test"], ["early", "2000-11 test, biased"]];
+  const names = [...new Set(DATA.windows.map(w => w.sys))];
+  let h = "<thead><tr><th></th>" + per.map(p => `<th colspan="3">${p[1]}</th>`).join("") + "</tr><tr><th></th>" +
+    per.map(() => "<th>a year</th><th>worst fall</th><th>beat all 3</th>").join("") + "</tr></thead><tbody>";
+  for (const n of names) {
+    h += `<tr${n.startsWith("India") ? ' class="sub"' : ""}><td class="name">${n}</td>`;
+    for (const [p] of per) {
+      const w = DATA.windows.find(x => x.sys === n && x.per === p);
+      const ok = w.dd > w.ddidx;
+      h += `<td>${w.cagr.toFixed(1)}%</td><td${ok ? ' class="win"' : ""}>${w.dd}%</td><td>${w.ba}%</td>`;
+    }
+    h += "</tr>";
+  }
+  document.getElementById("win").innerHTML = h + "</tbody>";
+})();
+
+// ---- year table
+(function () {
+  const cols = [...SYS, "SPY", "QQQ", "SMH"];
+  let h = "<thead><tr><th>Year</th>" + cols.map(c => `<th>${c}</th>`).join("") + "</tr></thead><tbody>";
+  for (const r of DATA.years) {
+    const best = Math.max(r.SPY, r.QQQ, r.SMH);
+    h += `<tr${r.partial ? ' class="partial"' : ""}><td class="name">${r.year}${r.partial ? " to Oct" : ""}</td>` +
+      cols.map(c => {
+        const v = r[c], win = SYS.includes(c) && !r.partial && v > best;
+        return `<td${win ? ' class="win"' : ""}>${v > 0 ? "+" : ""}${v.toFixed(1)}</td>`;
+      }).join("") + "</tr>";
+  }
+  document.getElementById("yrs").innerHTML = h + "</tbody>";
+})();
+
+// ---- coverage
+(function () {
+  const cov = [[2000, 52], [2002, 56], [2004, 65], [2006, 68], [2008, 75], [2010, 80], [2012, 84], [2014, 86], [2016, 91], [2018, 95], [2019, 97], [2020, 99], [2026, 100]];
+  document.getElementById("cov").innerHTML = cov.map(([y, s]) =>
+    `<span class="num">${y}</span><div class="bar"><span style="width:${s}%"></span></div><span class="num">${s}%</span>`).join("");
+})();
+
+// ---- chart
+let run = "2012";
+const svg = document.getElementById("svg"), tip = document.getElementById("tip");
+function draw() {
+  const series = DATA.curves[run];
+  const W = svg.clientWidth || 900, H = 380, m = {l: 58, r: 168, t: 10, b: 28};
+  const dates = series[0].d.map(s => new Date(s));
+  const t0 = +dates[0], t1 = +dates[dates.length - 1];
+  let lo = Infinity, hi = -Infinity;
+  for (const s of series) for (const v of s.v) if (v > 0) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  const L0 = Math.log10(lo * 0.9), L1 = Math.log10(hi * 1.1);
+  const x = t => m.l + (t - t0) / (t1 - t0) * (W - m.l - m.r);
+  const y = v => m.t + (L1 - Math.log10(v)) / (L1 - L0) * (H - m.t - m.b);
+  let g = "";
+  const ticks = [];
+  for (let e = Math.floor(L0); e <= Math.ceil(L1); e++) for (const k of [1, 2, 5]) { const v = k * 10 ** e; if (Math.log10(v) >= L0 && Math.log10(v) <= L1) ticks.push(v); }
+  for (const v of ticks) g += `<line x1="${m.l}" x2="${W - m.r}" y1="${y(v)}" y2="${y(v)}" stroke="${css("--grid")}"/><text x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${fmtUSD(v)}</text>`;
+  const y0 = dates[0].getFullYear(), y1 = dates[dates.length - 1].getFullYear();
+  const step = (y1 - y0) > 10 ? 2 : 1;
+  for (let yr = y0 + 1; yr <= y1; yr += step) { const t = +new Date(yr, 0, 1); if (t > t1) break; g += `<text x="${x(t)}" y="${H - 8}" text-anchor="middle">${yr}</text><line x1="${x(t)}" x2="${x(t)}" y1="${H - m.b}" y2="${H - m.b + 4}" stroke="${css("--rule")}"/>`; }
+  const ends = [];
+  for (const s of [...series].reverse()) {
+    const col = css(COLORS[s.name]);
+    let d = "";
+    s.v.forEach((v, i) => { if (v > 0) d += (d ? "L" : "M") + x(+new Date(s.d[i])).toFixed(1) + "," + y(v).toFixed(1); });
+    g += `<path d="${d}" fill="none" stroke="${col}" stroke-width="${s.kind === "sys" ? 2 : 1.5}" ${DASH[s.name] ? `stroke-dasharray="${DASH[s.name]}"` : ""} stroke-linejoin="round"/>`;
+    const lv = s.v[s.v.length - 1];
+    ends.push({name: s.name, y: y(lv), v: lv, col});
+  }
+  ends.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 14) ends[i].y = ends[i - 1].y + 14;
+  for (const e of ends) g += `<text x="${W - m.r + 6}" y="${e.y + 4}" style="fill:${css("--ink-2")}">${e.name} ${fmtUSD(e.v)}</text>`;
+  g += `<line id="xh" y1="${m.t}" y2="${H - m.b}" stroke="${css("--ink-3")}" stroke-width="1" visibility="hidden"/>`;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.innerHTML = g;
+  document.getElementById("legend").innerHTML = series.map(s =>
+    `<span><i style="border-color:${css(COLORS[s.name])};${DASH[s.name] ? "border-top-style:dashed" : ""}"></i>${s.name}</span>`).join("");
+  svg.onmousemove = ev => {
+    const r = svg.getBoundingClientRect(), px = (ev.clientX - r.left) * W / r.width;
+    if (px < m.l || px > W - m.r) { tip.hidden = true; svg.querySelector("#xh").setAttribute("visibility", "hidden"); return; }
+    const t = t0 + (px - m.l) / (W - m.l - m.r) * (t1 - t0);
+    let i = 0; while (i < dates.length - 1 && +dates[i + 1] <= t) i++;
+    const xh = svg.querySelector("#xh"); xh.setAttribute("x1", x(+dates[i])); xh.setAttribute("x2", x(+dates[i])); xh.setAttribute("visibility", "visible");
+    tip.innerHTML = `<b>${series[0].d[i]}</b>` + series.map(s => `<div><span>${s.name}</span><span>${fmtUSD(s.v[i])}</span></div>`).join("");
+    tip.hidden = false;
+    const left = ev.clientX - r.left + 16;
+    tip.style.left = Math.min(left, r.width - tip.offsetWidth - 4) + "px";
+    tip.style.top = "60px";
+  };
+  svg.onmouseleave = () => { tip.hidden = true; const xh = svg.querySelector("#xh"); if (xh) xh.setAttribute("visibility", "hidden"); };
+}
+for (const k of ["2012", "2000"]) document.getElementById("b" + k).onclick = () => {
+  run = k;
+  for (const j of ["2012", "2000"]) document.getElementById("b" + j).setAttribute("aria-pressed", j === k);
+  draw();
+};
+draw();
+addEventListener("resize", draw);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+new MutationObserver(draw).observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
+</script>
