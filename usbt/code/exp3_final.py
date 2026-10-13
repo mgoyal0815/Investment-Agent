@@ -72,7 +72,7 @@ if __name__ == "__main__":
     pd.DataFrame(rows).to_csv("../results/exp3_periods.csv", index=False)
 
     pool = mp.get_context("fork").Pool(4, initializer=_init)
-    jobs = [(lab, c, s, e) for lab, c in fin for s, e in (("2012-01-03", None), ("2000-01-03", "2011-12-30"))]
+    jobs = [(lab, c, s, e) for lab, c in fin for s, e in (("2012-01-03", None), ("2020-01-02", None), ("2000-01-03", "2011-12-30"))]
     curves, years, summ = {}, [], []
     for lab, start, curve, table, s, expo in pool.map(_cont, jobs):
         key = f"{lab}|{start[:4]}"
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         years.append(t.reset_index().rename(columns={"index": "year"}))
         summ.append(dict(label=lab, run=start[:4], **s))
     m = X.Market(pd.read_pickle("../data/panel.pkl"))
-    for s, e in (("2012-01-03", None), ("2000-01-03", "2011-12-30")):
+    for s, e in (("2012-01-03", None), ("2020-01-02", None), ("2000-01-03", "2011-12-30")):
         i0 = m.dates.searchsorted(pd.Timestamp(s))
         i1 = len(m.dates) if e is None else m.dates.searchsorted(pd.Timestamp(e), side="right")
         for k in M.BENCH:
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     pd.concat(years).to_csv("../results/exp3_years.csv", index=False)
     pd.DataFrame(summ).to_csv("../results/exp3_continuous.csv", index=False)
 
-    starts = [str(d.date()) for d in pd.date_range("2019-01-01", "2025-12-31", freq="QS")]
+    starts = [str(d.date()) for d in pd.date_range("2020-01-01", "2025-12-31", freq="QS")]
     starts = [str(m.dates[m.dates.searchsorted(pd.Timestamp(s))].date()) for s in starts]
     fr = pool.map(_fresh, [(lab, c, s) for lab, c in fin for s in starts])
     fr = pd.DataFrame(fr)
@@ -103,6 +103,6 @@ if __name__ == "__main__":
         beat_all = ((g.cagr > g.cagr_SPY) & (g.cagr > g.cagr_QQQ) & (g.cagr > g.cagr_SMH)).mean()
         dd_ok = ((g.dd > g.dd_SPY) & (g.dd > g.dd_QQQ) & (g.dd > g.dd_SMH)).mean()
         r12 = ((g.r12 > g.r12_SPY) & (g.r12 > g.r12_QQQ) & (g.r12 > g.r12_SMH)).mean()
-        print(f"{lab:28s} fresh quarterly starts 2019-2025: beat all three to today {beat_all:.0%}, "
+        print(f"{lab:28s} fresh quarterly starts 2020-2025: beat all three to today {beat_all:.0%}, "
               f"first-12-months beat all {r12:.0%}, smaller worst fall than all three {dd_ok:.0%}, "
               f"median CAGR {g.cagr.median():.1%}")

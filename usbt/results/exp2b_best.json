@@ -1,6 +1,6 @@
 {
  "balanced": {
-  "objective": 1.232691959224271,
+  "objective": 1.0775897416620173,
   "cfg": {
    "sizing": "slot",
    "universe": "topN",
@@ -26,32 +26,32 @@
    "rank_min_hold": 21
   },
   "train": {
-   "cagr": 0.2622515073813485,
-   "cagr_min": 0.24326508146296466,
+   "cagr": 0.23931074095529192,
+   "cagr_min": 0.22362260205207485,
    "maxdd": -0.1819456220136646,
    "dd_idx": -0.1934973773526688,
    "dd_ok": 1.0,
-   "beat_all": 0.8380952380952381,
+   "beat_all": 0.7214285714285715,
    "beat_all_min": 5,
-   "years": 7,
-   "beat_SPY": 1.0,
-   "beat_QQQ": 0.9047619047619048,
-   "beat_SMH": 0.8380952380952381,
-   "roll_win": 0.6538838697534349,
-   "min_year_gap": -0.12589837735072962,
-   "expo": 0.8464945078177019
+   "years": 8,
+   "beat_SPY": 0.8607142857142858,
+   "beat_QQQ": 0.7785714285714287,
+   "beat_SMH": 0.7214285714285715,
+   "roll_win": 0.6017374847374847,
+   "min_year_gap": -0.5456316684321862,
+   "expo": 0.8335255096522731
   }
  },
  "beat_all": {
-  "objective": 1.232691959224271,
+  "objective": 0.9138521893381317,
   "cfg": {
    "sizing": "slot",
    "universe": "topN",
-   "N": 12,
+   "N": 10,
    "score": "nifty",
-   "trend": false,
+   "trend": true,
    "exit": "rank",
-   "buffer": 1.5,
+   "buffer": 1.0,
    "adds": "india",
    "cadence": "twice",
    "overlay": "pause",
@@ -59,30 +59,30 @@
     "breadth",
     "large"
    ],
-   "intramonth": false,
-   "park": "GLD",
-   "gold_slots": 4,
+   "intramonth": true,
+   "park": null,
+   "gold_slots": 2,
    "universe_n": 300,
-   "ramp": 0,
-   "zone_gate": true,
+   "ramp": 3,
+   "zone_gate": false,
    "regime_w": "FULL_STOCK",
    "rank_min_hold": 21
   },
   "train": {
-   "cagr": 0.2622515073813485,
-   "cagr_min": 0.24326508146296466,
-   "maxdd": -0.1819456220136646,
+   "cagr": 0.22347828995017482,
+   "cagr_min": 0.20597635643086654,
+   "maxdd": -0.18479321042724683,
    "dd_idx": -0.1934973773526688,
    "dd_ok": 1.0,
-   "beat_all": 0.8380952380952381,
-   "beat_all_min": 5,
-   "years": 7,
-   "beat_SPY": 1.0,
-   "beat_QQQ": 0.9047619047619048,
-   "beat_SMH": 0.8380952380952381,
-   "roll_win": 0.6538838697534349,
-   "min_year_gap": -0.12589837735072962,
-   "expo": 0.8464945078177019
+   "beat_all": 0.5821428571428571,
+   "beat_all_min": 4,
+   "years": 8,
+   "beat_SPY": 0.8607142857142858,
+   "beat_QQQ": 0.8071428571428572,
+   "beat_SMH": 0.5821428571428571,
+   "roll_win": 0.5355950345950345,
+   "min_year_gap": -0.4842193403194768,
+   "expo": 0.8544643649508481
   }
  }
 }

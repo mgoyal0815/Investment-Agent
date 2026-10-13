@@ -1,0 +1,88 @@
+{
+ "balanced": {
+  "objective": 1.232691959224271,
+  "cfg": {
+   "sizing": "slot",
+   "universe": "topN",
+   "N": 12,
+   "score": "nifty",
+   "trend": false,
+   "exit": "rank",
+   "buffer": 1.5,
+   "adds": "india",
+   "cadence": "twice",
+   "overlay": "pause",
+   "pause_rules": [
+    "breadth",
+    "large"
+   ],
+   "intramonth": false,
+   "park": "GLD",
+   "gold_slots": 4,
+   "universe_n": 300,
+   "ramp": 0,
+   "zone_gate": true,
+   "regime_w": "FULL_STOCK",
+   "rank_min_hold": 21
+  },
+  "train": {
+   "cagr": 0.2622515073813485,
+   "cagr_min": 0.24326508146296466,
+   "maxdd": -0.1819456220136646,
+   "dd_idx": -0.1934973773526688,
+   "dd_ok": 1.0,
+   "beat_all": 0.8380952380952381,
+   "beat_all_min": 5,
+   "years": 7,
+   "beat_SPY": 1.0,
+   "beat_QQQ": 0.9047619047619048,
+   "beat_SMH": 0.8380952380952381,
+   "roll_win": 0.6538838697534349,
+   "min_year_gap": -0.12589837735072962,
+   "expo": 0.8464945078177019
+  }
+ },
+ "beat_all": {
+  "objective": 1.232691959224271,
+  "cfg": {
+   "sizing": "slot",
+   "universe": "topN",
+   "N": 12,
+   "score": "nifty",
+   "trend": false,
+   "exit": "rank",
+   "buffer": 1.5,
+   "adds": "india",
+   "cadence": "twice",
+   "overlay": "pause",
+   "pause_rules": [
+    "breadth",
+    "large"
+   ],
+   "intramonth": false,
+   "park": "GLD",
+   "gold_slots": 4,
+   "universe_n": 300,
+   "ramp": 0,
+   "zone_gate": true,
+   "regime_w": "FULL_STOCK",
+   "rank_min_hold": 21
+  },
+  "train": {
+   "cagr": 0.2622515073813485,
+   "cagr_min": 0.24326508146296466,
+   "maxdd": -0.1819456220136646,
+   "dd_idx": -0.1934973773526688,
+   "dd_ok": 1.0,
+   "beat_all": 0.8380952380952381,
+   "beat_all_min": 5,
+   "years": 7,
+   "beat_SPY": 1.0,
+   "beat_QQQ": 0.9047619047619048,
+   "beat_SMH": 0.8380952380952381,
+   "roll_win": 0.6538838697534349,
+   "min_year_gap": -0.12589837735072962,
+   "expo": 0.8464945078177019
+  }
+ }
+}

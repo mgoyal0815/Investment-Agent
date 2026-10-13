@@ -1,0 +1,27 @@
+US v5 (live)                                 CAGR  13.4% (min  11.4%)  DD -24.4% vs idx -19.3% ok 0%  beatAll 13% (min 0/7)  SPY 48% QQQ 39% SMH 35%  roll12 22%  expo 80%
+India v8 on US                               CAGR  16.2% (min  15.4%)  DD -22.1% vs idx -19.3% ok 0%  beatAll 22% (min 1/7)  SPY 77% QQQ 51% SMH 55%  roll12 26%  expo 76%
+v5 + 1-2 hold 10, equal slots                CAGR  15.3% (min  13.9%)  DD -30.5% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 71% QQQ 36% SMH 42%  roll12 31%  expo 73%
+v5 + 3 fully invested (no overlay)           CAGR   9.7% (min   8.0%)  DD -41.9% vs idx -19.3% ok 0%  beatAll 19% (min 0/7)  SPY 48% QQQ 26% SMH 25%  roll12 23%  expo 98%
+v5 + 4 India buy pause instead of regimes    CAGR  14.5% (min  13.5%)  DD -29.8% vs idx -19.3% ok 0%  beatAll 29% (min 1/7)  SPY 58% QQQ 45% SMH 68%  roll12 31%  expo 90%
+v5 + 5 no MTD exit / daily re-entry          CAGR  13.5% (min  12.3%)  DD -24.0% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 49% QQQ 45% SMH 30%  roll12 23%  expo 78%
+v5 + 6 sell on rank, no stops/hold           CAGR  15.3% (min  13.9%)  DD -29.9% vs idx -19.3% ok 0%  beatAll 22% (min 1/7)  SPY 55% QQQ 49% SMH 41%  roll12 27%  expo 77%
+v5 + 7 no adds (v5)                          CAGR  12.0% (min  11.1%)  DD -21.7% vs idx -19.3% ok 0%  beatAll 22% (min 1/7)  SPY 51% QQQ 45% SMH 35%  roll12 24%  expo 78%
+v5 + 8 India ranking + trend                 CAGR   7.9% (min   6.3%)  DD -30.0% vs idx -19.3% ok 0%  beatAll 3% (min 0/7)  SPY 39% QQQ 16% SMH 6%  roll12 8%  expo 72%
+v5 + 9 no pullback-band entry                CAGR  13.8% (min  11.4%)  DD -25.1% vs idx -19.3% ok 0%  beatAll 13% (min 0/7)  SPY 52% QQQ 39% SMH 32%  roll12 21%  expo 80%
+v5 + 10 decide twice a month                 CAGR  14.4% (min  13.1%)  DD -25.3% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 49% QQQ 32% SMH 45%  roll12 25%  expo 76%
+v5 + 11 idle cash in GLD                     CAGR  12.7% (min  11.7%)  DD -24.7% vs idx -19.3% ok 0%  beatAll 13% (min 0/7)  SPY 45% QQQ 32% SMH 45%  roll12 19%  expo 80%
+v5 + 12 top-500 universe                     CAGR  15.9% (min  12.5%)  DD -23.6% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 46% QQQ 32% SMH 32%  roll12 25%  expo 79%
+v5 + 13 no ramp-in                           CAGR  13.3% (min  12.2%)  DD -24.1% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 58% QQQ 39% SMH 45%  roll12 25%  expo 81%
+v5 + 14 1% ADV order cap                     CAGR  13.4% (min  11.4%)  DD -24.4% vs idx -19.3% ok 0%  beatAll 13% (min 0/7)  SPY 48% QQQ 39% SMH 35%  roll12 22%  expo 80%
+India + v5 regime overlay                    CAGR  17.9% (min  16.1%)  DD -29.0% vs idx -19.3% ok 0%  beatAll 32% (min 2/7)  SPY 78% QQQ 65% SMH 51%  roll12 49%  expo 77%
+India + v5 stops                             CAGR  15.0% (min  14.4%)  DD -20.9% vs idx -19.3% ok 0%  beatAll 19% (min 1/7)  SPY 81% QQQ 35% SMH 51%  roll12 20%  expo 73%
+India + v5 ranking (RobustPair)              CAGR  17.6% (min  15.2%)  DD -25.2% vs idx -19.3% ok 0%  beatAll 35% (min 2/7)  SPY 58% QQQ 45% SMH 68%  roll12 31%  expo 76%
+India + pullback-band entry                  CAGR  15.9% (min  14.6%)  DD -20.3% vs idx -19.3% ok 0%  beatAll 19% (min 1/7)  SPY 68% QQQ 42% SMH 35%  roll12 23%  expo 74%
+India decide daily                           CAGR  20.3% (min  19.5%)  DD -22.5% vs idx -19.3% ok 0%  beatAll 16% (min 0/7)  SPY 84% QQQ 64% SMH 35%  roll12 41%  expo 79%
+India, no gold                               CAGR  16.2% (min  15.5%)  DD -21.4% vs idx -19.3% ok 0%  beatAll 22% (min 1/7)  SPY 68% QQQ 49% SMH 61%  roll12 38%  expo 78%
+India, idle cash no gold slots               CAGR  15.6% (min  14.7%)  DD -22.1% vs idx -19.3% ok 0%  beatAll 19% (min 1/7)  SPY 77% QQQ 39% SMH 51%  roll12 25%  expo 78%
+India + $50m-ADV universe                    CAGR  13.6% (min  12.2%)  DD -30.6% vs idx -19.3% ok 0%  beatAll 3% (min 0/7)  SPY 68% QQQ 39% SMH 19%  roll12 24%  expo 77%
+India + 3-month ramp                         CAGR  16.5% (min  15.0%)  DD -22.2% vs idx -19.3% ok 0%  beatAll 19% (min 1/7)  SPY 80% QQQ 51% SMH 51%  roll12 27%  expo 75%
+India no adds                                CAGR  14.2% (min  13.9%)  DD -22.0% vs idx -19.3% ok 0%  beatAll 19% (min 1/7)  SPY 51% QQQ 32% SMH 51%  roll12 22%  expo 74%
+India no pause                               CAGR  16.9% (min  16.5%)  DD -35.4% vs idx -19.3% ok 0%  beatAll 32% (min 1/7)  SPY 71% QQQ 68% SMH 48%  roll12 48%  expo 96%
+India 29 slots                               CAGR  11.9% (min  11.5%)  DD -19.3% vs idx -19.3% ok 100%  beatAll 16% (min 0/7)  SPY 51% QQQ 35% SMH 48%  roll12 17%  expo 80%

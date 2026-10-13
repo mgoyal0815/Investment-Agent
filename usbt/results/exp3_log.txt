@@ -1,24 +1,32 @@
-train US v5 (live)                                 CAGR  13.4% (min  11.4%)  DD -24.4% vs idx -19.3% ok 0%  beatAll 13% (min 0/7)  SPY 48% QQQ 39% SMH 35%  roll12 22%  expo 80%
-train India v8 on US                               CAGR  16.2% (min  15.4%)  DD -22.1% vs idx -19.3% ok 0%  beatAll 22% (min 1/7)  SPY 77% QQQ 51% SMH 55%  roll12 26%  expo 76%
-train Candidate 3                                  CAGR  14.3% (min  13.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 39% (min 2/7)  SPY 65% QQQ 39% SMH 65%  roll12 28%  expo 75%
-train Candidate 3 + v5 adds                        CAGR  20.1% (min  19.6%)  DD -20.4% vs idx -19.3% ok 0%  beatAll 42% (min 2/7)  SPY 68% QQQ 49% SMH 61%  roll12 35%  expo 76%
-train v5 + twice-monthly                           CAGR  14.4% (min  13.1%)  DD -25.3% vs idx -19.3% ok 0%  beatAll 16% (min 1/7)  SPY 49% QQQ 32% SMH 45%  roll12 25%  expo 76%
-train Hybrid A (tuned)                             CAGR  26.2% (min  24.3%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 84% (min 5/7)  SPY 100% QQQ 90% SMH 84%  roll12 65%  expo 85%
-test US v5 (live)                                 CAGR  29.7% (min  28.7%)  DD -38.9% vs idx -33.7% ok 40%  beatAll 39% (min 2/7)  SPY 51% QQQ 58% SMH 49%  roll12 27%  expo 73%
-test India v8 on US                               CAGR  20.0% (min  19.3%)  DD -49.1% vs idx -33.7% ok 0%  beatAll 30% (min 1/7)  SPY 55% QQQ 32% SMH 30%  roll12 22%  expo 68%
-test Candidate 3                                  CAGR  27.8% (min  26.1%)  DD -29.8% vs idx -33.7% ok 100%  beatAll 29% (min 1/7)  SPY 65% QQQ 52% SMH 29%  roll12 37%  expo 72%
-test Candidate 3 + v5 adds                        CAGR  34.8% (min  33.5%)  DD -34.6% vs idx -33.7% ok 0%  beatAll 32% (min 2/7)  SPY 81% QQQ 49% SMH 32%  roll12 37%  expo 72%
-test v5 + twice-monthly                           CAGR  34.8% (min  31.5%)  DD -33.1% vs idx -33.7% ok 100%  beatAll 61% (min 3/7)  SPY 78% QQQ 65% SMH 61%  roll12 36%  expo 68%
-test Hybrid A (tuned)                             CAGR  25.3% (min  23.7%)  DD -50.9% vs idx -33.7% ok 0%  beatAll 32% (min 2/7)  SPY 49% QQQ 32% SMH 32%  roll12 29%  expo 77%
+train US v5 (live)                                 CAGR  15.2% (min  13.6%)  DD -24.4% vs idx -19.3% ok 0%  beatAll 11% (min 0/8)  SPY 41% QQQ 33% SMH 30%  roll12 21%  expo 80%
+train India v8 on US                               CAGR  15.6% (min  14.8%)  DD -22.1% vs idx -19.3% ok 0%  beatAll 19% (min 1/8)  SPY 66% QQQ 44% SMH 47%  roll12 25%  expo 75%
+train Candidate 1                                  CAGR  21.6% (min  20.6%)  DD -19.2% vs idx -19.3% ok 100%  beatAll 53% (min 3/8)  SPY 86% QQQ 75% SMH 56%  roll12 49%  expo 85%
+train Candidate 2                                  CAGR  17.7% (min  17.5%)  DD -17.3% vs idx -19.3% ok 100%  beatAll 39% (min 2/8)  SPY 70% QQQ 53% SMH 55%  roll12 39%  expo 84%
+train Candidate 3                                  CAGR  15.2% (min  14.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 34% (min 2/8)  SPY 56% QQQ 34% SMH 56%  roll12 29%  expo 76%
+train Candidate 4                                  CAGR  16.1% (min  15.3%)  DD -18.4% vs idx -19.3% ok 100%  beatAll 30% (min 2/8)  SPY 58% QQQ 41% SMH 30%  roll12 23%  expo 50%
+train Local-search best                            CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+train Local-search best (beat-all)                 CAGR  22.3% (min  20.6%)  DD -18.5% vs idx -19.3% ok 100%  beatAll 58% (min 4/8)  SPY 86% QQQ 81% SMH 58%  roll12 54%  expo 85%
+test US v5 (live)                                 CAGR  30.2% (min  14.6%)  DD -34.7% vs idx -33.7% ok 20%  beatAll 38% (min 1/6)  SPY 53% QQQ 50% SMH 42%  roll12 22%  expo 72%
+test India v8 on US                               CAGR  21.7% (min  20.8%)  DD -50.0% vs idx -33.7% ok 0%  beatAll 35% (min 1/6)  SPY 54% QQQ 39% SMH 35%  roll12 25%  expo 68%
+test Candidate 1                                  CAGR  19.3% (min  18.7%)  DD -59.3% vs idx -33.7% ok 0%  beatAll 7% (min 0/6)  SPY 42% QQQ 58% SMH 27%  roll12 31%  expo 79%
+test Candidate 2                                  CAGR  19.7% (min  17.7%)  DD -51.5% vs idx -33.7% ok 0%  beatAll 58% (min 3/6)  SPY 61% QQQ 58% SMH 58%  roll12 31%  expo 77%
+test Candidate 3                                  CAGR  30.0% (min  19.2%)  DD -31.0% vs idx -33.7% ok 20%  beatAll 35% (min 1/6)  SPY 49% QQQ 53% SMH 35%  roll12 39%  expo 71%
+test Candidate 4                                  CAGR  19.8% (min  13.5%)  DD -31.7% vs idx -33.7% ok 20%  beatAll 31% (min 1/6)  SPY 42% QQQ 39% SMH 31%  roll12 18%  expo 48%
+test Local-search best                            CAGR  27.7% (min  24.5%)  DD -54.0% vs idx -33.7% ok 0%  beatAll 39% (min 2/6)  SPY 42% QQQ 39% SMH 39%  roll12 35%  expo 77%
+test Local-search best (beat-all)                 CAGR  19.9% (min  19.2%)  DD -60.0% vs idx -33.7% ok 0%  beatAll 27% (min 1/6)  SPY 61% QQQ 58% SMH 27%  roll12 31%  expo 79%
 early US v5 (live)                                 CAGR   1.6% (min  -3.3%)  DD -59.8% vs idx -55.2% ok 80%  beatAll 30% (min 3/12)  SPY 50% QQQ 34% SMH 55%  roll12 32%  expo 67%
 early India v8 on US                               CAGR  13.6% (min   9.4%)  DD -60.8% vs idx -55.2% ok 80%  beatAll 45% (min 5/12)  SPY 54% QQQ 52% SMH 55%  roll12 61%  expo 66%
+early Candidate 1                                  CAGR   5.9% (min   3.7%)  DD -50.6% vs idx -55.2% ok 100%  beatAll 45% (min 5/12)  SPY 72% QQQ 46% SMH 71%  roll12 49%  expo 71%
+early Candidate 2                                  CAGR   4.2% (min   4.1%)  DD -54.7% vs idx -55.2% ok 100%  beatAll 46% (min 5/12)  SPY 73% QQQ 53% SMH 64%  roll12 47%  expo 74%
 early Candidate 3                                  CAGR  12.9% (min  10.5%)  DD -27.0% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 63%  expo 64%
-early Candidate 3 + v5 adds                        CAGR  11.3% (min   9.1%)  DD -29.6% vs idx -55.2% ok 100%  beatAll 45% (min 5/12)  SPY 63% QQQ 73% SMH 55%  roll12 60%  expo 64%
-early v5 + twice-monthly                           CAGR   5.0% (min   2.5%)  DD -50.0% vs idx -55.2% ok 100%  beatAll 36% (min 4/12)  SPY 43% QQQ 45% SMH 55%  roll12 42%  expo 61%
-early Hybrid A (tuned)                             CAGR   4.4% (min   3.1%)  DD -58.2% vs idx -55.2% ok 0%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 47%  expo 69%
-US v5 (live)                 fresh quarterly starts 2019-2025: beat all three to today 0%, first-12-months beat all 32%, smaller worst fall than all three 7%, median CAGR 29.6%
-India v8 on US               fresh quarterly starts 2019-2025: beat all three to today 4%, first-12-months beat all 21%, smaller worst fall than all three 0%, median CAGR 29.1%
-Candidate 3                  fresh quarterly starts 2019-2025: beat all three to today 4%, first-12-months beat all 25%, smaller worst fall than all three 18%, median CAGR 30.4%
-Candidate 3 + v5 adds        fresh quarterly starts 2019-2025: beat all three to today 29%, first-12-months beat all 21%, smaller worst fall than all three 0%, median CAGR 37.6%
-v5 + twice-monthly           fresh quarterly starts 2019-2025: beat all three to today 7%, first-12-months beat all 29%, smaller worst fall than all three 21%, median CAGR 33.8%
-Hybrid A (tuned)             fresh quarterly starts 2019-2025: beat all three to today 57%, first-12-months beat all 32%, smaller worst fall than all three 0%, median CAGR 45.3%
+early Candidate 4                                  CAGR   1.7% (min   0.6%)  DD -58.9% vs idx -55.2% ok 80%  beatAll 25% (min 2/12)  SPY 45% QQQ 32% SMH 55%  roll12 25%  expo 48%
+early Local-search best                            CAGR   4.4% (min   3.1%)  DD -58.2% vs idx -55.2% ok 0%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 47%  expo 69%
+early Local-search best (beat-all)                 CAGR   5.8% (min   3.3%)  DD -51.2% vs idx -55.2% ok 100%  beatAll 45% (min 5/12)  SPY 72% QQQ 46% SMH 70%  roll12 48%  expo 71%
+US v5 (live)                 fresh quarterly starts 2020-2025: beat all three to today 0%, first-12-months beat all 33%, smaller worst fall than all three 4%, median CAGR 29.7%
+India v8 on US               fresh quarterly starts 2020-2025: beat all three to today 4%, first-12-months beat all 25%, smaller worst fall than all three 0%, median CAGR 33.3%
+Candidate 1                  fresh quarterly starts 2020-2025: beat all three to today 50%, first-12-months beat all 25%, smaller worst fall than all three 0%, median CAGR 50.7%
+Candidate 2                  fresh quarterly starts 2020-2025: beat all three to today 8%, first-12-months beat all 29%, smaller worst fall than all three 0%, median CAGR 32.6%
+Candidate 3                  fresh quarterly starts 2020-2025: beat all three to today 4%, first-12-months beat all 29%, smaller worst fall than all three 4%, median CAGR 31.3%
+Candidate 4                  fresh quarterly starts 2020-2025: beat all three to today 0%, first-12-months beat all 12%, smaller worst fall than all three 4%, median CAGR 24.5%
+Local-search best            fresh quarterly starts 2020-2025: beat all three to today 67%, first-12-months beat all 38%, smaller worst fall than all three 0%, median CAGR 52.8%
+Local-search best (beat-all) fresh quarterly starts 2020-2025: beat all three to today 50%, first-12-months beat all 29%, smaller worst fall than all three 0%, median CAGR 49.0%

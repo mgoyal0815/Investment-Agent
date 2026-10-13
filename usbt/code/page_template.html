@@ -73,21 +73,21 @@ ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
 
 <div class="wrap">
   <header class="col">
-    <div class="eyebrow">US momentum study · 2000 to 12 Oct 2026 · $10,000, whole shares</div>
+    <div class="eyebrow">US momentum study · train 2012-19 · test 2020-26 and 2000-11 · $10,000, whole shares</div>
     <h1>Can India v8's rules make US v5 beat SPY, QQQ and SMH every year?</h1>
-    <p class="lede">No. No combination does it once tested on years it was not tuned on. Three changes do make the US system better, and one of them was chosen strictly on training data.</p>
+    <p class="lede">No. The best combination on 2012-2019 fails the 2020-2026 test. One blend, Candidate 3, earns what live v5 earns with smaller falls, but it does not beat all three indexes every year either.</p>
   </header>
 
   <section class="col">
-    <p class="verdict">The years that break every version are semiconductor booms: SMH returned +64% in 2019, +73% in 2023 and +39% in 2024. A diversified stock book does not keep pace with that, however it ranks or sizes.</p>
-    <p>The study ran the live US v5 code, India v8 ported to US data, each of the 15 differences one at a time, and about 600 combinations. Choices were made on 2012 to 2018 only, then tested on 2019 to October 2026 and on 2000 to 2011.</p>
+    <p class="verdict">The years that break every version are semiconductor and mega-cap years: SMH returned +73% in 2023 and +39% in 2024, QQQ +55% in 2023. A diversified stock book does not keep pace with that, however it ranks or sizes.</p>
+    <p>The study ran the live US v5 code, India v8 ported to US data, each of the 15 differences one at a time, and about 600 combinations. Choices were made on 2012 to 2019 only, with the search space, seed and scoring fixed in advance, then tested on January 2020 to October 2026 and on 2000 to 2011.</p>
   </section>
 
   <section>
     <div class="col"><h2>Three windows, five start dates each</h2>
     <p>Median return a year, deepest fall across the five paths, and share of full calendar years beating all three indexes.</p></div>
     <div class="tblwrap"><table id="win"></table></div>
-    <p class="note">A green worst fall is smaller than the worst fall of SPY, QQQ and SMH in that window. Index worst falls: 2012-18 SPY −19%, QQQ −23%, SMH −27%. 2019-26 SPY −34%, QQQ −35%, SMH −45%. 2000-11 SPY −55%, QQQ −83%, SMH −84%. The 2000-11 window is survivorship-biased in every system's favour.</p>
+    <p class="note">A green worst fall is smaller than the worst fall of SPY, QQQ and SMH in that window. Index worst falls: 2012-19 SPY −19%, QQQ −23%, SMH −27%. 2020-26 SPY −34%, QQQ −35%, SMH −45%. 2000-11 SPY −55%, QQQ −83%, SMH −84%. The 2000-11 window is survivorship-biased in every system's favour.</p>
   </section>
 
   <section>
@@ -95,7 +95,8 @@ ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
     <div class="chart">
       <div class="toolbar">
         <div class="seg" role="group" aria-label="Period">
-          <button id="b2012" aria-pressed="true">Jan 2012 to Oct 2026</button>
+          <button id="b2020" aria-pressed="true">2020 to Oct 2026</button>
+          <button id="b2012" aria-pressed="false">2012 to Oct 2026</button>
           <button id="b2000" aria-pressed="false">2000 to 2011</button>
         </div>
         <div class="legend" id="legend"></div>
@@ -108,16 +109,16 @@ ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
 
   <section>
     <div class="col"><h2>Year by year</h2>
-    <p>Green marks a year the system beat SPY, QQQ and SMH together. The 2012 rows come from a run started in January 2012, the 2000 rows from one started in January 2000.</p></div>
+    <p>Green marks a year the system beat SPY, QQQ and SMH together. Rows come from three runs: 2000-2011 from a start in January 2000, 2012-2019 from January 2012, and 2020 on from January 2020.</p></div>
     <div class="tblwrap"><table id="yrs"></table></div>
   </section>
 
   <section>
     <div class="col"><h2>What changed the US system, and what did not</h2></div>
     <div class="grid3">
-      <div class="card"><h3>Candidate 3 (chosen on training data)</h3><p>The v5 stock engine with India's top-500 universe, India's buy pause instead of the regime overlay, decisions twice a month, and a sell when a holding ranks outside the top 45. Slightly lower returns than v5 in 2019-26, much smaller falls, and 12.9% a year in 2000-11 against 1.6%.</p></div>
-      <div class="card"><h3>Twice a month beats daily</h3><p>Deciding on the 11th and the last session instead of every day helped v5 in all three windows. It is the single most consistent change found, but it was identified after the test years were seen.</p></div>
-      <div class="card"><h3>The tuned winner failed</h3><p>"Hybrid A" (12 equal slots, India ranking, gold) beat all three indexes in 84% of training years. On 2019-26 it managed 32% with a −51% fall. That gap is overfitting, and it is why the plainer Candidate 3 is the recommendation.</p></div>
+      <div class="card"><h3>Candidate 3: the robust blend</h3><p>The v5 stock engine with India's top-500 universe, India's buy pause instead of the regime overlay, decisions twice a month, and a sell when a holding ranks outside the top 45. Same return as v5 in 2020-26 (30.0% against 30.2%), a smaller worst fall, and 12.9% a year in 2000-11 against 1.6%. Third in training both times.</p></div>
+      <div class="card"><h3>No single change helps much</h3><p>Each of the 15 differences on its own moves v5 by under 2 points a year on 2012-19, and India's ranking alone makes it worse. The gains come only from combinations, which is also where overfitting comes from.</p></div>
+      <div class="card"><h3>The training winner failed</h3><p>Hybrid A (12 equal slots, India ranking, gold) had the best 2012-19 score: 23.9% a year, beating all three indexes in 72% of years with a −18% worst fall. On 2020-26 it fell 54% at worst and lost 20% in 2021. That gap is overfitting.</p></div>
     </div>
   </section>
 
@@ -131,7 +132,7 @@ ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
   <section class="col">
     <h2>Next steps</h2>
     <ul>
-      <li>Paper-test Candidate 3 beside the live v5 system. Nothing in the live repositories was changed.</li>
+      <li>Paper-test Candidate 3 beside the live v5 system. It is not what the fixed rule picked, and the 2019-26 years were seen in an earlier round, so treat it as a candidate, not a result. Nothing in the live repositories was changed.</li>
       <li>A survivorship-free dataset (MarketParquet, Norgate or Sharadar) would turn 2000-2018 into a real test. The code reruns unchanged on it.</li>
       <li>Beating SMH every year needs semiconductor exposure rather than better stock selection. If that is the goal, decide how much of the book should follow the leading index ETF.</li>
     </ul>
@@ -141,20 +142,20 @@ ul { margin: 0; padding-left: 20px } li { margin-bottom: 6px }
 
 <script>
 const DATA = /*DATA*/null;
-const SYS = ["v5 live", "Candidate 3", "Cand. 3 + adds", "v5 twice-monthly"];
-const COLORS = {"v5 live": "--s1", "Candidate 3": "--s2", "Cand. 3 + adds": "--s3", "v5 twice-monthly": "--s4", SPY: "--i1", QQQ: "--i2", SMH: "--i3"};
+const SYS = ["v5 live", "Candidate 3", "Hybrid A", "India v8"];
+const COLORS = {"v5 live": "--s1", "Candidate 3": "--s2", "Hybrid A": "--s3", "India v8": "--s4", SPY: "--i1", QQQ: "--i2", SMH: "--i3"};
 const DASH = {SPY: "5 4", QQQ: "2 3", SMH: "8 3 2 3"};
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const fmtUSD = v => v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "m" : "$" + Math.round(v).toLocaleString("en-US");
 
 // ---- windows table
 (function () {
-  const per = [["train", "2012-18 train"], ["test", "2019-26 test"], ["early", "2000-11 test, biased"]];
+  const per = [["train", "2012-19 train"], ["test", "2020-26 test"], ["early", "2000-11 test, biased"]];
   const names = [...new Set(DATA.windows.map(w => w.sys))];
   let h = "<thead><tr><th></th>" + per.map(p => `<th colspan="3">${p[1]}</th>`).join("") + "</tr><tr><th></th>" +
     per.map(() => "<th>a year</th><th>worst fall</th><th>beat all 3</th>").join("") + "</tr></thead><tbody>";
   for (const n of names) {
-    h += `<tr${n.startsWith("India") ? ' class="sub"' : ""}><td class="name">${n}</td>`;
+    h += `<tr><td class="name">${n}</td>`;
     for (const [p] of per) {
       const w = DATA.windows.find(x => x.sys === n && x.per === p);
       const ok = w.dd > w.ddidx;
@@ -188,7 +189,7 @@ const fmtUSD = v => v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "m" : "$" + Math.rou
 })();
 
 // ---- chart
-let run = "2012";
+let run = "2020";
 const svg = document.getElementById("svg"), tip = document.getElementById("tip");
 function draw() {
   const series = DATA.curves[run];
@@ -238,9 +239,9 @@ function draw() {
   };
   svg.onmouseleave = () => { tip.hidden = true; const xh = svg.querySelector("#xh"); if (xh) xh.setAttribute("visibility", "hidden"); };
 }
-for (const k of ["2012", "2000"]) document.getElementById("b" + k).onclick = () => {
+for (const k of ["2020", "2012", "2000"]) document.getElementById("b" + k).onclick = () => {
   run = k;
-  for (const j of ["2012", "2000"]) document.getElementById("b" + j).setAttribute("aria-pressed", j === k);
+  for (const j of ["2020", "2012", "2000"]) document.getElementById("b" + j).setAttribute("aria-pressed", j === k);
   draw();
 };
 draw();

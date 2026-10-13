@@ -1,5 +1,5 @@
 """Experiment 1: baselines and every difference one at a time, in both directions, on the
-training window (2012-2018, five start dates). Writes results/exp1_switches.csv."""
+training window (2012-2019, five start dates). Writes results/exp1_switches.csv."""
 import pandas as pd
 import runner as R
 

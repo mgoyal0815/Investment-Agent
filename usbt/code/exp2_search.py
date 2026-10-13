@@ -1,9 +1,9 @@
-"""Experiment 2: combination search on the TRAINING window only (2012-2018, five start dates).
+"""Experiment 2: combination search on the TRAINING window only (2012-2019, five start dates).
 
 Random sample of the combined v5 x India design space, plus a few levers aimed at the SMH problem
 (a bigger leader-ETF sleeve, idle cash in the leader). Every configuration is scored with
 runner.objective. The top 25 by objective go to results/exp2_top.csv; all to exp2_all.csv.
-Nothing from 2019 on or before 2012 is looked at here.
+Nothing from 2020 on or before 2012 is looked at here.
 """
 import json
 import random
