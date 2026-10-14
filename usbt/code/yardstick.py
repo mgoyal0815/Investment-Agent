@@ -21,10 +21,13 @@ def _init(path):
     MM = X.Market(pd.read_pickle(path))
 
 
-def starts(a="2000-01-01", b="2025-10-31", step=1):
+def starts(a="2000-01-01", b="2025-10-31", step=1, day=1):
+    """First session on/after `day` of each month. day=1 is the standard set; day=15 is the held-back
+    second sample used only to confirm a system before it is accepted (iterative protocol, 15 Oct 2026)."""
     d = MM.dates if MM is not None else pd.read_pickle("../data/panel.pkl")["dates"]
     s = pd.Series(d, index=d)
     s = s[(s >= a) & (s <= b)]
+    s = s[s.index.day >= day]
     first = s.groupby([s.index.year, s.index.month]).first().values
     return [pd.Timestamp(x) for x in first[::step]]
 
