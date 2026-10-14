@@ -223,7 +223,8 @@ class Market:
                 self._ucache[key] = ~np.isin(self.syms, list(ex))
             base &= self._ucache[key]
         if cfg["universe"] == "sp500":
-            return base & self.sp_member[i]
+            # etf_in_universe: index / sector ETFs (panel columns flagged is_etf) compete for slots like stocks
+            return base & (self.sp_member[i] | (self.is_etf if etf_in else False))
         if cfg["universe"] == "sp500+ndx":
             return base & (self.sp_member[i] | self.ndx_member[i])
         if etf_in:
@@ -662,7 +663,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if is_decision(i - 1) or park_state[0] is None:
                     park_state[0] = risk_off
                 risk_off = park_state[0]
-            pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target")) and vf[0] < 0.999))
+            pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target") or cfg.get("mkt_vol_target")) and vf[0] < 0.999))
             # rotate: a parking ETF that is no longer the target is sold first
             for k in [k for k in list(parked) if k != pk]:
                 park_trade(k, -parked[k], i)
@@ -699,7 +700,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         unit_hist.append(unit)
         # volatility-managed exposure (Barroso & Santa-Clara): the stock book may use at most
         # vol_target / (its own realised volatility over 63 sessions) of the account
-        if cfg.get("vol_target") and len(unit_hist) > 64:
+        if cfg.get("mkt_vol_target"):
+            sp_ = m.E["SPY"]["c"]
+            if i >= 64:
+                rr_ = np.diff(sp_[i - 63:i + 1]) / sp_[i - 63:i]
+                rv = float(np.nanstd(rr_, ddof=1) * np.sqrt(252))
+                vf[0] = min(1.0, max(cfg.get("vol_floor", 0.3), cfg["mkt_vol_target"] / rv)) if rv > 0 else 1.0
+        elif cfg.get("vol_target") and len(unit_hist) > 64:
             u = np.array(unit_hist[-64:])
             rv = np.std(np.diff(u) / u[:-1], ddof=1) * np.sqrt(252)
             vf[0] = min(1.0, max(cfg.get("vol_floor", 0.3), cfg["vol_target"] / rv)) if rv > 0 else 1.0
@@ -1187,6 +1194,12 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
             continue
+        if cfg.get("index_hurdle") and not m.is_etf[j]:
+            # a stock is only bought if its 6-month return beats the best of SPY/QQQ/SMH (else the index wins the slot)
+            c_ = P["Cf"]
+            if i < 126 or not (c_[i, j] / c_[i - 126, j] - 1 > max(m.E[t]["c"][i] / m.E[t]["c"][i - 126] - 1 for t in ("SPY", "QQQ", "SMH")
+                                                                     if m.E[t]["c"][i - 126] == m.E[t]["c"][i - 126])):
+                continue
         if cfg.get("vol_max_pct"):
             if "_rvp" not in cfg or cfg["_rvp"][0] != i:
                 cfg["_rvp"] = (i, pct_rank(np.where(u, P["RV30"][i].astype(float), np.nan)))

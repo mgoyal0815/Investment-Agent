@@ -17,6 +17,9 @@ ETFS = ["SPY", "QQQ", "SMH", "TLT", "GLD", "UUP", "DBC", "SHY", "HYG", "BIL", "X
 KEYS = "/home/user/v5-forward-test/keys"
 # sector / industry ETFs the stock picker may hold like a stock (engine switch etf_in_universe)
 SECTOR_ETFS = ["SMH", "SOXX", "XLK", "IGV", "XLE", "XLV", "XLF", "XLI", "XLY", "XLP", "XLU", "XLB", "XLC"]
+# broad index ETFs that may also compete for slots (exp48); written to a separate panel so older results stay reproducible
+if os.environ.get("IDX_COLS"):
+    SECTOR_ETFS = SECTOR_ETFS + ["QQQ", "SPY", "DIA", "IWM"]
 
 
 def load(sym):
@@ -82,7 +85,7 @@ def main():
         frames[s] = df
         syms.append(s)
     print(len(syms), "stocks kept,", len(dropped), "dropped", flush=True)
-    json.dump(dropped, open(f"{D}/dropped_ndx.json" if os.environ.get("NDX") else f"{D}/dropped.json", "w"), indent=0)
+    json.dump(dropped, open(f"{D}/dropped_ndx.json" if os.environ.get("NDX") else (f"{D}/dropped_idx.json" if os.environ.get("IDX_COLS") else f"{D}/dropped.json"), "w"), indent=0)
 
     def wide(col):
         return pd.DataFrame({s: frames[s][col] for s in syms}).reindex(idx)
@@ -175,7 +178,7 @@ def main():
              corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52),
              ADX=f32(ADX), MACDH=f32(MACDH), BO55=BO55.to_numpy(), PDI_GT=(pdi > ndi).to_numpy(),
              RSI=f32(RSI), EMA50=f32(EMA50), VIX=(vix.to_numpy() if vix is not None else None))
-    pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else f"{D}/panel.pkl")
+    pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else (f"{D}/panel_idx.pkl" if os.environ.get("IDX_COLS") else f"{D}/panel.pkl"))
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
 
