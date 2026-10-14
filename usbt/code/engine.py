@@ -152,8 +152,9 @@ class Market:
         if cfg["score"] == "robust" and cfg["sizing"] == "v5":
             sc = np.full(self.N, np.nan)
             for m in (u & cont, u & rec):
-                a = pct_rank(np.where(m, P["rs126"][i], np.nan))
-                b = pct_rank(np.where(m, P["dist200"][i], np.nan))
+                k1, k2 = cfg.get("rp_metrics", ("rs126", "dist200"))
+                a = pct_rank(np.where(m, P[k1][i], np.nan))
+                b = pct_rank(np.where(m, P[k2][i], np.nan))
                 core = 0.5 * a + 0.5 * b
                 r = pct_rank(core)
                 sc = np.where(m, r, sc)
@@ -232,6 +233,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     curve, expo, events, trades = [], [], [], []
     costs = 0.0
     paused = False
+    vf = [1.0]                 # volatility-managed exposure factor (1 = no cap)
     flow = [0.0, 0.0]          # today's stock sells / buys at fill value (for the flow-free unit NAV)
     sv_prev, sleeve_base = 0.0, 0.0
     park_tk = cfg["park"]
@@ -490,9 +492,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             wst = alloc.get("stock", 1.0)
             sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
             sleeve_cash_cap = max(0.0, wst * navo - sv_open)
-        elif ramp_factor(i) < 1:
+        elif ramp_factor(i) * vf[0] < 1:
             sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
-            sleeve_cash_cap = max(0.0, ramp_factor(i) * navo - sv_open)
+            cap_v = ramp_factor(i) * vf[0] * navo
+            if cfg.get("vol_hard") and sv_open > 1.05 * cap_v:
+                scale_down(i, sv_open - cap_v)
+                sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
+            sleeve_cash_cap = max(0.0, cap_v - sv_open)
         for o in buys:
             j = o["j"]
             dollars = o["dollars"]
@@ -512,7 +518,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 sleeve_cash_cap -= spent
         # park idle cash (India: at least half a slot idle)
         if park_tk and not drew:
-            pk = _park_name(park_tk, m, i, cfg, paused)
+            # money held back by the volatility cap must not ride the market in an index ETF
+            pk = _park_name(park_tk, m, i, cfg, paused or (bool(cfg.get("vol_target")) and vf[0] < 0.999))
             # rotate: a parking ETF that is no longer the target is sold first
             for k in [k for k in list(parked) if k != pk]:
                 park_trade(k, -parked[k], i)
@@ -547,6 +554,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         flow[0] = flow[1] = 0.0
         sv_prev = sv
         unit_hist.append(unit)
+        # volatility-managed exposure (Barroso & Santa-Clara): the stock book may use at most
+        # vol_target / (its own realised volatility over 63 sessions) of the account
+        if cfg.get("vol_target") and len(unit_hist) > 64:
+            u = np.array(unit_hist[-64:])
+            rv = np.std(np.diff(u) / u[:-1], ddof=1) * np.sqrt(252)
+            vf[0] = min(1.0, max(cfg.get("vol_floor", 0.3), cfg["vol_target"] / rv)) if rv > 0 else 1.0
         curve.append(navc)
         expo.append(sv / navc if navc > 0 else 0.0)
         wst_now = alloc.get("stock", 1.0) if cfg["overlay"] in ("v5", "v5_soft") else 1.0
@@ -659,7 +672,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             sleeve_nav = wst * navd
             sleeve_cash = min(cash + park_v, max(0.0, sleeve_nav - sv))
         else:
-            f = ramp_factor(i)
+            f = ramp_factor(i) * vf[0]
             sleeve_nav = navd
             sleeve_cash = cash + park_v if f >= 1 else min(cash + park_v, max(0.0, f * navd - sv))
         # projected cash: + queued exits

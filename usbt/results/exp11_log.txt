@@ -1,0 +1,20 @@
+train done
+test done
+early done
+TOP 12 BY TRAINING SCORE
+                                  label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+ rs126+dist200, vol 0.3 hard, size x1.5       0.238    -0.218       0.582      0.319   -0.277      0.340       0.055    -0.493       0.447
+rs126+dist200, vol 0.25 hard, size x1.5       0.232    -0.227       0.582      0.258   -0.293      0.227       0.064    -0.495       0.447
+     rs126+dist200, vol 0.25, size x1.0       0.194    -0.175       0.557      0.253   -0.281      0.193       0.077    -0.492       0.447
+      rs126+dist200, vol 0.2, size x1.5       0.202    -0.194       0.554      0.259   -0.333      0.380       0.067    -0.507       0.447
+      rs126+dist200, vol 0.4, size x1.5       0.211    -0.207       0.525      0.328   -0.321      0.267       0.073    -0.475       0.447
+ rs126+dist200, vol 0.4 hard, size x1.5       0.211    -0.207       0.525      0.368   -0.304      0.493       0.073    -0.449       0.447
+      rs126+dist200, vol off, size x1.5       0.208    -0.207       0.525      0.356   -0.346      0.227       0.081    -0.369       0.517
+      rs126+dist200, vol 0.3, size x1.0       0.190    -0.183       0.557      0.291   -0.283      0.387       0.095    -0.459       0.483
+     rs126+dist200, vol 0.25, size x1.5       0.212    -0.215       0.500      0.259   -0.315      0.347       0.068    -0.513       0.447
+ rs126+dist200, vol 0.3 hard, size x1.0       0.188    -0.183       0.557      0.284   -0.271      0.387       0.094    -0.424       0.502
+ rs126+dist200, vol 0.2 hard, size x1.5       0.191    -0.191       0.554      0.229   -0.320      0.420       0.073    -0.461       0.447
+rs126+dist200, vol 0.25 hard, size x1.0       0.187    -0.183       0.557      0.268   -0.288      0.273       0.072    -0.474       0.447
+CURRENT BEST
+                            label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+rs126+dist200, vol off, size x1.0       0.187    -0.183       0.529      0.327   -0.304       0.42       0.104    -0.381       0.535

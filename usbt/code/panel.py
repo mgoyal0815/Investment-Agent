@@ -121,6 +121,15 @@ def main():
     m12 = (Cf / Cf.shift(252) - 1) / vol
     ret1 = Cf.pct_change(fill_method=None)
 
+    # residual momentum (Blitz, Huij & Martens): 12-1 month sum of returns net of SPY beta, over the
+    # residual volatility; and nearness to the 52-week high (George & Hwang)
+    mret = spyc.pct_change(fill_method=None)
+    mv = mret.rolling(252, min_periods=200).var()
+    cov = ret1.mul(mret, axis=0).rolling(252, min_periods=200).mean() - ret1.rolling(252, min_periods=200).mean().mul(mret.rolling(252, min_periods=200).mean(), axis=0)
+    beta = cov.div(mv, axis=0).shift(1)
+    resid = ret1 - beta.mul(mret, axis=0)
+    resmom = resid.shift(21).rolling(231, min_periods=180).sum() / resid.rolling(252, min_periods=200).std()
+    hi52 = Cf / Cf.rolling(252, min_periods=200).max()
     # how closely each name has moved with SMH and with QQQ over the last 126 sessions (daily
     # returns, correlation), for the "lean into the leading index" tilt. Prices only, so delisted
     # names are covered.
@@ -135,7 +144,7 @@ def main():
              ADV20=f32(ADV20), cont=cont.to_numpy(), rec=rec.to_numpy(), rs126=f32(rs126), dist200=f32(dist200),
              medv=f32(medv), hist=f32(hist), m6=f32(m6), m12=f32(m12), ret1=f32(ret1),
              in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]),
-             corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]))
+             corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52))
     pd.to_pickle(P, f"{D}/panel.pkl")
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
