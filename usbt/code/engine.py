@@ -170,6 +170,14 @@ class Market:
             self._esma[key] = np.sign((c - c.rolling(n, min_periods=n).mean()).fillna(0).to_numpy())
         return self._esma[key][i]
 
+    def etf_macd(self, t, i):
+        key = ("macd", t)
+        if key not in self._esma:
+            c = pd.Series(self.E[t]["c"]).ffill()
+            mc = c.ewm(span=12, adjust=False).mean() - c.ewm(span=26, adjust=False).mean()
+            self._esma[key] = (mc - mc.ewm(span=9, adjust=False).mean()).fillna(0).to_numpy()
+        return self._esma[key][i]
+
     def universe(self, i, cfg):
         """Boolean mask of names that can be ranked and bought at session i."""
         P = self.P
@@ -767,6 +775,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if tok == "tlt_up":
                     sig.append(m.etf_vs_sma("TLT", 63, i) > 0)
+                elif tok.startswith("vix"):          # e.g. vix25: VIX closes above 25
+                    v_ = m.P.get("VIX")
+                    sig.append(v_ is not None and v_[i] == v_[i] and v_[i] > float(tok[3:]))
+                elif tok.endswith("macd"):           # e.g. spymacd: SPY MACD below its signal line
+                    sig.append(m.etf_macd(tok[:3].upper(), i) < 0)
                 else:
                     t_, n_ = tok[:3].upper(), int(tok[3:])
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
@@ -806,6 +819,14 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     else:
                         pend_stock.append(dict(kind="exit", j=j, why="lock", all=True))
                     exiting.add(j)
+        if cfg.get("chand_k"):
+            # chandelier: sell when the close falls more than k ATRs below the highest close since entry
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j]:
+                    continue
+                a = ATR[i, j]
+                if a == a and a > 0 and i - p["entry_i"] >= cfg.get("chand_min_hold", 5) and C[i, j] < p["peak"] - cfg["chand_k"] * a:
+                    pend_stock.append(dict(kind="exit", j=j, why="chand", all=True)); exiting.add(j)
         if use_stop:
             for j, p in pos.items():
                 if p["stale"] or j in exiting:
@@ -841,6 +862,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
+        for key_, w_ in (cfg.get("score_mix") or {}).items():
+            # blend the rank score with another indicator's cross-sectional percentile (hi52, resmom, ADX, RSI)
+            x_ = pct_rank(np.where(u & ~np.isnan(sc), m.P[key_][i].astype(float), np.nan))
+            sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.nan_to_num(x_, nan=0.0)) / (1 + w_))
         if use_rank or not v5_size:
             order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
             nvalid = int((~np.isnan(sc)).sum())
@@ -866,6 +891,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
+                if cfg.get("trend_hold") and not paused:
+                    # keep a holding while its own trend is intact: above a rising 50-session EMA
+                    e50 = m.P["EMA50"]
+                    if C[i, j] > e50[i, j] and i >= 10 and e50[i, j] > e50[i - 10, j] and \
+                            (cfg["trend_hold"] is True or C[i, j] / pos[j]["cost"] - 1 >= cfg["trend_hold"]):
+                        continue
                 rl = cfg.get("rank_ladder")
                 if rl and not paused:
                     rk = pos_rank.get(j, 10 ** 9)
@@ -1077,6 +1108,16 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         if cfg["trend"] and not P["cont"][i, j]:
             continue
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
+            continue
+        if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
+            continue
+        if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
+            continue
+        if cfg.get("macd_pos") and not (P["MACDH"][i, j] > 0):
+            continue
+        if cfg.get("rsi_max") and not (P["RSI"][i, j] <= cfg["rsi_max"]):
+            continue
+        if cfg.get("bo_recent") and not P["BO55"][max(0, i - cfg["bo_recent"]):i + 1, j].any():
             continue
         w = 1.0
         wt = cfg.get("weight")

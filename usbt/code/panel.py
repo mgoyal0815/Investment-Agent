@@ -148,6 +148,23 @@ def main():
     for k in ("SMH", "QQQ"):
         er = etf[k]["close"].ffill().pct_change(fill_method=None)
         corr[k] = ret1.rolling(126, min_periods=100).corr(er)
+    # trend-strength and turn indicators (owner, 15 Oct 2026): ADX(14, Wilder), MACD histogram (12/26/9) as a
+    # share of price, and a 55-session breakout (close at a new 55-session high)
+    up, dn = Hf.diff(), -Lf.diff()
+    pdm = up.where((up > dn) & (up > 0), 0.0)
+    ndm = dn.where((dn > up) & (dn > 0), 0.0)
+    wild = lambda x: x.ewm(alpha=1 / 14, adjust=False, min_periods=14).mean()
+    atr_w = wild(TR)
+    pdi, ndi = 100 * wild(pdm) / atr_w, 100 * wild(ndm) / atr_w
+    ADX = wild(100 * (pdi - ndi).abs() / (pdi + ndi).replace(0, np.nan))
+    macd = Cf.ewm(span=12, adjust=False, min_periods=26).mean() - Cf.ewm(span=26, adjust=False, min_periods=26).mean()
+    MACDH = (macd - macd.ewm(span=9, adjust=False, min_periods=9).mean()) / Cf
+    BO55 = Cf >= Cf.shift(1).rolling(55, min_periods=55).max()
+    dlt = Cf.diff()
+    g_, l_ = dlt.clip(lower=0).ewm(alpha=1 / 14, adjust=False, min_periods=14).mean(), (-dlt.clip(upper=0)).ewm(alpha=1 / 14, adjust=False, min_periods=14).mean()
+    RSI = 100 - 100 / (1 + g_ / l_.replace(0, np.nan))
+    EMA50 = Cf.ewm(span=50, adjust=False, min_periods=50).mean()
+    vix = pd.read_csv(f"{D}/vix.csv", parse_dates=["date"]).set_index("date")["close"].reindex(idx).ffill() if os.path.exists(f"{D}/vix.csv") else None
     f32 = lambda x: x.to_numpy(dtype=np.float32)
     P = dict(dates=idx, syms=np.array(syms), etf={k: (v["open"].to_numpy(), v["close"].to_numpy()) for k, v in etf.items()},
              O=f32(raw_O), C=f32(raw_C), Cf=f32(Cf), SF=f32(SF),
@@ -155,7 +172,9 @@ def main():
              ADV20=f32(ADV20), cont=cont.to_numpy(), rec=rec.to_numpy(), rs126=f32(rs126), dist200=f32(dist200),
              medv=f32(medv), hist=f32(hist), m6=f32(m6), m12=f32(m12), ret1=f32(ret1),
              in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]),
-             corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52))
+             corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52),
+             ADX=f32(ADX), MACDH=f32(MACDH), BO55=BO55.to_numpy(), PDI_GT=(pdi > ndi).to_numpy(),
+             RSI=f32(RSI), EMA50=f32(EMA50), VIX=(vix.to_numpy() if vix is not None else None))
     pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else f"{D}/panel.pkl")
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
