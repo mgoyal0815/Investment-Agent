@@ -129,6 +129,20 @@ class Market:
         self.large_idx = np.cumprod(1 + ew)
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
+        # point-in-time S&P 500 membership (fja05680/sp500): no knowledge of the future
+        try:
+            h = pd.read_csv("../data/sp500_hist.csv", parse_dates=["date"]).sort_values("date")
+            J = {s: j for j, s in enumerate(self.syms)}
+            snap = np.zeros((len(h), self.N), bool)
+            for k, t in enumerate(h.tickers):
+                for s in t.split(","):
+                    j = J.get(s.replace(".", "-"))
+                    if j is not None:
+                        snap[k, j] = True
+            pos_ = np.searchsorted(h.date.values, self.dates.values, side="right") - 1
+            self.sp_member = snap[np.clip(pos_, 0, None)]
+        except Exception:
+            self.sp_member = None
         self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
@@ -142,9 +156,14 @@ class Market:
             base &= ~self.is_etf
         if cfg["universe"] == "adv50":
             return base & (P["ADV20"][i] >= cfg["min_adv"])
+        if cfg["universe"] == "sp500":
+            return base & self.sp_member[i]
         if etf_in:
             return base & ((self.trank[i] <= cfg["universe_n"]) | self.is_etf)
-        return base & (self.trank[i] <= cfg["universe_n"])
+        u = base & (self.trank[i] <= cfg["universe_n"])
+        if cfg.get("sp500_only"):
+            u &= self.sp_member[i]
+        return u
 
     def scores(self, i, cfg):
         """Return (score array, route array) for session i. route: 1 Continuation, 2 Recovery, 0 none."""
@@ -761,8 +780,16 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
                     continue
                 if pos_rank.get(j, 10 ** 9) >= xr:
+                    p_ = pos[j]
+                    p_["out_n"] = p_.get("out_n", 0) + 1
+                    if cfg.get("rank_losers_only") and C[i, j] >= p_["cost"]:
+                        continue
+                    if p_["out_n"] < cfg.get("rank_persist", 1):
+                        continue
                     pend_stock.append(dict(kind="exit", j=j, why="rank", all=True))
                     exiting.add(j)
+                else:
+                    pos[j]["out_n"] = 0
         if paused:
             continue
         park_v = sum(sh * etf_px(k, i) for k, sh in parked.items())
@@ -833,8 +860,14 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         zone = ("Green" if -0.5 <= qq <= 1.0 else "Yellow" if (1.0 < qq <= 2.0 or -1.0 <= qq < -0.5)
                 else "Red" if qq > 2.0 else "Weak") if qq == qq else "Unknown"
         if j in pos:
-            if route[j] != pos[j]["route"] or zone != "Green" or cfg["adds"] != "v5":
+            if route[j] != pos[j]["route"] or cfg["adds"] != "v5":
                 continue
+            if zone != "Green":
+                # framework 10.1 add_red_hi: an extended held winner may take a Yellow-sized add
+                hi = cfg.get("add_red_hi")
+                if hi is None or not (qq == qq and -1.0 <= qq <= hi):
+                    continue
+                zone = "Yellow"
             kind = "add"
         else:
             if cfg["zone_gate"] and zone not in ("Green", "Yellow"):
@@ -878,9 +911,9 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         avg = held["cost"] if held else 0.0
         em = cfg.get("etf_size_mult", 1.0) if m.is_etf[j] else 1.0
         em *= tilt.get(j, 1.0)
-        base = (0.08 if zone == "Green" else 0.04) * nav * sm * em
+        base = (0.08 if zone == "Green" else 0.04) * nav * sm * em * cfg.get("base_mult", 1.0)
         target = min(base, cash)
-        rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm * em
+        rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm * em * cfg.get("risk_mult", 1.0)
         if stop is None or stop != stop or close <= stop:
             continue
         eff = sh
@@ -893,7 +926,7 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         target = min(target, rr * close)
         rv = RV30[i, j]
         if rv == rv and rv > 0:
-            vr = ((0.03 if zone == "Green" else 0.015) * nav * sm * em) / (3.0 * rv * close) - sh
+            vr = ((0.03 if zone == "Green" else 0.015) * nav * sm * em * cfg.get("vol_mult", 1.0)) / (3.0 * rv * close) - sh
             target = min(target, vr * close)
         raw_px = close * P["SF"][i, j]
         n = int(target // raw_px) if raw_px > 0 else 0

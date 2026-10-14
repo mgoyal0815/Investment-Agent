@@ -1,0 +1,19 @@
+                                                label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+                        US v5 live (its own universe)       0.152    -0.244       0.111      0.302   -0.347      0.380       0.016    -0.598       0.305
+                          System A (its own universe)       0.239    -0.212       0.582      0.462   -0.325      0.420       0.099    -0.390       0.553
+                                v5 live, S&P 500 only       0.129    -0.268       0.139      0.191   -0.291      0.193       0.067    -0.360       0.392
+                               System A, S&P 500 only       0.107    -0.251       0.164      0.250   -0.245      0.193       0.018    -0.420       0.429
+           previous best (no lock/adds), S&P 500 only       0.066    -0.172       0.000      0.181   -0.279      0.193       0.040    -0.426       0.464
+                       Candidate 3 core, S&P 500 only       0.054    -0.156       0.000      0.144   -0.285      0.193       0.063    -0.303       0.518
+A on S&P 500: losers-only False, persist 1, lock None       0.104    -0.255       0.164      0.233   -0.313      0.193       0.014    -0.432       0.374
+ A on S&P 500: losers-only False, persist 1, lock 0.3       0.107    -0.251       0.164      0.250   -0.245      0.193       0.018    -0.420       0.429
+ A on S&P 500: losers-only False, persist 1, lock 0.5       0.105    -0.257       0.164      0.249   -0.265      0.193       0.013    -0.432       0.374
+A on S&P 500: losers-only False, persist 2, lock None       0.145    -0.247       0.164      0.230   -0.316      0.193       0.049    -0.398       0.464
+ A on S&P 500: losers-only False, persist 2, lock 0.3       0.146    -0.245       0.164      0.224   -0.262      0.193       0.056    -0.419       0.464
+ A on S&P 500: losers-only False, persist 2, lock 0.5       0.145    -0.247       0.164      0.228   -0.271      0.193       0.051    -0.398       0.464
+ A on S&P 500: losers-only True, persist 1, lock None       0.102    -0.185       0.164      0.210   -0.312      0.193       0.047    -0.423       0.464
+  A on S&P 500: losers-only True, persist 1, lock 0.3       0.102    -0.173       0.164      0.206   -0.252      0.193       0.040    -0.447       0.464
+  A on S&P 500: losers-only True, persist 1, lock 0.5       0.102    -0.175       0.164      0.196   -0.270      0.193       0.044    -0.424       0.464
+ A on S&P 500: losers-only True, persist 2, lock None       0.119    -0.222       0.164      0.197   -0.288      0.193       0.050    -0.405       0.464
+  A on S&P 500: losers-only True, persist 2, lock 0.3       0.121    -0.212       0.164      0.189   -0.257      0.193       0.054    -0.404       0.464
+  A on S&P 500: losers-only True, persist 2, lock 0.5       0.117    -0.222       0.164      0.205   -0.247      0.193       0.051    -0.405       0.464
