@@ -90,6 +90,31 @@ leveraged ETFs.
   42% for the same system on the same panel with S&P 500 members only. Ten nearby variants scored
   27-50%, CAGR 10-21%, worst fall -36% to -50%.
 
+## The owner's yardstick (exp34, exp35, 14 October 2026)
+
+Rules: beat SPY and QQQ every year, beat SMH over every rolling 3 years, worst fall smaller than both
+SPY's and QQQ's, from ANY start date. Scored from every monthly start 2000-2025, each a fresh $10,000
+(`code/yardstick.py`). Search (exp34): 400 random settings plus fine-tuning around the best 3, chosen on
+starts 2012-2016 stopping at 2019; judged on starts 2000-2008 and 2020-2025.
+
+| From every monthly start 2000-25 | System C | best tuned (pick 3) |
+|---|---|---|
+| Starts that meet every rule | 0% | 0% |
+| Years (from the start date) beating both SPY and QQQ | 48% | 46% |
+| 3-year windows beating SMH | 32% | 37% |
+| Starts with a smaller worst fall than SPY and QQQ | 78% | 78% |
+
+- Tuning lifted the training score (56% to 62-67% of years) but not the unseen starts (45-50%).
+  That is curve-fitting, so System C stays.
+- Holding period, System C beats both SPY and QQQ: 1 year 47% of starts, 3 years 58%, 5 years 55%.
+  Held to today: 100%. Held only to the end of 2025: 31%. The "to today" figure rests on 2026's
+  +128% and is not reliable.
+- Starts from 2020 on fail the drawdown rule 97% of the time: from those starts, SPY's worst fall
+  was about -25%, while System C fell 28-34%.
+
+Verdict: on clean data, no rule found beats SPY and QQQ every year from every start. The best beat
+both in about half of years.
+
 ---
 
 # System A (frozen 14 October 2026)
