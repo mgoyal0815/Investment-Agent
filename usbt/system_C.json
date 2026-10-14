@@ -1,0 +1,30 @@
+{
+ "name": "System C",
+ "frozen": "2026-10-14",
+ "description": "System B staggered inside one account (half the book reviewed on the last session, half on the 11th), exit outside the top 15; chosen on the bias-free S&P 500 universe, 2012-2019, scored with and without the biggest winner",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.3,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ]
+ }
+}

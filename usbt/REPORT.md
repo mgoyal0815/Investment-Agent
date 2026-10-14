@@ -34,6 +34,15 @@ lead was partly date luck. Splitting the account into two halves that decide on 
 session removes most of that luck: 20.4% a year (2012-19, worst fall -18%), 32.1% (2020-26, -33%),
 6.1% (2000-11, -41%). That is the honest expectation for this system on clean data.
 
+System C (`system_C.json`, exp25): System B staggered inside ONE account (half the book reviewed on the
+last session of the month, half on the 11th) with the exit at the top 15, chosen on 2012-2019 with a
+score that ignores both date luck and the single biggest winner. Five-start medians: 23.4% a year with
+a -16% worst fall (2012-19), 31.7% / -32% (2020-26), 7.2% / -39% (2000-11). One run from 2000: $10,000
+to $725,000, 17.4% a year, worst fall -39%; it beats SPY from every quarterly start held to today, but
+beats all three indexes in only 9 of 26 calendar years, and its 2020s gains are lumpy (2023 +9%,
+2024 +9%, 2025 +46%, 2026 to date +128%). A higher-scoring 6-slot variant fell 37% in 2020-26 and was
+not adopted.
+
 ---
 
 # System A (frozen 14 October 2026)

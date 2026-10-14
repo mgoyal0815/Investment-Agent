@@ -1,0 +1,23 @@
+40 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+80 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+120 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+160 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+200 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+240 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+252 best {'score': 0.129, 'cagr': 0.23, 'dd': -0.205, 'beat': 0.443, 'cagr_wo': 0.149}
+  climb pass0 +0.147
+  climb pass1 +0.147
+  climb pass0 +0.171
+  climb pass1 +0.174
+train System B, one decision day                   CAGR  24.3% (min  22.0%)  DD -21.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 72% QQQ 72% SMH 58%  roll12 52%  expo nan% | w/o top winner 15.1% (NVDA)
+train System B staggered last+11                   CAGR  23.0% (min  22.0%)  DD -20.5% vs idx -19.3% ok 0%  beatAll 44% (min 3/8)  SPY 72% QQQ 69% SMH 58%  roll12 48%  expo nan% | w/o top winner 14.9% (NVDA)
+train staggered pick 1                             CAGR  23.4% (min  19.9%)  DD -16.0% vs idx -19.3% ok 100%  beatAll 44% (min 3/8)  SPY 72% QQQ 58% SMH 58%  roll12 43%  expo nan% | w/o top winner 14.6% (NVDA)
+train staggered pick 2                             CAGR  30.4% (min  25.4%)  DD -20.6% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 72% QQQ 69% SMH 72%  roll12 62%  expo nan% | w/o top winner 16.8% (NVDA)
+test System B, one decision day                   CAGR  28.6% (min  26.3%)  DD -31.8% vs idx -33.7% ok 20%  beatAll 31% (min 1/6)  SPY 42% QQQ 39% SMH 31%  roll12 29%  expo nan% | w/o top winner 18.1% (WDC)
+test System B staggered last+11                   CAGR  29.9% (min  25.8%)  DD -33.9% vs idx -33.7% ok 20%  beatAll 19% (min 1/6)  SPY 51% QQQ 54% SMH 19%  roll12 27%  expo nan% | w/o top winner 28.8% (STX,WDC)
+test staggered pick 1                             CAGR  31.7% (min  28.0%)  DD -32.1% vs idx -33.7% ok 20%  beatAll 23% (min 1/6)  SPY 50% QQQ 54% SMH 23%  roll12 35%  expo nan% | w/o top winner 23.3% (WDC)
+test staggered pick 2                             CAGR  29.6% (min  26.3%)  DD -37.4% vs idx -33.7% ok 0%  beatAll 19% (min 1/6)  SPY 49% QQQ 46% SMH 19%  roll12 34%  expo nan% | w/o top winner 28.8% (STX)
+early System B, one decision day                   CAGR   6.6% (min   5.0%)  DD -34.0% vs idx -55.2% ok 100%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 51%  expo nan% | w/o top winner 4.8% (DLX)
+early System B staggered last+11                   CAGR   6.6% (min   4.4%)  DD -38.3% vs idx -55.2% ok 100%  beatAll 37% (min 4/12)  SPY 55% QQQ 55% SMH 55%  roll12 53%  expo nan% | w/o top winner 5.9% (WMB)
+early staggered pick 1                             CAGR   7.2% (min   5.6%)  DD -39.4% vs idx -55.2% ok 100%  beatAll 28% (min 3/12)  SPY 52% QQQ 46% SMH 55%  roll12 51%  expo nan% | w/o top winner 7.4% (WMB)
+early staggered pick 2                             CAGR   5.2% (min   1.7%)  DD -45.2% vs idx -55.2% ok 100%  beatAll 37% (min 4/12)  SPY 64% QQQ 46% SMH 46%  roll12 50%  expo nan% | w/o top winner 4.4% (GNW)
