@@ -63,7 +63,7 @@ def score(m, curve):
     ddb = {k: maxdd(v) for k, v in b.items()}
     return dict(cagr=cagr(curve), maxdd=dd, **{f"cagr_{k}": cagr(v) for k, v in b.items()},
                 **{f"dd_{k}": v for k, v in ddb.items()},
-                dd_ok=bool(all(dd > v for v in ddb.values())),
+                dd_ok=bool(all(dd > v for v in ddb.values())), dd_ok_SMH=bool(dd > ddb["SMH"]),
                 years=len(yrs), beat_all=beat_all, **{f"beat_{k}": v for k, v in beat.items()},
                 roll_win=wins / n if n else np.nan, roll_worst_gap=worst_gap,
                 min_year_gap=float((yrs["sys"] - yrs[list(BENCH)].max(axis=1)).min()) if len(yrs) else np.nan,

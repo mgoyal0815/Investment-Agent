@@ -1,0 +1,61 @@
+50 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+100 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+150 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+200 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+250 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+300 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+350 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+400 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+450 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+500 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+503 best 0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+  pass0 +0.781                                              CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83%
+  pass0 +0.794                                              CAGR  39.1% (min  36.8%)  DD -23.7% vs idx -19.3% ok 0%  beatAll 70% (min 5/8)  SPY 84% QQQ 84% SMH 72%  roll12 79%  expo 88%
+  pass1 +0.796                                              CAGR  39.9% (min  37.0%)  DD -22.4% vs idx -19.3% ok 0%  beatAll 70% (min 5/8)  SPY 98% QQQ 84% SMH 72%  roll12 82%  expo 88%
+  pass0 +0.892                                              CAGR  35.4% (min  32.8%)  DD -19.4% vs idx -19.3% ok 60%  beatAll 80% (min 5/8)  SPY 100% QQQ 91% SMH 80%  roll12 75%  expo 86%
+  pass1 +0.892                                              CAGR  35.4% (min  32.8%)  DD -19.4% vs idx -19.3% ok 60%  beatAll 80% (min 5/8)  SPY 100% QQQ 91% SMH 80%  roll12 75%  expo 86%
+train +0.575 Current best                                 CAGR  18.7% (min  17.5%)  DD -18.3% vs idx -19.3% ok 100%  beatAll 53% (min 3/8)  SPY 70% QQQ 53% SMH 58%  roll12 45%  expo 77% SMH-dd ok 100%
+train +0.781 Option-1 pick 1 (train +0.781)               CAGR  23.9% (min  22.4%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 72% (min 5/8)  SPY 86% QQQ 78% SMH 72%  roll12 60%  expo 83% SMH-dd ok 100%
+train +0.796 Option-1 pick 2 (train +0.796)               CAGR  39.9% (min  37.0%)  DD -22.4% vs idx -19.3% ok 0%  beatAll 70% (min 5/8)  SPY 98% QQQ 84% SMH 72%  roll12 82%  expo 88% SMH-dd ok 100%
+train +0.892 Option-1 pick 3 (train +0.892)               CAGR  35.4% (min  32.8%)  DD -19.4% vs idx -19.3% ok 60%  beatAll 80% (min 5/8)  SPY 100% QQQ 91% SMH 80%  roll12 75%  expo 86% SMH-dd ok 100%
+test +0.502 Current best                                 CAGR  32.7% (min  24.9%)  DD -30.4% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 61% QQQ 45% SMH 42%  roll12 43%  expo 72% SMH-dd ok 100%
+test -0.544 Option-1 pick 1 (train +0.781)               CAGR  27.7% (min  24.5%)  DD -54.0% vs idx -33.7% ok 0%  beatAll 39% (min 2/6)  SPY 42% QQQ 39% SMH 39%  roll12 35%  expo 77% SMH-dd ok 0%
+test -0.612 Option-1 pick 2 (train +0.796)               CAGR  35.0% (min  22.5%)  DD -50.0% vs idx -33.7% ok 0%  beatAll 30% (min 1/6)  SPY 69% QQQ 77% SMH 49%  roll12 33%  expo 83% SMH-dd ok 0%
+test -0.449 Option-1 pick 3 (train +0.892)               CAGR  36.6% (min  19.6%)  DD -54.8% vs idx -33.7% ok 0%  beatAll 46% (min 1/6)  SPY 57% QQQ 57% SMH 46%  roll12 44%  expo 82% SMH-dd ok 0%
+early +0.561 Current best                                 CAGR  10.4% (min   9.9%)  DD -38.1% vs idx -55.2% ok 100%  beatAll 53% (min 5/12)  SPY 71% QQQ 73% SMH 55%  roll12 64%  expo 67% SMH-dd ok 100%
+early +0.475 Option-1 pick 1 (train +0.781)               CAGR   4.4% (min   3.1%)  DD -58.2% vs idx -55.2% ok 0%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 47%  expo 69% SMH-dd ok 100%
+early +0.281 Option-1 pick 2 (train +0.796)               CAGR  -2.3% (min  -3.4%)  DD -59.4% vs idx -55.2% ok 0%  beatAll 29% (min 3/12)  SPY 38% QQQ 50% SMH 48%  roll12 33%  expo 85% SMH-dd ok 100%
+early +0.143 Option-1 pick 3 (train +0.892)               CAGR  -7.7% (min  -9.1%)  DD -79.5% vs idx -55.2% ok 20%  beatAll 16% (min 1/12)  SPY 39% QQQ 25% SMH 38%  roll12 20%  expo 74% SMH-dd ok 100%
+Current best                       beat all 3: 2000-11 7/12  2012-19 4/8  2020-25 3/6  total 14/26
+Option-1 pick 1 (train +0.781)     beat all 3: 2000-11 6/12  2012-19 6/8  2020-25 2/6  total 14/26
+Option-1 pick 2 (train +0.796)     beat all 3: 2000-11 3/12  2012-19 5/8  2020-25 3/6  total 11/26
+Option-1 pick 3 (train +0.892)     beat all 3: 2000-11 1/12  2012-19 7/8  2020-25 3/6  total 11/26
+      Current best  Option-1 pick 1 (train +0.781)  Option-1 pick 2 (train +0.796)  Option-1 pick 3 (train +0.892)   SPY   QQQ   SMH
+date                                                                                                                                
+2000          -4.5                             3.1                           -17.0                           -16.0  -8.9 -38.4 -47.1
+2001           7.7                           -10.3                           -18.5                           -15.9 -11.7 -33.3 -14.6
+2002         -15.7                            -0.7                           -30.1                           -41.4 -21.6 -37.4 -47.0
+2003          66.8                            38.8                            64.9                            44.9  28.2  49.7  87.3
+2004          27.4                            18.1                            41.0                           -10.0  10.7  10.5 -19.3
+2005           8.3                            15.9                            -7.3                            -6.1   4.8   1.6  10.8
+2006          16.2                             2.1                            -4.2                           -18.4  15.9   7.2  -6.7
+2007          44.4                            24.7                            39.5                            -2.2   5.1  19.0   6.0
+2008         -11.3                           -38.1                           -28.0                           -15.2 -36.8 -41.7 -44.7
+2009          25.4                            35.8                            -5.2                            29.3  26.4  54.7  60.5
+2010           9.8                             9.2                             3.2                            18.8  15.1  19.9  19.0
+2011         -23.3                           -19.8                           -31.2                           -39.4   1.9   3.4   6.8
+2012          13.8                            21.1                            10.4                            18.6  14.2  15.9   7.0
+2013          49.3                            48.7                            71.8                            55.6  32.3  36.6  33.4
+2014          14.3                            18.1                            14.2                            31.7  13.5  19.2  30.2
+2015           9.8                            11.3                            29.2                            27.8   1.2   9.4  -0.3
+2016           5.1                            47.8                            47.0                            46.6  12.0   7.1  35.6
+2017          44.9                            51.0                            57.2                            56.3  21.7  32.7  38.5
+2018           0.1                             1.8                            25.4                            14.0  -4.6  -0.1  -9.1
+2019          28.1                            11.1                            52.7                            39.1  31.2  39.0  64.4
+2020          53.7                            44.6                           101.8                            95.6  17.2  46.2  52.0
+2021          29.4                           -20.1                            43.6                            41.5  28.7  27.4  42.1
+2022          -4.7                            -8.0                           -31.7                           -15.5 -18.2 -32.6 -33.5
+2023          28.1                            18.4                            21.3                            12.6  26.2  54.9  73.4
+2024          20.1                            14.0                            41.4                             0.1  24.9  25.6  39.1
+2025          52.7                            80.5                            24.7                            54.9  17.7  20.8  49.2
+2026          53.0                           124.6                            80.7                           102.4  15.0  21.9  64.1

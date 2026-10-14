@@ -74,7 +74,8 @@ def agg(rs):
     ba = np.array(f("beat_all"))
     return dict(cagr=np.median(f("cagr")), cagr_min=min(f("cagr")), maxdd=min(f("maxdd")),
                 dd_idx=min(max(r["dd_SPY"], r["dd_QQQ"], r["dd_SMH"]) for r in rs),
-                dd_ok=float(np.mean(f("dd_ok"))), beat_all=float(np.mean(ba / yrs)), beat_all_min=int(ba.min()),
+                dd_ok=float(np.mean(f("dd_ok"))), dd_ok_SMH=float(np.mean(f("dd_ok_SMH"))),
+                dd_SMH=min(r["dd_SMH"] for r in rs), beat_all=float(np.mean(ba / yrs)), beat_all_min=int(ba.min()),
                 years=int(yrs.max()), beat_SPY=float(np.mean(np.array(f("beat_SPY")) / yrs)),
                 beat_QQQ=float(np.mean(np.array(f("beat_QQQ")) / yrs)), beat_SMH=float(np.mean(np.array(f("beat_SMH")) / yrs)),
                 roll_win=float(np.mean(f("roll_win"))), min_year_gap=min(f("min_year_gap")), expo=float(np.mean(f("expo"))))
@@ -90,6 +91,12 @@ def objective2(a):
     """Owner's rule from 14 Oct 2026: growth high, drawdown low, and beating the indexes.
     1 point less drawdown is worth half a point of return."""
     return a["cagr"] + 0.5 * a["maxdd"] + 0.1 * a["beat_all"]
+
+
+def objective3(a):
+    """Owner's option 1 (14 Oct 2026): beat all three indexes first, growth second; the worst fall
+    may be as deep as SMH's own but no deeper."""
+    return a["beat_all"] + 0.25 * a["cagr"] - 1.0 * (1 - a["dd_ok_SMH"])
 
 
 def fmt(lab, a):
