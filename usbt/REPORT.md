@@ -1,3 +1,41 @@
+# System A (frozen 14 October 2026)
+
+`system_A.json` holds the configuration; `code/final_backtest.py` reproduces every number here.
+The live system is unchanged.
+
+**What it is:** the US v5 stock engine with
+1. the 500 most-traded US stocks as the universe;
+2. India v8's buy pause instead of the v5 regime overlay (pause on HYG below its 63-day average,
+   the equal-weight large-cap index below its 50-day average, or breadth under 30%); no -12% exit
+   or daily re-entry;
+3. decisions on the 11th and last session of each month;
+4. a sale when a holding ranks outside the top 45, as well as on its v5 stop;
+5. idle cash in the leading index ETF (SPY, QQQ or SMH by 6-month return), Treasuries (SHY) while paused;
+6. v5 adds to winners;
+7. a profit lock: once a position is up 30%, sell it if it closes 25% below its peak.
+
+**Backtest, $10,000, whole shares, every cost:**
+
+| One run from | Ends at | A year | Worst fall | SPY / QQQ / SMH a year | Their worst falls |
+|---|---|---|---|---|---|
+| Jan 2000 | $2,269,000 | 22.5% | -39% | 8.4 / 8.7 / 12.1% | -55 / -83 / -84% |
+| Jan 2012 | $691,000 | 33.3% | -33% | 15.0 / 20.1 / 29.4% | -34 / -35 / -45% |
+| Jan 2020 | $132,000 | 46.2% | -32.5% | 15.4 / 20.8 / 37.1% | -34 / -35 / -45% |
+
+Beats SPY, QQQ and SMH together in 15 of 26 calendar years (2000-2025). A fresh $10,000 started in any
+quarter and held to today beat all three in 85% of 2000-2011 starts, 97% of 2012-2019 starts and 67%
+of 2020-2025 starts; its worst fall was smaller than SMH's from every start before 2020.
+
+**How it was found:** trade-by-trade attribution on 2012-2019 (`code/analyze_train.py`). Positions
+held more than 63 sessions made all the profit; winners gave back 28 points (54 in 2020-26) before
+their stop. The profit lock and the adds fix that, chosen on 2012-2019 only (`exp13`-`exp15`).
+
+**What it does not do:** beat all three indexes every year. It misses SMH boom years and rebounds
+(2003, 2009, 2019, 2023) and 2010-2011. Pausing less, and a rebound mode that holds the leading
+index after a fall, both made it worse (`exp16`, `exp17`).
+
+---
+
 # US v5 and India v8 on US data: train 2012-2019, test 2020-2026 and 2000-2011
 
 Backtest study, 13 October 2026. The live system is unchanged; everything is in `usbt/` on

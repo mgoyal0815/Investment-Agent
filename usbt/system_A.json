@@ -1,0 +1,46 @@
+{
+ "name": "System A",
+ "frozen": "2026-10-14",
+ "description": "US v5 stock engine + India v8 pieces + profit lock, chosen on 2012-2019",
+ "changes_vs_live_v5": [
+  "universe: 500 most-traded US stocks (126-session median turnover)",
+  "India v8 buy pause instead of the v5 regime overlay; pause on HYG<SMA63, equal-weight large-cap index<SMA50, or breadth<30%",
+  "no -12% sleeve exit, no daily re-entry",
+  "decisions on the 11th and the last session of each month",
+  "also sell a holding ranked outside the top 45 (route RobustPair)",
+  "idle cash in the leading index ETF (SPY/QQQ/SMH by 126-session return), SHY while paused",
+  "v5 adds to winners kept",
+  "profit lock: once up 30%, sell if it falls 25% below its peak close",
+  "no pullback-band entry gate; Recovery cutoff 0.95"
+ ],
+ "cfg": {
+  "sizing": "v5",
+  "universe": "topN",
+  "universe_n": 500,
+  "overlay": "pause",
+  "intramonth": false,
+  "zone_gate": false,
+  "cadence": "twice",
+  "park": "leader_safe",
+  "adds": "v5",
+  "exit": "stop+rank",
+  "min_hold": 88,
+  "cont_cut": 0.88,
+  "rec_cut": 0.95,
+  "regime_w": "LEADER_MID",
+  "ramp": 3,
+  "N": 30,
+  "leader_lb": 126,
+  "etf_in_universe": false,
+  "pause_rules": [
+   "breadth",
+   "hyg",
+   "large"
+  ],
+  "pause_mode": "any",
+  "breadth_level": 0.3,
+  "lock_at": 0.3,
+  "lock_trail": 0.25,
+  "rank_min_hold": 0
+ }
+}

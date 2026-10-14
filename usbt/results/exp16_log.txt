@@ -1,0 +1,25 @@
+                                                                         label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+needs bear False, Treasuries when paused, breadth 20%, rules breadth+hyg+large       0.239    -0.212       0.582      0.458   -0.325      0.420       0.107    -0.356       0.570
+        needs bear False, Treasuries when paused, breadth 20%, rules hyg+large       0.239    -0.212       0.582      0.458   -0.325      0.420       0.091    -0.392       0.570
+needs bear False, Treasuries when paused, breadth 30%, rules breadth+hyg+large       0.239    -0.212       0.582      0.462   -0.325      0.420       0.099    -0.390       0.553
+        needs bear False, Treasuries when paused, breadth 30%, rules hyg+large       0.239    -0.212       0.582      0.458   -0.325      0.420       0.091    -0.392       0.570
+        needs bear False, Treasuries when paused, breadth 40%, rules hyg+large       0.239    -0.212       0.582      0.458   -0.325      0.420       0.091    -0.392       0.570
+         needs bear True, Treasuries when paused, breadth 20%, rules hyg+large       0.247    -0.241       0.443      0.452   -0.417      0.387       0.076    -0.445       0.464
+ needs bear True, Treasuries when paused, breadth 30%, rules breadth+hyg+large       0.247    -0.241       0.443      0.476   -0.417      0.387       0.090    -0.389       0.464
+         needs bear True, Treasuries when paused, breadth 30%, rules hyg+large       0.247    -0.241       0.443      0.452   -0.417      0.387       0.076    -0.445       0.464
+         needs bear True, Treasuries when paused, breadth 40%, rules hyg+large       0.247    -0.241       0.443      0.452   -0.417      0.387       0.076    -0.445       0.464
+ needs bear True, Treasuries when paused, breadth 20%, rules breadth+hyg+large       0.247    -0.241       0.443      0.452   -0.417      0.387       0.093    -0.387       0.464
+needs bear False, Treasuries when paused, breadth 40%, rules breadth+hyg+large       0.222    -0.213       0.443      0.445   -0.326      0.420       0.101    -0.321       0.536
+  needs bear False, Treasuries when bear, breadth 20%, rules breadth+hyg+large       0.226    -0.221       0.443      0.428   -0.370      0.347       0.101    -0.418       0.464
+          needs bear False, Treasuries when bear, breadth 20%, rules hyg+large       0.226    -0.221       0.443      0.428   -0.370      0.347       0.088    -0.418       0.464
+          needs bear False, Treasuries when bear, breadth 30%, rules hyg+large       0.226    -0.221       0.443      0.428   -0.370      0.347       0.088    -0.418       0.464
+  needs bear False, Treasuries when bear, breadth 30%, rules breadth+hyg+large       0.226    -0.221       0.443      0.428   -0.370      0.347       0.106    -0.418       0.464
+          needs bear False, Treasuries when bear, breadth 40%, rules hyg+large       0.226    -0.221       0.443      0.428   -0.370      0.347       0.088    -0.418       0.464
+           needs bear True, Treasuries when bear, breadth 40%, rules hyg+large       0.239    -0.261       0.443      0.475   -0.417      0.387       0.093    -0.419       0.464
+   needs bear True, Treasuries when bear, breadth 20%, rules breadth+hyg+large       0.239    -0.261       0.443      0.475   -0.417      0.387       0.106    -0.392       0.464
+           needs bear True, Treasuries when bear, breadth 20%, rules hyg+large       0.239    -0.261       0.443      0.475   -0.417      0.387       0.093    -0.419       0.464
+   needs bear True, Treasuries when bear, breadth 30%, rules breadth+hyg+large       0.239    -0.261       0.443      0.475   -0.417      0.387       0.107    -0.392       0.464
+           needs bear True, Treasuries when bear, breadth 30%, rules hyg+large       0.239    -0.261       0.443      0.475   -0.417      0.387       0.093    -0.419       0.464
+  needs bear False, Treasuries when bear, breadth 40%, rules breadth+hyg+large       0.213    -0.223       0.443      0.431   -0.375      0.347       0.098    -0.389       0.464
+ needs bear True, Treasuries when paused, breadth 40%, rules breadth+hyg+large       0.228    -0.259       0.443      0.447   -0.418      0.420       0.083    -0.385       0.464
+   needs bear True, Treasuries when bear, breadth 40%, rules breadth+hyg+large       0.225    -0.261       0.443      0.441   -0.415      0.387       0.100    -0.392       0.464

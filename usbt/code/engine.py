@@ -130,6 +130,8 @@ class Market:
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
         self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
+        _s = pd.Series(E["SPY"]["c"])
+        self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
 
     def universe(self, i, cfg):
         """Boolean mask of names that can be ranked and bought at session i."""
@@ -238,6 +240,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     lsma = m.large_sma50 if cfg.get("large_n", 50) == 50 else \
         pd.Series(m.large_idx).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
     core = {"k": None, "w": 0.0}   # index core: ETF held while it is in a strong uptrend
+    rebound = [False]
     pend_core = None
     flow = [0.0, 0.0]
     lots, daily = [], []          # today's stock sells / buys at fill value (for the flow-free unit NAV)
@@ -549,7 +552,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         # park idle cash (India: at least half a slot idle)
         if park_tk and not drew:
             # money held back by the volatility cap must not ride the market in an index ETF
-            pk = _park_name(park_tk, m, i, cfg, paused or (bool(cfg.get("vol_target")) and vf[0] < 0.999))
+            risk_off = paused if cfg.get("safe_when", "paused") == "paused" else (not m.b200[i])
+            pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target")) and vf[0] < 0.999))
             # rotate: a parking ETF that is no longer the target is sold first
             for k in [k for k in list(parked) if k != pk]:
                 park_trade(k, -parked[k], i)
@@ -593,7 +597,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         curve.append(navc)
         if record:
             daily.append((d, navc, sv, sum(sh * etf_px(k, i) for k, sh in parked.items()),
-                          sum(sh * etf_px(k, i) for k, sh in etf.items() if sh), cash, paused, len(pos)))
+                          sum(sh * etf_px(k, i) for k, sh in etf.items() if sh), cash, paused, len(pos),
+                          sum(sh * etf_px(k, i) for k, sh in parked.items() if k == "SHY"), unit))
         expo.append(sv / navc if navc > 0 else 0.0)
         wst_now = alloc.get("stock", 1.0) if cfg["overlay"] in ("v5", "v5_soft") else 1.0
         sleeve_base = sv if cfg["overlay"] not in ("v5", "v5_soft") else max(wst_now * navc, sv)
@@ -651,6 +656,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             strong = cm(ldr) > cfg.get("core_min", 0.15) and m.E[ldr]["c"][i] > m.e_sma50[ldr][i]
             if cfg.get("core_only_smh_qqq", True) and ldr == "SPY":
                 strong = False
+            if cfg.get("core_mode") == "rebound":
+                # rebound state: SPY fell at least rebound_trig from its 1-year high within the last
+                # 126 sessions and now closes above its 50-session average
+                lo = np.nanmin(m.spy_dd[max(0, i - 126):i + 1])
+                strong = lo <= -cfg.get("rebound_trig", 0.15) and m.E["SPY"]["c"][i] > m.e_sma50["SPY"][i] \
+                    and m.E[ldr]["c"][i] > m.e_sma50[ldr][i]
+                rebound[0] = strong
             want = ldr if strong else None
             held_ok = core["k"] is not None and m.E[core["k"]]["c"][i] > m.e_sma50[core["k"]][i]
             if want != core["k"]:
@@ -666,6 +678,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                    ("large" in r and lsma[i] == lsma[i] and m.large_idx[i] < lsma[i])]
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
             paused = sum(sig) >= (2 if cfg.get("pause_mode", "any") == "two" else 1)
+            # a pause only counts inside a real bear market (SPY below its 200-session average)
+            if cfg.get("pause_needs_bear") and m.b200[i]:
+                paused = False
 
         # ===== (4) at the close: stock exits and buys for the next open
         exiting = set()
@@ -748,7 +763,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 frac = 1.0 if o.get("all") else cfg["ladder"]
                 sleeve_cash += p["sh"] * frac * C[i, o["j"]] * 0.998
         if v5_size:
-            _v5_orders(m, cfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
+            ocfg = cfg if not (rebound[0] and cfg.get("rec_cut_rebound")) else dict(cfg, rec_cut=cfg["rec_cut_rebound"])
+            _v5_orders(m, ocfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
         else:
             _slot_orders(m, cfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
 
@@ -758,7 +774,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         out["events"] = events
         out["trades"] = pd.DataFrame(trades, columns=["date", "sym", "side", "value", "why", "ret"])
         out["lots"] = pd.DataFrame(lots)
-        out["daily"] = pd.DataFrame(daily, columns=["date", "nav", "stocks", "parked", "core", "cash", "paused", "npos"]).set_index("date")
+        out["daily"] = pd.DataFrame(daily, columns=["date", "nav", "stocks", "parked", "core", "cash", "paused", "npos", "shy", "unit"]).set_index("date")
     return out
 
 

@@ -1,0 +1,18 @@
+                                                    label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+ rebound 15%, core 50%, lb 63, rec cut None, QQQ/SMH only       0.233    -0.195       0.582      0.356   -0.325      0.387       0.048    -0.484       0.553
+    rebound 15%, core 50%, lb 63, rec cut 0.83, any index       0.233    -0.195       0.582      0.356   -0.325      0.387       0.048    -0.484       0.553
+ rebound 15%, core 50%, lb 63, rec cut 0.83, QQQ/SMH only       0.233    -0.195       0.582      0.356   -0.325      0.387       0.048    -0.484       0.553
+    rebound 15%, core 50%, lb 63, rec cut None, any index       0.233    -0.195       0.582      0.356   -0.325      0.387       0.048    -0.484       0.553
+    rebound 15%, core 30%, lb 63, rec cut 0.83, any index       0.234    -0.198       0.582      0.398   -0.328      0.387       0.062    -0.447       0.553
+ rebound 15%, core 30%, lb 63, rec cut None, QQQ/SMH only       0.234    -0.198       0.582      0.395   -0.325      0.387       0.062    -0.447       0.553
+    rebound 15%, core 30%, lb 63, rec cut None, any index       0.234    -0.198       0.582      0.395   -0.325      0.387       0.062    -0.447       0.553
+ rebound 15%, core 30%, lb 63, rec cut 0.83, QQQ/SMH only       0.234    -0.198       0.582      0.398   -0.328      0.387       0.062    -0.447       0.553
+                                                 System A       0.239    -0.212       0.582      0.462   -0.325      0.420       0.099    -0.390       0.553
+ rebound 20%, core 50%, lb 63, rec cut None, QQQ/SMH only       0.239    -0.212       0.582      0.399   -0.325      0.387       0.061    -0.472       0.553
+    rebound 20%, core 50%, lb 63, rec cut None, any index       0.239    -0.212       0.582      0.399   -0.325      0.387       0.061    -0.472       0.553
+ rebound 20%, core 50%, lb 63, rec cut 0.83, QQQ/SMH only       0.239    -0.212       0.582      0.399   -0.325      0.387       0.061    -0.472       0.553
+    rebound 20%, core 50%, lb 63, rec cut 0.83, any index       0.239    -0.212       0.582      0.399   -0.325      0.387       0.061    -0.472       0.553
+rebound 20%, core 50%, lb 126, rec cut None, QQQ/SMH only       0.239    -0.212       0.582      0.426   -0.326      0.387       0.070    -0.472       0.553
+   rebound 20%, core 50%, lb 126, rec cut None, any index       0.239    -0.212       0.582      0.426   -0.326      0.387       0.070    -0.472       0.553
+   label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+System A       0.239    -0.212       0.582      0.462   -0.325       0.42       0.099     -0.39       0.553
