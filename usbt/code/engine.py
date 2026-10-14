@@ -500,7 +500,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 sleeve_cash_cap -= spent
         # park idle cash (India: at least half a slot idle)
         if park_tk and not drew:
-            pk = _park_name(park_tk, m, i)
+            pk = _park_name(park_tk, m, i, cfg, paused)
+            # rotate: a parking ETF that is no longer the target is sold first
+            for k in [k for k in list(parked) if k != pk]:
+                park_trade(k, -parked[k], i)
             # park only a meaningful idle balance and keep a buffer, or the account churns a
             # $1-minimum round trip every session (v5 buys a little most days)
             thresh, keep = (0.5 * navo / N, 0.01 * navo) if not v5_size else (0.10 * navo, 0.04 * navo)
@@ -667,9 +670,19 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
 _PARKABLE = ("GLD", "SHY", "BIL", "SPY", "QQQ", "SMH", "IEF")
 
 
-def _park_name(park, m, i):
-    if park == "leader":
-        return max(LEADERS, key=lambda t: np.nan_to_num(m.mom126[t][i - 1], nan=-999))
+def _park_name(park, m, i, cfg=None, paused=False):
+    """Where idle cash goes. "leader": the index ETF (SPY/QQQ/SMH) with the best return over
+    cfg["leader_lb"] sessions to yesterday's close. "leader_safe": the same, but SHY while the
+    buy pause is on, so parked cash does not ride a falling market."""
+    if park in ("leader", "leader_safe"):
+        if park == "leader_safe" and paused:
+            return "SHY" if m.E["SHY"]["c"][i] == m.E["SHY"]["c"][i] else None
+        lb = (cfg or {}).get("leader_lb", 126)
+        def mom(t):
+            c = m.E[t]["c"]
+            a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
+            return a / b - 1 if (a == a and b == b and b > 0) else -999
+        return max(LEADERS, key=mom)
     k = park
     if np.isnan(m.E[k]["raw"][i]) and np.isnan(m.E[k]["c"][i]):
         return None
@@ -704,9 +717,14 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
             kind = "new"
         cand.append((-sc[j], route[j] != 1, j, zone, kind))
     cand.sort()
+    mp = cfg.get("max_pos")
+    n_held = len([j for j in pos if j not in exiting])
+    sm = cfg.get("size_mult", 1.0)
     for _, _, j, zone, kind in cand:
         if cash <= 0:
             break
+        if kind == "new" and mp is not None and n_held >= mp:
+            continue
         close = C[i, j]
         rt = int(route[j])
         stop_line = (SMA50[i, j] - ATR[i, j]) if rt == 1 else (EMA20[i, j] - 0.5 * ATR[i, j])
@@ -714,9 +732,9 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         stop = held["stop"] if held else stop_line
         sh = held["sh"] if held else 0.0
         avg = held["cost"] if held else 0.0
-        base = (0.08 if zone == "Green" else 0.04) * nav
+        base = (0.08 if zone == "Green" else 0.04) * nav * sm
         target = min(base, cash)
-        rb = min(0.015 if zone == "Green" else 0.010, 0.02)
+        rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm
         if stop is None or stop != stop or close <= stop:
             continue
         eff = sh
@@ -729,7 +747,7 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         target = min(target, rr * close)
         rv = RV30[i, j]
         if rv == rv and rv > 0:
-            vr = ((0.03 if zone == "Green" else 0.015) * nav) / (3.0 * rv * close) - sh
+            vr = ((0.03 if zone == "Green" else 0.015) * nav * sm) / (3.0 * rv * close) - sh
             target = min(target, vr * close)
         raw_px = close * P["SF"][i, j]
         n = int(target // raw_px) if raw_px > 0 else 0
@@ -741,6 +759,8 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         out.append(dict(kind=kind, j=j, dollars=dollars, route=rt, stop=stop_line if kind == "new" else None,
                         min_dollars=0.005 * nav if kind == "new" else 0.0))
         cash -= dollars + tcost(n, dollars)
+        if kind == "new":
+            n_held += 1
 
 
 def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank):

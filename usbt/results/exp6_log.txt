@@ -1,0 +1,52 @@
+252 configurations
+36 done
+72 done
+108 done
+144 done
+180 done
+216 done
+252 done
+train Candidate 3                                  CAGR  15.2% (min  14.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 34% (min 2/8)  SPY 56% QQQ 34% SMH 56%  roll12 29%  expo 76%
+train C3 + index always (earlier)                  CAGR  20.3% (min  18.6%)  DD -29.2% vs idx -19.3% ok 0%  beatAll 41% (min 2/8)  SPY 61% QQQ 69% SMH 58%  roll12 43%  expo 76%
+train no index, any stocks, size x1.0, exit top 45 CAGR  15.2% (min  14.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 34% (min 2/8)  SPY 56% QQQ 34% SMH 56%  roll12 29%  expo 76%
+train no index, 12 stocks, size x1.0, exit top 30, CAGR  10.8% (min  10.5%)  DD -15.5% vs idx -19.3% ok 100%  beatAll 14% (min 1/8)  SPY 53% QQQ 28% SMH 39%  roll12 19%  expo 44%
+train no index, 12 stocks, size x1.0, exit top 45, CAGR  10.4% (min   9.5%)  DD -15.8% vs idx -19.3% ok 100%  beatAll 14% (min 1/8)  SPY 45% QQQ 14% SMH 33%  roll12 17%  expo 45%
+train index always, any stocks, size x2.0, exit to CAGR  23.5% (min  22.3%)  DD -31.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 67% QQQ 58% SMH 58%  roll12 51%  expo 76%
+train index always, 12 stocks, size x2.0, exit top CAGR  23.5% (min  22.4%)  DD -31.4% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 58% QQQ 70% SMH 58%  roll12 53%  expo 73%
+train index always, 12 stocks, size x1.5, exit top CAGR  23.6% (min  21.0%)  DD -31.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 58% QQQ 72% SMH 58%  roll12 50%  expo 61%
+train index unless paused, any stocks, size x1.0,  CAGR  17.0% (min  16.2%)  DD -17.8% vs idx -19.3% ok 100%  beatAll 42% (min 3/8)  SPY 61% QQQ 42% SMH 58%  roll12 35%  expo 76%
+train index unless paused, any stocks, size x1.0,  CAGR  16.6% (min  15.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 39% (min 2/8)  SPY 52% QQQ 39% SMH 58%  roll12 34%  expo 76%
+train index unless paused, any stocks, size x1.0,  CAGR  15.9% (min  14.7%)  DD -18.7% vs idx -19.3% ok 100%  beatAll 28% (min 1/8)  SPY 61% QQQ 28% SMH 56%  roll12 31%  expo 76%
+test Candidate 3                                  CAGR  30.0% (min  19.2%)  DD -31.0% vs idx -33.7% ok 20%  beatAll 35% (min 1/6)  SPY 49% QQQ 53% SMH 35%  roll12 39%  expo 71%
+test C3 + index always (earlier)                  CAGR  32.1% (min  27.1%)  DD -42.9% vs idx -33.7% ok 0%  beatAll 23% (min 1/6)  SPY 57% QQQ 57% SMH 42%  roll12 34%  expo 71%
+test no index, any stocks, size x1.0, exit top 45 CAGR  30.0% (min  19.2%)  DD -31.0% vs idx -33.7% ok 20%  beatAll 35% (min 1/6)  SPY 49% QQQ 53% SMH 35%  roll12 39%  expo 71%
+test no index, 12 stocks, size x1.0, exit top 30, CAGR  16.0% (min  14.3%)  DD -21.0% vs idx -33.7% ok 100%  beatAll 19% (min 1/6)  SPY 61% QQQ 47% SMH 19%  roll12 31%  expo 36%
+test no index, 12 stocks, size x1.0, exit top 45, CAGR  17.1% (min  15.0%)  DD -21.7% vs idx -33.7% ok 100%  beatAll 19% (min 1/6)  SPY 61% QQQ 39% SMH 19%  roll12 29%  expo 38%
+test index always, any stocks, size x2.0, exit to CAGR  30.0% (min  21.7%)  DD -47.3% vs idx -33.7% ok 0%  beatAll 3% (min 0/6)  SPY 58% QQQ 58% SMH 23%  roll12 22%  expo 71%
+test index always, 12 stocks, size x2.0, exit top CAGR  26.9% (min  24.3%)  DD -47.6% vs idx -33.7% ok 0%  beatAll 15% (min 0/6)  SPY 65% QQQ 53% SMH 34%  roll12 26%  expo 66%
+test index always, 12 stocks, size x1.5, exit top CAGR  31.4% (min  26.7%)  DD -44.6% vs idx -33.7% ok 0%  beatAll 19% (min 0/6)  SPY 77% QQQ 80% SMH 38%  roll12 29%  expo 51%
+test index unless paused, any stocks, size x1.0,  CAGR  30.8% (min  24.6%)  DD -31.5% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 53% QQQ 45% SMH 42%  roll12 40%  expo 71%
+test index unless paused, any stocks, size x1.0,  CAGR  30.4% (min  23.6%)  DD -31.5% vs idx -33.7% ok 20%  beatAll 27% (min 1/6)  SPY 42% QQQ 45% SMH 27%  roll12 38%  expo 71%
+test index unless paused, any stocks, size x1.0,  CAGR  30.9% (min  23.8%)  DD -31.3% vs idx -33.7% ok 20%  beatAll 27% (min 1/6)  SPY 49% QQQ 46% SMH 27%  roll12 38%  expo 71%
+early Candidate 3                                  CAGR  12.9% (min  10.5%)  DD -27.0% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 63%  expo 64%
+early C3 + index always (earlier)                  CAGR   5.9% (min   5.7%)  DD -61.4% vs idx -55.2% ok 0%  beatAll 34% (min 3/12)  SPY 55% QQQ 64% SMH 46%  roll12 48%  expo 64%
+early no index, any stocks, size x1.0, exit top 45 CAGR  12.9% (min  10.5%)  DD -27.0% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 63%  expo 64%
+early no index, 12 stocks, size x1.0, exit top 30, CAGR   5.4% (min   3.7%)  DD -25.3% vs idx -55.2% ok 100%  beatAll 40% (min 3/12)  SPY 50% QQQ 52% SMH 55%  roll12 42%  expo 36%
+early no index, 12 stocks, size x1.0, exit top 45, CAGR   6.4% (min   4.8%)  DD -22.5% vs idx -55.2% ok 100%  beatAll 45% (min 5/12)  SPY 54% QQQ 46% SMH 55%  roll12 46%  expo 39%
+early index always, any stocks, size x2.0, exit to CAGR   4.4% (min   3.4%)  DD -63.3% vs idx -55.2% ok 0%  beatAll 45% (min 4/12)  SPY 46% QQQ 55% SMH 53%  roll12 46%  expo 63%
+early index always, 12 stocks, size x2.0, exit top CAGR   4.6% (min   4.1%)  DD -60.3% vs idx -55.2% ok 0%  beatAll 36% (min 4/12)  SPY 45% QQQ 55% SMH 46%  roll12 50%  expo 61%
+early index always, 12 stocks, size x1.5, exit top CAGR   1.5% (min   0.8%)  DD -59.4% vs idx -55.2% ok 0%  beatAll 30% (min 3/12)  SPY 30% QQQ 62% SMH 64%  roll12 38%  expo 52%
+early index unless paused, any stocks, size x1.0,  CAGR  10.5% (min   8.6%)  DD -32.8% vs idx -55.2% ok 100%  beatAll 48% (min 5/12)  SPY 66% QQQ 73% SMH 55%  roll12 62%  expo 64%
+early index unless paused, any stocks, size x1.0,  CAGR   7.8% (min   5.8%)  DD -45.8% vs idx -55.2% ok 100%  beatAll 43% (min 4/12)  SPY 61% QQQ 64% SMH 55%  roll12 60%  expo 64%
+early index unless paused, any stocks, size x1.0,  CAGR   8.5% (min   7.2%)  DD -38.8% vs idx -55.2% ok 100%  beatAll 47% (min 5/12)  SPY 64% QQQ 73% SMH 55%  roll12 60%  expo 64%
+Candidate 3                                                            beat all 3: 2000-11 6/12  2012-19 2/8  2020-25 2/6  total 10/26
+C3 + index always (earlier)                                            beat all 3: 2000-11 5/12  2012-19 4/8  2020-25 2/6  total 11/26
+no index, any stocks, size x1.0, exit top 45, hold 88                  beat all 3: 2000-11 6/12  2012-19 2/8  2020-25 2/6  total 10/26
+no index, 12 stocks, size x1.0, exit top 30, hold 88                   beat all 3: 2000-11 3/12  2012-19 1/8  2020-25 1/6  total 5/26
+no index, 12 stocks, size x1.0, exit top 45, hold 88                   beat all 3: 2000-11 5/12  2012-19 1/8  2020-25 1/6  total 7/26
+index always, any stocks, size x2.0, exit top 45, hold 44, leader 126d beat all 3: 2000-11 6/12  2012-19 5/8  2020-25 1/6  total 12/26
+index always, 12 stocks, size x2.0, exit top 45, hold 44, leader 126d  beat all 3: 2000-11 4/12  2012-19 5/8  2020-25 2/6  total 11/26
+index always, 12 stocks, size x1.5, exit top 30, hold 44, leader 126d  beat all 3: 2000-11 4/12  2012-19 5/8  2020-25 2/6  total 11/26
+index unless paused, any stocks, size x1.0, exit top 45, hold 88, lead beat all 3: 2000-11 5/12  2012-19 3/8  2020-25 3/6  total 11/26
+index unless paused, any stocks, size x1.0, exit top 45, hold 88, lead beat all 3: 2000-11 5/12  2012-19 3/8  2020-25 2/6  total 10/26
+index unless paused, any stocks, size x1.0, exit top 45, hold 88, lead beat all 3: 2000-11 5/12  2012-19 2/8  2020-25 1/6  total 8/26
