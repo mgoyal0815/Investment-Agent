@@ -115,6 +115,30 @@ starts 2012-2016 stopping at 2019; judged on starts 2000-2008 and 2020-2025.
 Verdict: on clean data, no rule found beats SPY and QQQ every year from every start. The best beat
 both in about half of years.
 
+## Fixing the weak spot (exp38, exp39, 15 October 2026)
+
+- exp38, an index share inside System C's account (fixed 20-50% QQQ, SMH or SPY, with or without a
+  trend filter, or the leader-index core): nothing beat System C out of sample. SMH shares helped the
+  2020s but fell to 34% of years on 2000-08 starts, with worst falls of -50% to -69%.
+- exp39, exits and sizing, one change at a time, then combined (chosen on starts 2012-2016 only):
+  - Let 100%+ winners run (`rank_exempt_gain`): kept.
+  - Ladder exits, a half profit lock, a tiered lock, laddering up, sizing by rank, momentum or
+    volatility, and more or fewer slots: no better, or worse.
+  - The fully tuned combination improved training but lowered the share of starts with a smaller
+    fall than SPY and QQQ from 78% to 53%. Rejected.
+- **System D** (`system_D.json`) = System C + let 100%+ winners run. From every monthly start
+  2000-2025 (exp39b):
+
+| | System C | System D |
+|---|---|---|
+| Years (from the start) beating SPY and QQQ | 47.9% | 49.6% |
+| Calendar years beating SPY and QQQ | 43.6% | 48.3% |
+| 3-year windows beating SMH | 31.8% | 39.8% |
+| Median growth a year | 22.6% | 23.4% |
+| Worst fall | -39.4% | -38.1% |
+| Unseen starts 2000-08: years beating both | 50.5% | 52.6% |
+| Unseen starts 2020-25: years beating both | 50.4% | 50.4% |
+
 ---
 
 # System A (frozen 14 October 2026)
