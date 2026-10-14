@@ -1,0 +1,36 @@
+{
+ "name": "cand_obv0",
+ "changes": {
+  "obv_min": 0.0
+ },
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.0
+ }
+}
