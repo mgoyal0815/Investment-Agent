@@ -23,7 +23,7 @@ if __name__ == "__main__":
     keys = list(B.F)
     enc = {k: [json.dumps(v) for v in B.F[k]] for k in keys}
     study = optuna.create_study(direction="maximize", sampler=optuna.samplers.TPESampler(seed=43, multivariate=True))
-    d = pd.read_csv("../results/exp43_design.csv")
+    d = pd.read_csv("../results/exp43_design.csv", dtype={f"f:{k}": str for k in keys}, keep_default_na=False)
     d["obj"] = d["train|beat"] - 0.5 * (1 - d["train|ddok"])
     for _, r in d.sort_values("obj", ascending=False).head(15).iterrows():
         study.enqueue_trial({k: (r[f"f:{k}"] if r[f"f:{k}"] in enc[k] else enc[k][0]) for k in keys})
@@ -35,7 +35,8 @@ if __name__ == "__main__":
         log.append(dict(trial=t.number, obj=o, beat=s["yrs_beat_SPY_QQQ"], ddok=s["dd_ok"], cagr=s["med_cagr"], x=json.dumps(x)))
         if t.number % 10 == 0:
             pd.DataFrame(log).to_csv("../results/exp43_optuna.csv", index=False)
-            print(t.number, "best", round(study.best_value if study.best_trial else o, 3), flush=True)
+            done = [x.value for x in study.trials if x.value is not None]
+            print(t.number, "best", round(max(done + [o]), 3), flush=True)
         return o
     study.optimize(objective, n_trials=n)
     L = pd.DataFrame(log).sort_values("obj", ascending=False)
