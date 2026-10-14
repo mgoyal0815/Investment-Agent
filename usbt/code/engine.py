@@ -884,6 +884,14 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     pend_stock.append(dict(kind="exit", j=j, why="hard", all=True)); exiting.add(j)
                 elif cfg.get("pause_cut") and paused and C[i, j] < p["cost"] * (1 - cfg.get("pause_cut_loss", 0.0)):
                     pend_stock.append(dict(kind="exit", j=j, why="pausecut", all=True)); exiting.add(j)
+        if cfg.get("adx_exit"):
+            # sell a profitable holding when its trend weakens: ADX below adx_exit, or sellers take over (-DI > +DI)
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j] or i - p["entry_i"] < 21:
+                    continue
+                weak = (m.P["ADX"][i, j] < cfg["adx_exit"]) if cfg["adx_exit"] > 0 else (not m.P["PDI_GT"][i, j])
+                if weak and C[i, j] > p["cost"] * 1.1:
+                    pend_stock.append(dict(kind="exit", j=j, why="adx_exit", all=True)); exiting.add(j)
         if cfg.get("macd_exit") is not None:
             # sell a profitable holding when its MACD histogram falls below macd_exit (momentum rolling over)
             for j, p in pos.items():
@@ -1031,6 +1039,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
+                if cfg.get("adx_hold") and not paused and m.P["ADX"][i, j] > cfg["adx_hold"] and m.P["PDI_GT"][i, j]:
+                    continue                                    # strong uptrend (ADX high, buyers in charge): keep it
                 if cfg.get("macd_hold") is not None and not paused and m.P["MACDH"][i, j] > cfg["macd_hold"]:
                     continue                                    # MACD still rising: keep it despite the rank
                 if cfg.get("rsi_sell_floor") and not paused and m.P["RSI"][i, j] < cfg["rsi_sell_floor"]:
@@ -1266,6 +1276,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
                 cfg["_rvp"] = (i, pct_rank(np.where(u, P["RV30"][i].astype(float), np.nan)))
             if not (cfg["_rvp"][1][j] <= cfg["vol_max_pct"]):
                 continue
+        if cfg.get("adx_max") and not (P["ADX"][i, j] <= cfg["adx_max"]):
+            continue                                            # buy only early in a trend (ADX still low)
         if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
             continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
