@@ -139,6 +139,27 @@ both in about half of years.
 | Unseen starts 2000-08: years beating both | 50.5% | 52.6% |
 | Unseen starts 2020-25: years beating both | 50.4% | 50.4% |
 
+## AUDIT, 15 October 2026: a look-ahead leak in the pause signals (exp46, exp47)
+
+A review of all 56 commits found that the buy pause's breadth and large-cap signals were built from the
+500/100 most-traded names of the WHOLE panel, which includes the live list's future survivors (20-50% of
+that set were not S&P 500 members on the day). Rebuilt from that day's S&P 500 members only (`pit_signals`):
+
+| From every monthly start 2000-25 | C old | C clean | D old | D clean | E old | E clean |
+|---|---|---|---|---|---|---|
+| Years beating SPY and QQQ | 47.9% | 46.4% | 49.6% | 47.5% | 53.9% | 52.1% |
+| Starts with a smaller fall than SPY and QQQ | 78% | 78% | 78% | 78% | 78% | 76% |
+| Median growth a year | 22.6% | 21.5% | 23.4% | 22.6% | 26.9% | 26.2% |
+| Worst fall (any start) | -39% | -57% | -38% | -57% | -38% | -53% |
+| One run from 2000: growth a year / worst fall | 17.4% / -39% | 15.4% / -50% | 18.6% / -38% | 15.9% / -50% | 21.3% / -35% | 18.1% / -38% |
+
+The leak mostly flattered 2000-2002 (System E 2002: -9% old, -21% clean). All numbers in this report
+before this section used the old signals; treat them as optimistic by about 1-3 points a year and up to
+15 points of worst fall. System E (now with `pit_signals`) remains the best system on clean data.
+exp46 (built-in rules one at a time on E): gold slots, the pause's tighter sell rank, re-entry timing,
+parking, cadence, tranches, the trend gate and the ramp are all at or near their best; options that add
+exposure raise growth but break the drawdown rule.
+
 ---
 
 # System A (frozen 14 October 2026)
