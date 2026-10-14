@@ -130,6 +130,20 @@ class Market:
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
         self._esma = {}
+        # exp49: point-in-time industry assignment (sectors.py) and intermediate-horizon momentum
+        try:
+            import json as _js
+            sec = np.load("../data/sector_idx.npy")
+            self.sector = sec if sec.shape == (self.T, self.N) else None
+            self.sector_list = _js.load(open("../data/sector_list.json"))
+        except Exception:
+            self.sector, self.sector_list = None, []
+        Cf_ = P["Cf"]
+        m121 = np.full(Cf_.shape, np.nan, np.float32); m127 = np.full(Cf_.shape, np.nan, np.float32); m63 = np.full(Cf_.shape, np.nan, np.float32)
+        m121[252:] = Cf_[231:-21] / Cf_[:-252] - 1          # 12-1 month
+        m127[252:] = Cf_[126:-126] / Cf_[:-252] - 1         # 12-7 month (Novy-Marx)
+        m63[63:] = Cf_[63:] / Cf_[:-63] - 1
+        P["mom12_1"], P["mom12_7"], P["mom63"] = m121, m127, m63
         # ---- regime indicators (exp43); all use closes up to the session itself, acted on at the next open
         a50 = Cf > P["SMA50"]
         self.b50 = (a50 & top500).sum(1) / np.maximum(top500.sum(1), 1)            # share of top-500 above 50-day
@@ -939,6 +953,28 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
+        if cfg.get("dm_guard") and m.mom_crash[i] and m.etf_vs_sma("SPY", 50, i) > 0:
+            # Daniel-Moskowitz: after a bear market, in a rebound, rank by short-term recovery instead of 6-month momentum
+            sc = np.where(np.isnan(sc), np.nan, pct_rank(np.where(u & ~np.isnan(sc), m.P["mom63"][i].astype(float), np.nan)))
+        if (cfg.get("sector_top_k") or cfg.get("sector_w")) and m.sector is not None:
+            lbs = cfg.get("sector_lb", 126)
+            smom = []
+            for t_ in m.sector_list:
+                jj = list(m.syms).index(t_) if t_ in m.syms else None
+                c_ = m.P["Cf"][:, jj] if jj is not None else None
+                smom.append(c_[i] / c_[i - lbs] - 1 if c_ is not None and i >= lbs and c_[i] == c_[i] and c_[i - lbs] == c_[i - lbs] else -9)
+            smom = np.array(smom)
+            sid = m.sector[i]
+            ok_s = sid >= 0
+            if cfg.get("sector_top_k"):
+                top = np.argsort(-smom)[:cfg["sector_top_k"]]
+                good = ok_s & np.isin(sid, top)
+                sc = np.where(good | m.is_etf, sc, np.nan)          # new buys and rank only inside leading industries
+            if cfg.get("sector_w"):
+                sp_ = pct_rank(smom)
+                sv_ = np.where(ok_s, sp_[np.clip(sid, 0, None)], 0.0)
+                w_ = cfg["sector_w"]
+                sc = np.where(np.isnan(sc), np.nan, (sc + w_ * sv_) / (1 + w_))
         if cfg.get("narrow_size_w") and m.narrow[i]:
             # narrow market: lean the ranking toward the biggest companies (they are carrying the index)
             w_ = cfg["narrow_size_w"]
