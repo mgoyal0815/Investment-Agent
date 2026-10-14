@@ -43,6 +43,33 @@ beats all three indexes in only 9 of 26 calendar years, and its 2020s gains are 
 2024 +9%, 2025 +46%, 2026 to date +128%). A higher-scoring 6-slot variant fell 37% in 2020-26 and was
 not adopted.
 
+## Leveraged semiconductor/index ETFs with System C (exp26-31, 14 October 2026)
+
+Why System C misses: in most years it loses only to SMH (2003, 2009, 2019, 2020, 2023, 2024: SMH +55
+to +87%). A 10-stock S&P 500 portfolio rarely beats that. The other tool that can is an ordinary 2x/3x
+ETF (USD/SOXL, QLD/TQQQ, SSO/UPRO). These are not options and need no margin. Real fund prices were
+used where they exist (2006-2010 onward). Before that, a daily-reset synthetic version with a 2.5% a
+year drag was used; it checks within 1-2 points a year against the real QQQ/SPY funds.
+
+| | Calendar years 2000-2025 beating all three | max fall 2000-26 | CAGR 2000-26 |
+|---|---|---|---|
+| System C alone | 35% (9/26) | -39% | 17.4% |
+| Leveraged ETF trend rules alone, best of 576 (exp26) | 54% | -89% to -99% | |
+| Fixed blend System C + leveraged sleeve (exp26b) | 46% | -38% to -41% | about 19% |
+| Switch System C <-> 3x SMH in a confirmed SMH boom, real engine (exp31 D) | 58% | -88% | 22.6% |
+| Same, 2x on 2/3 of the account (exp31 B) | 50% | -59% | 19.6% |
+
+- The return-curve shortcut (exp27-30, about 3,000 variants) was too optimistic. In the real engine
+  (exp31), System C is sold when the switch turns on and rebuilt when it turns off. That costs 2-7
+  points a year and adds 10-20 points of drawdown.
+- Fresh quarterly starts held to today, real engine: exp31 D beats all three from 98% of starts, B
+  from 87%, System C from 19%. Held 1, 3 or 5 years: 50-62%.
+- The years that defeat every variant are 2005-07, 2010-11, 2018 and 2022. In those, SMH trend signals
+  whipsaw and System C is also weak.
+
+Conclusion so far: nothing found reaches 75% of calendar years. Above 55%, every variant needs 3x
+leverage and falls further than SPY (-55%). That breaks the drawdown rule.
+
 ---
 
 # System A (frozen 14 October 2026)
