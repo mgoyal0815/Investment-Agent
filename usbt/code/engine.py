@@ -197,6 +197,20 @@ class Market:
             ew_p = np.where(t100.sum(1) > 0, np.nansum(np.where(t100, np.nan_to_num(P["ret1"]), 0), 1) / np.maximum(t100.sum(1), 1), 0.0)
             self.large_idx_pit = np.cumprod(1 + ew_p)
             self.large_sma50_pit = pd.Series(self.large_idx_pit).rolling(50, min_periods=50).mean().to_numpy()
+            # ---- re-entry signals (exp53), from that day's S&P 500 members only
+            r1 = np.where(spm, P["ret1"], np.nan)
+            adv, dec = (r1 > 0).sum(1).astype(float), (r1 < 0).sum(1).astype(float)
+            rana = pd.Series(1000 * (adv - dec) / np.maximum(adv + dec, 1))
+            self.mcc_osc = (rana.ewm(span=19, adjust=False).mean() - rana.ewm(span=39, adjust=False).mean()).to_numpy()
+            self.mcc_sum = np.cumsum(self.mcc_osc)
+            hi = pd.DataFrame(Cf).rolling(252, min_periods=200).max().to_numpy()
+            lo = pd.DataFrame(Cf).rolling(252, min_periods=200).min().to_numpy()
+            nh = ((Cf >= hi * 0.999) & spm).sum(1); nl = ((Cf <= lo * 1.001) & spm).sum(1)
+            self.nhnl = pd.Series((nh - nl) / np.maximum(spm.sum(1), 1)).rolling(10, min_periods=5).mean().to_numpy()
+            spy_ = pd.Series(E["SPY"]["c"]).ffill()
+            roc = (spy_ / spy_.shift(294) - 1) + (spy_ / spy_.shift(231) - 1)
+            w = np.arange(1, 211, dtype=float)
+            self.coppock = roc.rolling(210, min_periods=210).apply(lambda x: np.dot(x, w) / w.sum(), raw=True).to_numpy()
         # point-in-time Nasdaq-100 membership 2004-2026 (ndx_members.py); nobody counts as a member before 2004
         try:
             h = pd.read_csv("../data/ndx_hist.csv", parse_dates=["date"]).sort_values("date")
@@ -357,7 +371,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         BREADTH, LARGE, LSMA_PIT = m.breadth_pit, m.large_idx_pit, m.large_sma50_pit
     else:
         BREADTH, LARGE, LSMA_PIT = m.breadth, m.large_idx, None
-    prev_paused = [False]   # index core: ETF held while it is in a strong uptrend
+    prev_paused = [False]
+    unpause_until = [-1]   # index core: ETF held while it is in a strong uptrend
     rebound = [False]
     park_state = [None]
     pend_core = None
@@ -874,6 +889,20 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                         bs |= u_[-1] < float(np.mean(u_[-bp["ma"]:]))
                 mode = bp.get("mode", "replace")
                 paused = bs if mode == "replace" else ((paused and bs) if mode == "and" else (paused or bs))
+            # re-entry signals (exp53): end the pause early for unpause_days sessions when a bottom signal fires
+            ue = cfg.get("unpause_on")
+            if ue and i > 30:
+                fire = False
+                if "coppock" in ue and m.coppock[i] == m.coppock[i]:
+                    fire |= m.coppock[i] < 0 and m.coppock[i] > m.coppock[i - 21] and m.coppock[i - 21] <= m.coppock[i - 42]
+                if "mcclellan" in ue:
+                    fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
+                if "nhnl" in ue:
+                    fire |= m.nhnl[i] > 0 and np.nanmin(m.nhnl[i - 40:i]) < -cfg.get("nhnl_depth", 0.05)
+                if fire:
+                    unpause_until[0] = i + cfg.get("unpause_days", 42)
+                if i <= unpause_until[0]:
+                    paused = False
             # breadth thrust: a broad surge off a washout ends any pause for thrust_days sessions
             if cfg.get("thrust_days"):
                 if m.thrust[i]:
