@@ -1,0 +1,12 @@
+System E (clean)
+E + index ETFs compete for slots
+E + index hurdle
+E + ETFs compete + hurdle
+E + market vol target 15%
+E + market vol target 20%
+E + market vol target 15%, hard
+E, no pause, market vol target 15% hard
+E, no pause, market vol target 20% hard
+E + ETFs + hurdle + vol target 20%
+E + ETFs + hurdle, no pause, vol target 15% hard
+DONE
