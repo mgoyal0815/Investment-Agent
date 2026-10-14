@@ -1,0 +1,28 @@
+                                        label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+ loser hold off, hard stop off, pause cut off       0.239    -0.212       0.582      0.462   -0.325      0.420       0.099    -0.390       0.553
+ loser hold off, hard stop 0.2, pause cut off       0.231    -0.213       0.500      0.395   -0.303      0.420       0.089    -0.442       0.536
+loser hold off, hard stop 0.15, pause cut off       0.209    -0.209       0.529      0.343   -0.317      0.387       0.080    -0.448       0.536
+ loser hold 21, hard stop 0.15, pause cut off       0.161    -0.221       0.418      0.334   -0.293      0.193       0.077    -0.435       0.642
+  loser hold 21, hard stop 0.2, pause cut off       0.159    -0.226       0.389      0.332   -0.367      0.267       0.078    -0.483       0.609
+  loser hold 21, hard stop off, pause cut off       0.159    -0.226       0.389      0.334   -0.342      0.307       0.071    -0.402       0.606
+ loser hold off, hard stop 0.15, pause cut 5%       0.145    -0.223       0.418      0.305   -0.352      0.267       0.074    -0.466       0.642
+  loser hold off, hard stop 0.2, pause cut 5%       0.145    -0.226       0.418      0.302   -0.364      0.267       0.065    -0.496       0.626
+  loser hold off, hard stop off, pause cut 5%       0.144    -0.225       0.418      0.306   -0.364      0.307       0.064    -0.475       0.642
+  loser hold 5, hard stop 0.15, pause cut off       0.145    -0.233       0.279      0.303   -0.380      0.233       0.028    -0.507       0.485
+   loser hold 5, hard stop 0.2, pause cut off       0.142    -0.231       0.279      0.307   -0.383      0.233       0.026    -0.527       0.412
+   loser hold 5, hard stop off, pause cut off       0.141    -0.232       0.279      0.299   -0.382      0.233       0.030    -0.504       0.411
+  loser hold 21, hard stop 0.15, pause cut 5%       0.120    -0.238       0.389      0.291   -0.378      0.193       0.063    -0.462       0.642
+   loser hold 21, hard stop 0.2, pause cut 5%       0.117    -0.238       0.361      0.298   -0.389      0.193       0.052    -0.503       0.626
+   loser hold 21, hard stop off, pause cut 5%       0.115    -0.235       0.361      0.301   -0.383      0.193       0.057    -0.475       0.642
+  loser hold off, hard stop 0.2, pause cut 0%       0.105    -0.270       0.332      0.304   -0.354      0.307       0.069    -0.446       0.553
+  loser hold off, hard stop off, pause cut 0%       0.107    -0.272       0.279      0.296   -0.349      0.347       0.068    -0.425       0.553
+ loser hold off, hard stop 0.15, pause cut 0%       0.105    -0.270       0.279      0.310   -0.356      0.387       0.073    -0.427       0.642
+    loser hold 5, hard stop 0.2, pause cut 5%       0.098    -0.244       0.168      0.264   -0.386      0.193       0.022    -0.558       0.447
+   loser hold 5, hard stop 0.15, pause cut 5%       0.097    -0.244       0.168      0.265   -0.391      0.193       0.031    -0.527       0.483
+    loser hold 5, hard stop off, pause cut 5%       0.096    -0.245       0.168      0.267   -0.379      0.273       0.019    -0.536       0.447
+   loser hold 21, hard stop 0.2, pause cut 0%       0.078    -0.277       0.139      0.295   -0.369      0.227       0.061    -0.442       0.553
+  loser hold 21, hard stop 0.15, pause cut 0%       0.078    -0.280       0.139      0.293   -0.368      0.193       0.068    -0.415       0.642
+   loser hold 21, hard stop off, pause cut 0%       0.077    -0.281       0.139      0.301   -0.365      0.267       0.062    -0.426       0.553
+    loser hold 5, hard stop off, pause cut 0%       0.061    -0.288       0.139      0.269   -0.371      0.193       0.039    -0.480       0.465
+    loser hold 5, hard stop 0.2, pause cut 0%       0.061    -0.288       0.139      0.272   -0.374      0.193       0.036    -0.499       0.465
+   loser hold 5, hard stop 0.15, pause cut 0%       0.060    -0.299       0.139      0.270   -0.388      0.193       0.047    -0.456       0.500

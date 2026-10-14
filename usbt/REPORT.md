@@ -32,7 +32,12 @@ their stop. The profit lock and the adds fix that, chosen on 2012-2019 only (`ex
 
 **What it does not do:** beat all three indexes every year. It misses SMH boom years and rebounds
 (2003, 2009, 2019, 2023) and 2010-2011. Pausing less, and a rebound mode that holds the leading
-index after a fall, both made it worse (`exp16`, `exp17`).
+index after a fall, both made it worse (`exp16`, `exp17`). The 2010-2011 losses come from crash
+bleed (Aug 2011: the pause stops buying but the held stocks fall 25% in 8 sessions while the 88-session
+floor blocks their stops). Letting losers exit early (framework 19.8), a hard stop from cost, and
+selling losers when the pause fires all made every window worse, because they sell near the lows and
+buy back higher (`exp18`). Switching the parking ETF only on decision days helped 2000-11 but hurt
+2012-19 and 2020-26, so it is not adopted.
 
 ---
 

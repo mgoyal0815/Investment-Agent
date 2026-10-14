@@ -241,6 +241,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         pd.Series(m.large_idx).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
     core = {"k": None, "w": 0.0}   # index core: ETF held while it is in a strong uptrend
     rebound = [False]
+    park_state = [None]
     pend_core = None
     flow = [0.0, 0.0]
     lots, daily = [], []          # today's stock sells / buys at fill value (for the flow-free unit NAV)
@@ -553,6 +554,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         if park_tk and not drew:
             # money held back by the volatility cap must not ride the market in an index ETF
             risk_off = paused if cfg.get("safe_when", "paused") == "paused" else (not m.b200[i])
+            if cfg.get("park_on_decision"):
+                # only re-decide the parking ETF on a decision day; hold the last choice in between
+                if is_decision(i - 1) or park_state[0] is None:
+                    park_state[0] = risk_off
+                risk_off = park_state[0]
             pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target")) and vf[0] < 0.999))
             # rotate: a parking ETF that is no longer the target is sold first
             for k in [k for k in list(parked) if k != pk]:
@@ -684,6 +690,14 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
 
         # ===== (4) at the close: stock exits and buys for the next open
         exiting = set()
+        if cfg.get("hard_stop") or (cfg.get("pause_cut") and paused):
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j]:
+                    continue
+                if cfg.get("hard_stop") and C[i, j] < p["cost"] * (1 - cfg["hard_stop"]):
+                    pend_stock.append(dict(kind="exit", j=j, why="hard", all=True)); exiting.add(j)
+                elif cfg.get("pause_cut") and paused and C[i, j] < p["cost"] * (1 - cfg.get("pause_cut_loss", 0.0)):
+                    pend_stock.append(dict(kind="exit", j=j, why="pausecut", all=True)); exiting.add(j)
         if cfg.get("lock_at"):
             for j, p in pos.items():
                 if p["stale"] or j in exiting:
@@ -703,7 +717,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 else:
                     live = None
                 held = i - p["entry_i"]
-                if held < cfg["min_hold"]:
+                floor_ = cfg["min_hold"]
+                # framework 19.8's own option: a position below its cost may exit after mh_loser_hold
+                if cfg.get("mh_profit_only") and C[i, j] < p["cost"]:
+                    floor_ = cfg.get("mh_loser_hold", 5)
+                if held < floor_:
                     if live is not None:
                         p["stop"] = live if p["stop"] is None or p["stop"] != p["stop"] else max(p["stop"], live)
                     p["below"] = 0
