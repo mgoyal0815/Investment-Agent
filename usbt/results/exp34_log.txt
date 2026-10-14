@@ -1,0 +1,1 @@
+25 {'score': 1.274, 'yrs_beat_SPY_QQQ': 0.56, 'r3_beat_SMH': 0.428, 'dd_ok': 1.0, 'PASS': 0.0, 'med_cagr': 0.192}
