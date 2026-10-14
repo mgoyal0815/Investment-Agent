@@ -1,0 +1,141 @@
+[
+ {
+  "label": "System A on S&P 500",
+  "cfg": {
+   "sizing": "v5",
+   "universe": "sp500",
+   "universe_n": 500,
+   "overlay": "pause",
+   "intramonth": false,
+   "zone_gate": false,
+   "cadence": "twice",
+   "park": "leader_safe",
+   "adds": "v5",
+   "exit": "stop+rank",
+   "min_hold": 88,
+   "cont_cut": 0.88,
+   "rec_cut": 0.95,
+   "regime_w": "LEADER_MID",
+   "ramp": 3,
+   "N": 30,
+   "leader_lb": 126,
+   "etf_in_universe": false,
+   "pause_rules": [
+    "breadth",
+    "hyg",
+    "large"
+   ],
+   "pause_mode": "any",
+   "breadth_level": 0.3,
+   "lock_at": 0.3,
+   "lock_trail": 0.25,
+   "rank_min_hold": 0
+  }
+ },
+ {
+  "label": "v5 live on S&P 500",
+  "cfg": {
+   "universe": "sp500"
+  }
+ },
+ {
+  "label": "India v8 on S&P 500",
+  "cfg": {
+   "universe": "sp500",
+   "universe_n": 500,
+   "score": "nifty",
+   "trend": true,
+   "zone_gate": false,
+   "sizing": "slot",
+   "N": 10,
+   "exit": "rank",
+   "buffer": 1.5,
+   "min_hold": 0,
+   "adds": "india",
+   "cadence": "twice",
+   "overlay": "pause",
+   "intramonth": false,
+   "park": "GLD",
+   "gold_slots": 4,
+   "ramp": 0,
+   "adv_cap": 0.01
+  }
+ },
+ {
+  "label": "S&P 500 pick 1 (train +0.195)",
+  "cfg": {
+   "sizing": "slot",
+   "N": 10,
+   "score": "robust",
+   "trend": true,
+   "exit": "rank",
+   "buffer": 2.0,
+   "adds": "india",
+   "cadence": "monthly",
+   "overlay": "pause",
+   "intramonth": false,
+   "park": "leader_safe",
+   "gold_slots": 4,
+   "ramp": 3,
+   "zone_gate": false,
+   "rank_min_hold": 0,
+   "lock_at": 0.3,
+   "lock_trail": 0.25,
+   "breadth_level": 0.2,
+   "universe": "sp500"
+  }
+ },
+ {
+  "label": "S&P 500 pick 2 (train +0.177)",
+  "cfg": {
+   "sizing": "slot",
+   "N": 5,
+   "score": "robust",
+   "trend": true,
+   "exit": "rank",
+   "buffer": 1.5,
+   "adds": null,
+   "cadence": "twice",
+   "overlay": "v5",
+   "intramonth": false,
+   "park": "leader",
+   "gold_slots": 4,
+   "ramp": 3,
+   "zone_gate": true,
+   "rank_min_hold": 21,
+   "lock_at": 0.5,
+   "lock_trail": 0.25,
+   "breadth_level": 0.4,
+   "universe": "sp500"
+  }
+ },
+ {
+  "label": "S&P 500 pick 3 (train +0.146)",
+  "cfg": {
+   "sizing": "v5",
+   "overlay": "pause",
+   "intramonth": true,
+   "zone_gate": false,
+   "cadence": "twice",
+   "park": "leader_safe",
+   "adds": "v5",
+   "exit": "stop",
+   "min_hold": 126,
+   "cont_cut": 0.88,
+   "rec_cut": 0.83,
+   "N": 30,
+   "lock_at": 0.3,
+   "lock_trail": 0.25,
+   "rank_losers_only": true,
+   "rank_persist": 2,
+   "breadth_level": 0.4,
+   "pause_mode": "two",
+   "base_mult": 1.5,
+   "risk_mult": 2.0,
+   "vol_mult": 2.0,
+   "add_red_hi": 3.0,
+   "ramp": 3,
+   "universe": "sp500"
+  }
+ }
+]

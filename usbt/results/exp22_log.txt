@@ -1,0 +1,35 @@
+50 best 0.106                                              CAGR  19.2% (min  16.9%)  DD -23.9% vs idx -19.3% ok 0%  beatAll 33% (min 2/8)  SPY 58% QQQ 33% SMH 58%  roll12 26%  expo 90%
+100 best 0.106                                              CAGR  19.2% (min  16.9%)  DD -23.9% vs idx -19.3% ok 0%  beatAll 33% (min 2/8)  SPY 58% QQQ 33% SMH 58%  roll12 26%  expo 90%
+150 best 0.106                                              CAGR  19.2% (min  16.9%)  DD -23.9% vs idx -19.3% ok 0%  beatAll 33% (min 2/8)  SPY 58% QQQ 33% SMH 58%  roll12 26%  expo 90%
+200 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+250 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+300 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+350 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+400 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+450 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+500 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+503 best 0.133                                              CAGR  21.7% (min  19.6%)  DD -26.2% vs idx -19.3% ok 0%  beatAll 47% (min 3/8)  SPY 64% QQQ 47% SMH 50%  roll12 42%  expo 75%
+  pass0 +0.192
+  pass1 +0.195
+  pass0 +0.177
+  pass1 +0.177
+  pass0 +0.145
+  pass1 +0.146
+train -0.003 System A on S&P 500                          CAGR  10.7% (min   9.8%)  DD -25.1% vs idx -19.3% ok 0%  beatAll 16% (min 1/8)  SPY 44% QQQ 16% SMH 30%  roll12 19%  expo 76%
+train +0.006 v5 live on S&P 500                           CAGR  12.6% (min   9.8%)  DD -26.8% vs idx -19.3% ok 0%  beatAll 14% (min 1/8)  SPY 42% QQQ 31% SMH 16%  roll12 19%  expo 78%
+train -0.002 India v8 on S&P 500                          CAGR  10.7% (min   9.7%)  DD -27.8% vs idx -19.3% ok 0%  beatAll 30% (min 2/8)  SPY 30% QQQ 30% SMH 30%  roll12 19%  expo 74%
+train +0.195 S&P 500 pick 1 (train +0.195)                CAGR  24.3% (min  22.0%)  DD -21.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 72% QQQ 72% SMH 58%  roll12 52%  expo 76%
+train +0.177 S&P 500 pick 2 (train +0.177)                CAGR  24.8% (min  22.0%)  DD -20.9% vs idx -19.3% ok 0%  beatAll 33% (min 1/8)  SPY 86% QQQ 47% SMH 58%  roll12 42%  expo 66%
+train +0.146 S&P 500 pick 3 (train +0.146)                CAGR  19.7% (min  17.2%)  DD -19.1% vs idx -19.3% ok 100%  beatAll 44% (min 3/8)  SPY 58% QQQ 44% SMH 58%  roll12 23%  expo 89%
+test +0.147 System A on S&P 500                          CAGR  25.0% (min  22.5%)  DD -24.5% vs idx -33.7% ok 100%  beatAll 19% (min 1/6)  SPY 39% QQQ 39% SMH 19%  roll12 23%  expo 70%
+test +0.065 v5 live on S&P 500                           CAGR  19.1% (min  15.5%)  DD -29.1% vs idx -33.7% ok 20%  beatAll 19% (min 1/6)  SPY 42% QQQ 35% SMH 19%  roll12 16%  expo 74%
+test +0.128 India v8 on S&P 500                          CAGR  29.1% (min  26.3%)  DD -36.5% vs idx -33.7% ok 0%  beatAll 19% (min 1/6)  SPY 58% QQQ 54% SMH 19%  roll12 34%  expo 66%
+test +0.157 S&P 500 pick 1 (train +0.195)                CAGR  28.6% (min  26.3%)  DD -31.8% vs idx -33.7% ok 20%  beatAll 31% (min 1/6)  SPY 42% QQQ 39% SMH 31%  roll12 29%  expo 59%
+test +0.127 S&P 500 pick 2 (train +0.177)                CAGR  26.4% (min  24.0%)  DD -31.1% vs idx -33.7% ok 20%  beatAll 19% (min 1/6)  SPY 58% QQQ 58% SMH 19%  roll12 27%  expo 46%
+test +0.230 S&P 500 pick 3 (train +0.146)                CAGR  35.3% (min  28.3%)  DD -34.7% vs idx -33.7% ok 20%  beatAll 51% (min 2/6)  SPY 65% QQQ 65% SMH 55%  roll12 50%  expo 89%
+early -0.150 System A on S&P 500                          CAGR   1.8% (min   0.4%)  DD -42.0% vs idx -55.2% ok 100%  beatAll 43% (min 4/12)  SPY 55% QQQ 55% SMH 52%  roll12 43%  expo 64%
+early -0.074 v5 live on S&P 500                           CAGR   6.7% (min   5.8%)  DD -36.0% vs idx -55.2% ok 100%  beatAll 39% (min 3/12)  SPY 50% QQQ 50% SMH 55%  roll12 46%  expo 68%
+early -0.086 India v8 on S&P 500                          CAGR   7.4% (min   5.4%)  DD -39.8% vs idx -55.2% ok 100%  beatAll 39% (min 4/12)  SPY 79% QQQ 57% SMH 55%  roll12 45%  expo 62%
+early -0.058 S&P 500 pick 1 (train +0.195)                CAGR   6.6% (min   5.0%)  DD -34.0% vs idx -55.2% ok 100%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 51%  expo 62%
+early -0.189 S&P 500 pick 2 (train +0.177)                CAGR   3.8% (min   1.4%)  DD -52.5% vs idx -55.2% ok 100%  beatAll 36% (min 3/12)  SPY 45% QQQ 46% SMH 45%  roll12 41%  expo 51%
+early -0.278 S&P 500 pick 3 (train +0.146)                CAGR   2.2% (min   0.7%)  DD -65.6% vs idx -55.2% ok 0%  beatAll 28% (min 3/12)  SPY 55% QQQ 34% SMH 55%  roll12 39%  expo 89%

@@ -1,3 +1,27 @@
+# IMPORTANT: look-ahead bias found (14 October 2026)
+
+Most of the profit in System A, and in live v5's own backtests, comes from stocks that were not in the
+S&P 500 when bought (68-101%). Those stocks enter the data through the live universe lists, which only
+contain companies that reached $8bn at some point, including in the future. Small and mid caps that
+boomed and then failed below $8bn are missing, so every result on that universe is inflated.
+
+On a universe with no look-ahead (stocks that were S&P 500 members on that day; exp21, exp22):
+
+| | 2012-19 (train) | 2020-26 (test) | 2000-11 (test) |
+|---|---|---|---|
+| US v5 live | 12.6% a year, worst fall -27% | 19.1%, -29% | 6.7%, -36% |
+| System A | 10.7%, -25% | 25.0%, -25% | 1.8%, -42% |
+| India v8 | 10.7%, -28% | 29.1%, -37% | 7.4%, -40% |
+| **Best found on this universe (System B, exp22 pick 1)** | **24.3%, -21%** | **28.6%, -32%** | **6.6%, -34%** |
+| SPY / QQQ / SMH | about 13 / 17 / 21% | 15.4 / 20.8 / 37.1% | 0.6 / -4.0 / -6.7% |
+
+System B: 10 equal slots from S&P 500 members, RobustPair rank with the trend route, monthly decisions,
+sell outside the top 20, India adds to winners, India buy pause (breadth line 20%), idle cash in the
+leading index ETF (Treasuries while paused), gold takes 4 slots while it leads, profit lock 30%/25%.
+Configuration in `results/exp22_finalists.json`. Treat every System A number below as an upper bound.
+
+---
+
 # System A (frozen 14 October 2026)
 
 `system_A.json` holds the configuration; `code/final_backtest.py` reproduces every number here.
