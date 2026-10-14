@@ -147,18 +147,6 @@ class Market:
         self.credit_bad = (cr < cr.rolling(50, min_periods=50).mean()).to_numpy()
         self.mom_crash = (spy_c / spy_c.shift(504) - 1 < 0).to_numpy()            # market down over 2 years
         self.size_pct = 1 - pd.DataFrame(trk).rank(axis=1, pct=True).to_numpy()   # 1 = biggest by turnover
-        # ---- point-in-time versions of the market signals (audit, 15 Oct 2026): the originals rank the top
-        # 500/100 by turnover over the WHOLE panel, which includes the live list's future survivors (20-50% of
-        # that set were not S&P 500 members on the day). These use only that day's S&P 500 members.
-        if self.sp_member is not None:
-            spm = self.sp_member
-            self.breadth_pit = (above & spm).sum(1) / np.maximum(spm.sum(1), 1)
-            self.b50_pit = (a50 & spm).sum(1) / np.maximum(spm.sum(1), 1)
-            trk_sp = pd.DataFrame(np.where(spm & ~self.is_etf, medv, np.nan)).rank(axis=1, ascending=False).to_numpy()
-            t100 = pd.DataFrame(trk_sp <= 100).shift(1, fill_value=False).to_numpy()
-            ew_p = np.where(t100.sum(1) > 0, np.nansum(np.where(t100, np.nan_to_num(P["ret1"]), 0), 1) / np.maximum(t100.sum(1), 1), 0.0)
-            self.large_idx_pit = np.cumprod(1 + ew_p)
-            self.large_sma50_pit = pd.Series(self.large_idx_pit).rolling(50, min_periods=50).mean().to_numpy()
         # point-in-time S&P 500 membership (fja05680/sp500): no knowledge of the future
         try:
             h = pd.read_csv("../data/sp500_hist.csv", parse_dates=["date"]).sort_values("date")
@@ -173,6 +161,18 @@ class Market:
             self.sp_member = snap[np.clip(pos_, 0, None)]
         except Exception:
             self.sp_member = None
+        # ---- point-in-time versions of the market signals (audit, 15 Oct 2026): the originals rank the top
+        # 500/100 by turnover over the WHOLE panel, which includes the live list's future survivors (20-50% of
+        # that set were not S&P 500 members on the day). These use only that day's S&P 500 members.
+        if self.sp_member is not None:
+            spm = self.sp_member
+            self.breadth_pit = (above & spm).sum(1) / np.maximum(spm.sum(1), 1)
+            self.b50_pit = (a50 & spm).sum(1) / np.maximum(spm.sum(1), 1)
+            trk_sp = pd.DataFrame(np.where(spm & ~self.is_etf, medv, np.nan)).rank(axis=1, ascending=False).to_numpy()
+            t100 = pd.DataFrame(trk_sp <= 100).shift(1, fill_value=False).to_numpy()
+            ew_p = np.where(t100.sum(1) > 0, np.nansum(np.where(t100, np.nan_to_num(P["ret1"]), 0), 1) / np.maximum(t100.sum(1), 1), 0.0)
+            self.large_idx_pit = np.cumprod(1 + ew_p)
+            self.large_sma50_pit = pd.Series(self.large_idx_pit).rolling(50, min_periods=50).mean().to_numpy()
         # point-in-time Nasdaq-100 membership 2004-2026 (ndx_members.py); nobody counts as a member before 2004
         try:
             h = pd.read_csv("../data/ndx_hist.csv", parse_dates=["date"]).sort_values("date")
