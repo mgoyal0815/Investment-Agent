@@ -1,0 +1,18 @@
+                              label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+lock 30%/25%, adds v5, rank hold 21       0.240    -0.211       0.582      0.324   -0.330      0.420       0.093    -0.410       0.538
+lock 50%/25%, adds v5, rank hold 21       0.239    -0.210       0.582      0.324   -0.318      0.387       0.086    -0.457       0.536
+ lock 30%/25%, adds v5, rank hold 0       0.239    -0.212       0.582      0.462   -0.325      0.420       0.099    -0.390       0.553
+ lock 75%/25%, adds v5, rank hold 0       0.237    -0.208       0.582      0.439   -0.329      0.387       0.099    -0.442       0.483
+lock 100%/25%, adds v5, rank hold 0       0.235    -0.208       0.582      0.418   -0.335      0.387       0.100    -0.438       0.447
+lock 50%/20%, adds v5, rank hold 21       0.227    -0.193       0.582      0.323   -0.339      0.540       0.079    -0.486       0.536
+lock 100%/30%, adds v5, rank hold 0       0.233    -0.208       0.582      0.415   -0.349      0.387       0.103    -0.448       0.447
+ lock 75%/30%, adds v5, rank hold 0       0.233    -0.208       0.582      0.420   -0.353      0.387       0.100    -0.452       0.447
+lock 100%/20%, adds v5, rank hold 0       0.232    -0.209       0.582      0.426   -0.352      0.427       0.095    -0.436       0.447
+lock 100%/15%, adds v5, rank hold 0       0.229    -0.204       0.582      0.385   -0.347      0.500       0.089    -0.444       0.536
+ lock 50%/20%, adds v5, rank hold 0       0.229    -0.201       0.557      0.447   -0.323      0.507       0.084    -0.488       0.447
+lock 75%/25%, adds v5, rank hold 21       0.235    -0.216       0.582      0.297   -0.322      0.387       0.089    -0.440       0.536
+lock 50%/30%, adds v5, rank hold 21       0.232    -0.211       0.582      0.284   -0.331      0.387       0.086    -0.469       0.447
+lock 75%/20%, adds v5, rank hold 21       0.235    -0.218       0.582      0.319   -0.353      0.540       0.081    -0.469       0.536
+lock 75%/15%, adds v5, rank hold 21       0.234    -0.216       0.582      0.347   -0.336      0.387       0.088    -0.445       0.536
+                  label  train_cagr  train_dd  train_beat  test_cagr  test_dd  test_beat  early_cagr  early_dd  early_beat
+no lock (previous best)       0.187    -0.183       0.529      0.327   -0.304       0.42       0.104    -0.381       0.535
