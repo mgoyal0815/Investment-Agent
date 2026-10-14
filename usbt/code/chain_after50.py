@@ -19,8 +19,8 @@ print("CANDIDATE", json.dumps(changes)); print(tab.round(3).to_string()); print(
 if ok:
     json.dump(dict(name="System F", frozen="2026-10-15", description="System E + Bayesian round 1 (exp50) changes, accepted by accept.py",
                    changes=changes, cfg=cand), open("../system_F.json", "w"), indent=1, default=list)
-    print("ROUND1 ACCEPT -> System F; starting round 2", flush=True)
+    print("ROUND1 ACCEPT -> System F; round 2 after the range sweeps", flush=True)
     pool.close()
-    subprocess.Popen("nohup python3 bayes_round.py ../system_F.json round2 400 > ../results/round2_log.txt 2>&1 &", shell=True)
+    pass   # round 2 now waits for the full-range sweeps (exp51) - owner, 15 Oct 2026
 else:
     print("ROUND1 REJECT", flush=True)
