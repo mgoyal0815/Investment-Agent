@@ -402,7 +402,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             p["adds"] += 1
         else:
             pos[j] = dict(sh=adj_sh, cost=px, entry_i=i, route=route, stop=stop, rung=0, below=0,
-                          peak=px, last=px, stale=0, adds=0, hold_done=False, meta=meta or {})
+                          peak=px, last=px, stale=0, adds=0, hold_done=False, meta=meta or {}, px0=px, rung_in=0)
         pos[j]["inv"] = pos[j].get("inv", 0.0) + val
         pos[j]["buyc"] = pos[j].get("buyc", 0.0) + ch
         if record:
@@ -529,7 +529,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 sh = p["sh"]
             else:
                 raw_held = p["sh"] / SF[i, j]
-                k = int(raw_held * cfg["ladder"])
+                k = int(raw_held * o.get("frac", cfg["ladder"]))
                 sh = p["sh"] if k == 0 else k * SF[i, j]
             sell_stock(j, sh, px, i, o["why"])
         # stock budget
@@ -771,8 +771,21 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             for j, p in pos.items():
                 if p["stale"] or j in exiting:
                     continue
-                if p["peak"] / p["cost"] - 1 >= cfg["lock_at"] and C[i, j] < p["peak"] * (1 - cfg["lock_trail"]):
-                    pend_stock.append(dict(kind="exit", j=j, why="lock", all=True))
+                pg = p["peak"] / p["cost"] - 1
+                trail = cfg["lock_trail"]
+                # lock_tiers: [(gain, trail), ...] ascending; the biggest gain reached sets the give-back allowed
+                for g_, t_ in cfg.get("lock_tiers") or []:
+                    if pg >= g_:
+                        trail = t_
+                if cfg.get("lock_half") and p.get("locked"):
+                    trail = cfg.get("lock_trail2", trail)
+                if pg >= cfg["lock_at"] and C[i, j] < p["peak"] * (1 - trail):
+                    if cfg.get("lock_half") and not p.get("locked"):
+                        # first trigger sells half, the rest rides on a wider trail from a fresh peak
+                        pend_stock.append(dict(kind="exit", j=j, why="lock1", all=False, frac=0.5))
+                        p["locked"], p["peak"] = True, C[i, j]
+                    else:
+                        pend_stock.append(dict(kind="exit", j=j, why="lock", all=True))
                     exiting.add(j)
         if use_stop:
             for j, p in pos.items():
@@ -832,6 +845,17 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
                     continue
+                if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
+                    continue
+                rl = cfg.get("rank_ladder")
+                if rl and not paused:
+                    rk = pos_rank.get(j, 10 ** 9)
+                    if rk >= rl * N:
+                        pend_stock.append(dict(kind="exit", j=j, why="rank", all=True)); exiting.add(j)
+                    elif rk >= xr and not pos[j].get("halved"):
+                        pend_stock.append(dict(kind="exit", j=j, why="rank1", all=False, frac=0.5))
+                        pos[j]["halved"] = True; exiting.add(j)
+                    continue
                 if pos_rank.get(j, 10 ** 9) >= xr:
                     p_ = pos[j]
                     p_["out_n"] = p_.get("out_n", 0) + 1
@@ -858,7 +882,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         for o in pend_stock:
             if o["kind"] == "exit" and o["j"] in pos:
                 p = pos[o["j"]]
-                frac = 1.0 if o.get("all") else cfg["ladder"]
+                frac = 1.0 if o.get("all") else o.get("frac", cfg["ladder"])
                 sleeve_cash += p["sh"] * frac * C[i, o["j"]] * 0.998
         if v5_size:
             ocfg = cfg if not (rebound[0] and cfg.get("rec_cut_rebound")) else dict(cfg, rec_cut=cfg["rec_cut_rebound"])
@@ -1035,9 +1059,34 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
             continue
-        out.append(dict(kind="new", j=j, dollars=slot, route=1 if P["cont"][i, j] else 2,
-                        stop=(P["SMA50"][i, j] - P["ATR"][i, j]), min_dollars=0.5 * slot, meta={"tr": tr or 0}))
+        w = 1.0
+        wt = cfg.get("weight")
+        if wt == "rank":            # best-ranked new names get bigger slots
+            rk = pos_rank.get(j, 10 ** 9)
+            w = 1.5 if rk < 3 else (1.0 if rk < N else 0.75)
+        elif wt == "invvol":        # calmer names get bigger slots
+            rv = P["RV30"][i, j]; med = np.nanmedian(np.where(u, P["RV30"][i], np.nan))
+            w = float(np.clip(med / rv, 0.5, 1.5)) if rv == rv and rv > 0 else 1.0
+        elif wt == "mom":           # stronger 6-month trend gets a bigger slot
+            z = P["m6"][i, j]; med = np.nanmedian(np.where(u, P["m6"][i], np.nan))
+            w = float(np.clip(1.0 + 0.5 * (z - med), 0.5, 1.5)) if z == z else 1.0
+        f0 = cfg.get("scale_in", [1.0])[0] if cfg.get("scale_in") else 1.0
+        d0 = slot * w * f0
+        out.append(dict(kind="new", j=j, dollars=d0, route=1 if P["cont"][i, j] else 2,
+                        stop=(P["SMA50"][i, j] - P["ATR"][i, j]), min_dollars=0.5 * d0, meta={"tr": tr or 0, "w": w}))
         free -= 1
+    si = cfg.get("scale_in")
+    if si:
+        # ladder up: start with f0 of the slot; each further rung (step, 2*step ... above the first entry
+        # price) adds an equal share of the rest while the name is still ranked inside the top N
+        f0, step, k = si
+        for j, p in pos.items():
+            if j in exiting or (tr is not None and p.get("meta", {}).get("tr", 0) != tr) or p["rung_in"] >= k:
+                continue
+            if pos_rank.get(j, 10 ** 9) < N and P["Cf"][i, j] / p["px0"] - 1 >= step * (p["rung_in"] + 1):
+                amt = slot * p.get("meta", {}).get("w", 1.0) * (1 - f0) / k
+                out.append(dict(kind="add", j=j, dollars=amt, route=p["route"], min_dollars=0.5 * amt))
+                p["rung_in"] += 1
     if cfg["adds"] == "india":
         adds = []
         for j, p in pos.items():
