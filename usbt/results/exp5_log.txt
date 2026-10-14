@@ -1,0 +1,24 @@
+train US v5 (live)                                 CAGR  15.2% (min  13.6%)  DD -24.4% vs idx -19.3% ok 0%  beatAll 11% (min 0/8)  SPY 41% QQQ 33% SMH 30%  roll12 21%  expo 80%
+train Candidate 3                                  CAGR  15.2% (min  14.9%)  DD -18.1% vs idx -19.3% ok 100%  beatAll 34% (min 2/8)  SPY 56% QQQ 34% SMH 56%  roll12 29%  expo 76%
+train v5, 30% index core                           CAGR  15.6% (min  12.6%)  DD -23.7% vs idx -19.3% ok 0%  beatAll 9% (min 0/8)  SPY 48% QQQ 22% SMH 28%  roll12 16%  expo 62%
+train v5, 50% index core                           CAGR  15.4% (min  13.9%)  DD -24.9% vs idx -19.3% ok 0%  beatAll 6% (min 0/8)  SPY 56% QQQ 20% SMH 28%  roll12 9%  expo 46%
+train index rotation only (no stocks)              CAGR  18.4% (min  17.5%)  DD -24.0% vs idx -19.3% ok 0%  beatAll 0% (min 0/8)  SPY 81% QQQ 42% SMH 25%  roll12 6%  expo 5%
+train Candidate 3, idle cash in leading index      CAGR  19.6% (min  18.2%)  DD -29.7% vs idx -19.3% ok 0%  beatAll 44% (min 3/8)  SPY 58% QQQ 44% SMH 58%  roll12 40%  expo 76%
+test US v5 (live)                                 CAGR  30.2% (min  14.6%)  DD -34.7% vs idx -33.7% ok 20%  beatAll 38% (min 1/6)  SPY 53% QQQ 50% SMH 42%  roll12 22%  expo 72%
+test Candidate 3                                  CAGR  30.0% (min  19.2%)  DD -31.0% vs idx -33.7% ok 20%  beatAll 35% (min 1/6)  SPY 49% QQQ 53% SMH 35%  roll12 39%  expo 71%
+test v5, 30% index core                           CAGR  31.0% (min  20.4%)  DD -30.6% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 65% QQQ 57% SMH 42%  roll12 24%  expo 58%
+test v5, 50% index core                           CAGR  30.0% (min  21.3%)  DD -27.8% vs idx -33.7% ok 20%  beatAll 46% (min 2/6)  SPY 73% QQQ 65% SMH 46%  roll12 26%  expo 44%
+test index rotation only (no stocks)              CAGR  26.7% (min  23.5%)  DD -29.4% vs idx -33.7% ok 20%  beatAll 19% (min 1/6)  SPY 69% QQQ 65% SMH 19%  roll12 16%  expo 7%
+test Candidate 3, idle cash in leading index      CAGR  34.9% (min  26.1%)  DD -38.9% vs idx -33.7% ok 0%  beatAll 38% (min 1/6)  SPY 81% QQQ 57% SMH 38%  roll12 37%  expo 72%
+early US v5 (live)                                 CAGR   1.6% (min  -3.3%)  DD -59.8% vs idx -55.2% ok 80%  beatAll 30% (min 3/12)  SPY 50% QQQ 34% SMH 55%  roll12 32%  expo 67%
+early Candidate 3                                  CAGR  12.9% (min  10.5%)  DD -27.0% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 63%  expo 64%
+early v5, 30% index core                           CAGR   0.7% (min  -4.0%)  DD -63.3% vs idx -55.2% ok 80%  beatAll 25% (min 2/12)  SPY 45% QQQ 27% SMH 55%  roll12 29%  expo 55%
+early v5, 50% index core                           CAGR  -0.6% (min  -2.8%)  DD -55.7% vs idx -55.2% ok 80%  beatAll 27% (min 3/12)  SPY 45% QQQ 34% SMH 55%  roll12 28%  expo 43%
+early index rotation only (no stocks)              CAGR  -0.0% (min  -0.9%)  DD -53.2% vs idx -55.2% ok 100%  beatAll 27% (min 3/12)  SPY 45% QQQ 37% SMH 55%  roll12 27%  expo 14%
+early Candidate 3, idle cash in leading index      CAGR   9.4% (min   8.6%)  DD -55.2% vs idx -55.2% ok 100%  beatAll 34% (min 3/12)  SPY 62% QQQ 73% SMH 46%  roll12 49%  expo 64%
+US v5 (live)                               train 2012-19: SPY 4 QQQ 3 SMH 3 ALL 1/8 | test 2020-25: SPY 4 QQQ 3 SMH 3 ALL 3/6 | early 2000-11: SPY 6 QQQ 4 SMH 7 ALL 3/12
+Candidate 3                                train 2012-19: SPY 4 QQQ 2 SMH 4 ALL 2/8 | test 2020-25: SPY 4 QQQ 4 SMH 2 ALL 2/6 | early 2000-11: SPY 9 QQQ 9 SMH 7 ALL 6/12
+v5, 30% index core                         train 2012-19: SPY 3 QQQ 1 SMH 2 ALL 0/8 | test 2020-25: SPY 4 QQQ 4 SMH 3 ALL 3/6 | early 2000-11: SPY 4 QQQ 3 SMH 7 ALL 2/12
+v5, 50% index core                         train 2012-19: SPY 4 QQQ 1 SMH 2 ALL 0/8 | test 2020-25: SPY 5 QQQ 5 SMH 3 ALL 3/6 | early 2000-11: SPY 5 QQQ 5 SMH 7 ALL 3/12
+index rotation only (no stocks)            train 2012-19: SPY 6 QQQ 3 SMH 2 ALL 0/8 | test 2020-25: SPY 4 QQQ 4 SMH 1 ALL 1/6 | early 2000-11: SPY 5 QQQ 5 SMH 7 ALL 3/12
+Candidate 3, idle cash in leading index    train 2012-19: SPY 5 QQQ 4 SMH 5 ALL 4/8 | test 2020-25: SPY 5 QQQ 4 SMH 3 ALL 3/6 | early 2000-11: SPY 8 QQQ 9 SMH 6 ALL 5/12
