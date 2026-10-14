@@ -1,0 +1,37 @@
+System E
+buy only if RSI<=40
+buy only if RSI<=45
+buy only if RSI<=50
+buy only if RSI<=55
+buy only if RSI<=60
+buy only if RSI<=65
+buy only if RSI<=70
+buy only if RSI<=75
+buy only if RSI<=80
+buy only if RSI<=85
+buy only if RSI<=90
+buy only if RSI>=40
+buy only if RSI>=50
+buy only if RSI>=55
+buy only if RSI>=60
+buy only if RSI>=65
+buy only if RSI>=70
+               rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+           System E                 0.64                 0.95                0.227               0.418                 1.0               0.047               0.631               0.000               0.553
+buy only if RSI<=40                 0.22                 1.00                0.065               0.296                 1.0              -0.003               0.107               0.750               0.124
+buy only if RSI<=45                 0.13                 0.10                0.082               0.407                 1.0               0.044               0.262               0.167               0.154
+buy only if RSI<=50                 0.61                 1.00                0.214               0.423                 1.0               0.070               0.500               0.250               0.275
+buy only if RSI<=55                 0.62                 1.00                0.218               0.545                 1.0               0.095               0.560               0.042               0.341
+buy only if RSI<=60                 0.64                 0.10                0.169               0.545                 1.0               0.097               0.607               0.000               0.409
+buy only if RSI<=65                 0.62                 0.85                0.173               0.402                 1.0               0.051               0.607               0.000               0.455
+buy only if RSI<=70                 0.31                 0.75                0.096               0.429                 1.0               0.059               0.536               0.042               0.479
+buy only if RSI<=75                 0.28                 0.00                0.070               0.397                 1.0               0.040               0.643               0.000               0.533
+buy only if RSI<=80                 0.65                 0.95                0.218               0.423                 1.0               0.028               0.643               0.042               0.566
+buy only if RSI<=85                 0.64                 0.95                0.222               0.418                 1.0               0.047               0.607               0.042               0.560
+buy only if RSI<=90                 0.66                 0.95                0.230               0.418                 1.0               0.047               0.595               0.000               0.553
+buy only if RSI>=40                 0.64                 0.95                0.227               0.418                 1.0               0.047               0.631               0.000               0.553
+buy only if RSI>=50                 0.66                 1.00                0.230               0.418                 1.0               0.043               0.619               0.000               0.500
+buy only if RSI>=55                 0.63                 1.00                0.222               0.402                 1.0               0.023               0.655               0.000               0.489
+buy only if RSI>=60                 0.68                 1.00                0.247               0.381                 1.0               0.016               0.631               0.042               0.484
+buy only if RSI>=65                 0.64                 0.80                0.230               0.460                 1.0               0.066               0.667               0.042               0.489
+buy only if RSI>=70                 0.55                 0.60                0.191               0.349                 1.0               0.014               0.667               0.000               0.487
