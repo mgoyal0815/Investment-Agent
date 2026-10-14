@@ -1,3 +1,25 @@
+# UPDATE (15 October 2026): System F adopted
+
+System F = System E + buy only when ADX >= 25 with buyers in charge (`system_F.json`). Acceptance test:
++1.4 points of years beating SPY and QQQ over every monthly start (bar: 2), +2.1 on the held-back
+mid-month starts, drawdown record better, but 2020-25 starts 3.8 points worse. Adopted by the owner.
+
+| Clean data, Jan 2000 - 12 Oct 2026 | System F | System E | live v5 | SPY | QQQ |
+|---|---|---|---|---|---|
+| $10,000 becomes | $1,562k | $861k | $211k | $86k | $93k |
+| Growth a year (one run from 2000) | 20.8% | 18.1% | 12.1% | 8.4% | 8.7% |
+| Worst fall (one run from 2000) | -35% | -38% | -34% | -55% | -83% |
+| Calendar years 2000-2025 beating SPY and QQQ | 16 of 26 | 14 of 26 | | | |
+| Years beating SPY and QQQ, every monthly start | 53.5% | 52.1% | 33.3% | | |
+| Median growth a year, every monthly start | 28.6% | 26.2% | 13.6% | | |
+| Starts with a worst fall smaller than SPY's and QQQ's | 78% | 76% | 76% | | |
+| Worst fall, any start | -48% | -53% | -38% | | |
+
+Indicator range checks on both sides since the close-out (RSI, MACD, ADX; results/*_quick.csv,
+accept_*.txt): only ADX >= 25 at entry passed the held-back check. Volume indicators are next.
+
+---
+
 # FINAL (15 October 2026): System E
 
 Charts page: https://claude.ai/artifact/5HyZo5Ma17oPMY15Zpqhb1 (built by `code/build_page_E.py`).
