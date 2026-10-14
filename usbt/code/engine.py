@@ -811,6 +811,20 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
             paused = sum(sig) >= (cfg["pause_k"] if cfg.get("pause_k") else (2 if cfg.get("pause_mode", "any") == "two" else 1))
+            # own-book stress (owner, 15 Oct 2026): pause on OUR stock book's own drawdown / trend instead of, or
+            # together with, the market signals. unit = the stock book's flow-free value.
+            bp = cfg.get("book_pause")
+            if bp:
+                u_ = unit_hist
+                bs = False
+                if len(u_) > 21:
+                    if bp.get("dd"):
+                        lb_ = bp.get("dd_lb", 63)
+                        bs |= u_[-1] / max(u_[-lb_:]) - 1 < -bp["dd"]
+                    if bp.get("ma") and len(u_) > bp["ma"]:
+                        bs |= u_[-1] < float(np.mean(u_[-bp["ma"]:]))
+                mode = bp.get("mode", "replace")
+                paused = bs if mode == "replace" else ((paused and bs) if mode == "and" else (paused or bs))
             # breadth thrust: a broad surge off a washout ends any pause for thrust_days sessions
             if cfg.get("thrust_days"):
                 if m.thrust[i]:
