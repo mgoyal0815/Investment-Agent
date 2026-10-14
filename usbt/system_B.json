@@ -1,0 +1,26 @@
+{
+ "name": "System B",
+ "frozen": "2026-10-14",
+ "description": "best on the bias-free point-in-time S&P 500 universe, chosen on 2012-2019 (exp22 pick 1)",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 2.0,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.3,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500"
+ }
+}

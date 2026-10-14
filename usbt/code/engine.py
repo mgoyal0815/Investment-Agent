@@ -156,6 +156,12 @@ class Market:
             base &= ~self.is_etf
         if cfg["universe"] == "adv50":
             return base & (P["ADV20"][i] >= cfg["min_adv"])
+        ex = cfg.get("exclude")
+        if ex:
+            key = tuple(sorted(ex))
+            if key not in self._ucache:
+                self._ucache[key] = ~np.isin(self.syms, list(ex))
+            base &= self._ucache[key]
         if cfg["universe"] == "sp500":
             return base & self.sp_member[i]
         if etf_in:

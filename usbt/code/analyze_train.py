@@ -6,10 +6,15 @@ import pandas as pd
 import engine as X, metrics as M
 from exp2_search import materialise
 from exp8_more import NEW
+import json as _j, os as _o
+if _o.environ.get("SYS"):
+    NEW = _j.load(open(_o.environ["SYS"]))["cfg"]
 
 S, E = (sys.argv[1], sys.argv[2]) if len(sys.argv) > 2 else ("2012-01-03", "2019-12-31")
 m = X.Market(pd.read_pickle("../data/panel.pkl"))
-r = X.run(m, materialise(NEW), start=S, end=E, record=True)
+_c = materialise(NEW)
+if _c.get("lock_at") is None: _c.pop("lock_at", None)
+r = X.run(m, _c, start=S, end=E, record=True)
 L, D = r["lots"], r["daily"]
 Cf = m.P["Cf"]
 pd.set_option("display.width", 220, "display.max_columns", 30)
@@ -38,8 +43,9 @@ L["hold_b"] = pd.cut(L.held, [-1, 10, 21, 63, 126, 252, 9999], labels=["<=10", "
 print("\nBY HOLDING PERIOD (sessions)\n", tab("hold_b"))
 L["size_b"] = pd.cut(L.invested / 100, [0, 1, 2, 5, 10, 1e9], labels=["<$100", "$100-200", "$200-500", "$500-1000", ">$1000"])
 print("\nBY AMOUNT INVESTED\n", tab("size_b"))
-L["score_b"] = pd.cut(L.score, [0, 0.9, 0.95, 0.99, 1.01])
-print("\nBY RANK SCORE AT ENTRY\n", tab("score_b"))
+if L.score.notna().any():
+    L["score_b"] = pd.cut(L.score.astype(float), [0, 0.9, 0.95, 0.99, 1.01])
+    print("\nBY RANK SCORE AT ENTRY\n", tab("score_b"))
 print("\nTOP 10 WINNERS\n", L.nlargest(10, "pnl")[["sym", "entry", "exit", "held", "invested", "pnl", "peak_ret", "exit_ret", "why"]].round(2))
 print("\nTOP 10 LOSERS\n", L.nsmallest(10, "pnl")[["sym", "entry", "exit", "held", "invested", "pnl", "peak_ret", "exit_ret", "why"]].round(2))
 share_top = L.nlargest(int(len(L) * 0.05), "pnl").pnl.sum() / L.pnl.sum()
@@ -63,5 +69,5 @@ att = pd.DataFrame({"return%": ((yr.nav.last() / yr.nav.first() - 1) * 100).roun
 L["exit_year"] = pd.to_datetime(L.exit).dt.year
 att["stock P&L$"] = L.groupby("exit_year").pnl.sum().round(0)
 print("\nBY YEAR\n", att)
-L.to_csv(f"../results/root_lots_{S[:4]}_{(E or 'end')[:4]}.csv", index=False)
-att.to_csv(f"../results/root_years_{S[:4]}_{(E or 'end')[:4]}.csv")
+L.to_csv(f"../results/root{_o.environ.get('TAG','')}_lots_{S[:4]}_{(E or 'end')[:4]}.csv", index=False)
+att.to_csv(f"../results/root{_o.environ.get('TAG','')}_years_{S[:4]}_{(E or 'end')[:4]}.csv")
