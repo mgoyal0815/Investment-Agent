@@ -130,6 +130,23 @@ class Market:
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
         self._esma = {}
+        # ---- regime indicators (exp43); all use closes up to the session itself, acted on at the next open
+        a50 = Cf > P["SMA50"]
+        self.b50 = (a50 & top500).sum(1) / np.maximum(top500.sum(1), 1)            # share of top-500 above 50-day
+        b50s = pd.Series(self.b50)
+        # breadth thrust (Zweig-style): from under 25% above the 50-day to over 55% within 20 sessions
+        self.thrust = ((b50s.rolling(20, min_periods=20).min() < 0.25) & (b50s > 0.55)).to_numpy()
+        spy_c = pd.Series(E["SPY"]["c"]).ffill()
+        # narrow market: cap-weighted SPY beating the equal-weight top-100 over 63 sessions, SPY in an uptrend
+        rel = spy_c / pd.Series(self.large_idx)
+        self.narrow = ((rel > rel.rolling(63, min_periods=63).mean()) & (spy_c > spy_c.rolling(50, min_periods=50).mean())).to_numpy()
+        vix = pd.Series(P["VIX"]) if P.get("VIX") is not None else None
+        self.vix_rel = (vix / vix.rolling(50, min_periods=50).mean()).to_numpy() if vix is not None else np.ones(self.T)
+        hy, ie = pd.Series(E["HYG"]["c"]).ffill(), pd.Series(E["IEF"]["c"]).ffill()
+        cr = hy / ie
+        self.credit_bad = (cr < cr.rolling(50, min_periods=50).mean()).to_numpy()
+        self.mom_crash = (spy_c / spy_c.shift(504) - 1 < 0).to_numpy()            # market down over 2 years
+        self.size_pct = 1 - pd.DataFrame(trk).rank(axis=1, pct=True).to_numpy()   # 1 = biggest by turnover
         # point-in-time S&P 500 membership (fja05680/sp500): no knowledge of the future
         try:
             h = pd.read_csv("../data/sp500_hist.csv", parse_dates=["date"]).sort_values("date")
@@ -297,7 +314,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     vf = [1.0]                 # volatility-managed exposure factor (1 = no cap)
     lsma = m.large_sma50 if cfg.get("large_n", 50) == 50 else \
         pd.Series(m.large_idx).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
-    core = {"k": None, "w": 0.0}   # index core: ETF held while it is in a strong uptrend
+    core = {"k": None, "w": 0.0}
+    thrust_until = [-1]   # index core: ETF held while it is in a strong uptrend
     rebound = [False]
     park_state = [None]
     pend_core = None
@@ -775,16 +793,30 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if tok == "tlt_up":
                     sig.append(m.etf_vs_sma("TLT", 63, i) > 0)
-                elif tok.startswith("vix"):          # e.g. vix25: VIX closes above 25
+                elif tok.startswith("vix") and not tok.startswith("vixrel"):   # e.g. vix25: VIX closes above 25
                     v_ = m.P.get("VIX")
                     sig.append(v_ is not None and v_[i] == v_[i] and v_[i] > float(tok[3:]))
                 elif tok.endswith("macd"):           # e.g. spymacd: SPY MACD below its signal line
                     sig.append(m.etf_macd(tok[:3].upper(), i) < 0)
+                elif tok.startswith("vixrel"):       # e.g. vixrel1.3: VIX 30% above its 50-session average
+                    sig.append(m.vix_rel[i] == m.vix_rel[i] and m.vix_rel[i] > float(tok[6:]))
+                elif tok == "credit":                # high yield losing to Treasuries (HYG/IEF below its 50-day)
+                    sig.append(bool(m.credit_bad[i]))
+                elif tok == "momcrash":              # market down over two years: momentum-crash risk
+                    sig.append(bool(m.mom_crash[i]))
+                elif tok.startswith("b50_"):         # e.g. b50_20: under 20% of stocks above their 50-day
+                    sig.append(m.b50[i] < float(tok[4:]) / 100)
                 else:
                     t_, n_ = tok[:3].upper(), int(tok[3:])
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
             paused = sum(sig) >= (cfg["pause_k"] if cfg.get("pause_k") else (2 if cfg.get("pause_mode", "any") == "two" else 1))
+            # breadth thrust: a broad surge off a washout ends any pause for thrust_days sessions
+            if cfg.get("thrust_days"):
+                if m.thrust[i]:
+                    thrust_until[0] = i + cfg["thrust_days"]
+                if i <= thrust_until[0]:
+                    paused = False
             # a pause only counts inside a real bear market (SPY below its 200-session average)
             if cfg.get("pause_needs_bear") and m.b200[i]:
                 paused = False
@@ -862,6 +894,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
+        if cfg.get("narrow_size_w") and m.narrow[i]:
+            # narrow market: lean the ranking toward the biggest companies (they are carrying the index)
+            w_ = cfg["narrow_size_w"]
+            sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.where(u, m.size_pct[i], 0.0)) / (1 + w_))
         for key_, w_ in (cfg.get("score_mix") or {}).items():
             # blend the rank score with another indicator's cross-sectional percentile (hi52, resmom, ADX, RSI)
             x_ = pct_rank(np.where(u & ~np.isnan(sc), m.P[key_][i].astype(float), np.nan))
@@ -1109,6 +1145,11 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
             continue
+        if cfg.get("vol_max_pct"):
+            if "_rvp" not in cfg or cfg["_rvp"][0] != i:
+                cfg["_rvp"] = (i, pct_rank(np.where(u, P["RV30"][i].astype(float), np.nan)))
+            if not (cfg["_rvp"][1][j] <= cfg["vol_max_pct"]):
+                continue
         if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
             continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):

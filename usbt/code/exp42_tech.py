@@ -1,7 +1,8 @@
 """Experiment 42: technical indicators on top of System D (owner, 15 Oct 2026): more stocks (N), entry filters
-(ADX trend strength, near 52-week high, MACD, RSI not overbought, recent 55-day breakout), score blends
+(ADX trend strength, volatility cap, near 52-week high, MACD, RSI not overbought, recent 55-day breakout), score blends
 (52-week high, residual momentum, ADX, RSI), exits (keep while above a rising 50-day EMA; chandelier ATR
-stop), market pause votes with VIX and SPY/QQQ MACD. One change at a time, then coordinate ascent,
+stop), market pause votes with VIX, VIX spike, SPY/QQQ MACD, credit (HYG/IEF), 2-year momentum-crash risk;
+breadth-thrust restart; narrow-market tilt to the biggest companies. One change at a time, then coordinate ascent,
 chosen on starts 2012-2016 stopping 2019 (yardstick score); judged on starts 2000-2008, 2020-2025, all."""
 import json, multiprocessing as mp
 import pandas as pd
@@ -15,8 +16,10 @@ SPACE = dict(N=[8, 10, 12, 15, 20, 30], adx_min=[None, 15, 20, 25], hi52_min=[No
              score_mix=[None, {"hi52": 0.25}, {"resmom": 0.25}, {"resmom": 0.5}, {"ADX": 0.25}, {"RSI": 0.25}],
              trend_hold=[None, True, 0.0, 0.2, 0.5], chand_k=[None, 3, 4, 5],
              pause_rules=[("breadth", "hyg", "large"), ("breadth", "hyg", "large", "vix30"), ("breadth", "hyg", "large", "vix35"),
-                          ("hyg", "large", "vix30"), ("breadth", "hyg", "large", "spymacd")],
-             rank_exempt_gain=[None, 0.5, 1.0], buffer=[1.5, 2.0, 3.0])
+                          ("hyg", "large", "vix30"), ("breadth", "hyg", "large", "spymacd"), ("breadth", "hyg", "large", "credit"),
+                          ("breadth", "hyg", "large", "vixrel1.3"), ("breadth", "hyg", "large", "momcrash"), ("breadth", "large", "credit")],
+             rank_exempt_gain=[None, 0.5, 1.0], buffer=[1.5, 2.0, 3.0],
+             narrow_size_w=[None, 0.25, 0.5, 1.0], thrust_days=[None, 21, 63], vol_max_pct=[None, 0.8, 0.9])
 PER = None
 
 
