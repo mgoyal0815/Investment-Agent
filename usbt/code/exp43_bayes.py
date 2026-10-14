@@ -68,15 +68,22 @@ if __name__ == "__main__":
     n = int(sys.argv[1]) if len(sys.argv) > 1 else 500
     Y._init("../data/panel.pkl")
     pool = mp.get_context("fork").Pool(4, initializer=Y._init, initargs=("../data/panel.pkl",))
-    PER = {"train": (Y.starts("2012-01-01", "2016-12-31", 2), "2019-12-31"),
-           "early": (Y.starts("2000-01-01", "2008-12-31", 3), "2011-12-30"),
-           "late": (Y.starts("2020-01-01", "2025-10-31", 2), None)}
+    # quarterly-ish starts: neighbouring monthly starts give nearly the same answer, so this halves the cost
+    PER = {"train": (Y.starts("2012-01-01", "2016-12-31", 3), "2019-12-31"),
+           "early": (Y.starts("2000-01-01", "2008-12-31", 4), "2011-12-30"),
+           "late": (Y.starts("2020-01-01", "2025-10-31", 3), None)}
     rng = random.Random(43)
     rows = []
     design = [{k: v[0] for k, v in F.items()}] + [{k: rng.choice(v) for k, v in F.items()} for _ in range(n)]
     for k, x in enumerate(design):
         r = evaluate(pool, build(x))
         rows.append({**{f"f:{a}": json.dumps(b) for a, b in x.items()}, **r})
+        if (k + 1) % 100 == 0:
+            # interim Bayesian read: stop early if the conclusions have settled
+            pd.DataFrame(rows).to_csv("../results/exp43_design.csv", index=False)
+            import subprocess
+            subprocess.run(["python3", "exp43b_model.py"], stdout=open(f"../results/exp43_effects_at_{k + 1}.txt", "w"), stderr=subprocess.DEVNULL)
+            print("INTERIM", k + 1, flush=True)
         if (k + 1) % 10 == 0:
             pd.DataFrame(rows).to_csv("../results/exp43_design.csv", index=False)
             d = pd.DataFrame(rows)
