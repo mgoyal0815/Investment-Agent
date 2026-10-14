@@ -459,9 +459,18 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             if need <= 0:
                 break
 
+    def tranche_of(i):
+        """In-account staggering: which part of the book is reviewed at session i (None = no review)."""
+        for t, d_ in enumerate(cfg.get("stagger") or []):
+            if (d_ < 0 and m.month_end[i]) or (d_ >= 0 and m.day_in_month[i] == d_):
+                return t
+        return None
+
     def is_decision(i):
         if cfg["cadence"] == "daily":
             return True
+        if cfg.get("stagger"):
+            return tranche_of(i) is not None
         if cfg["cadence"] == "monthly":
             dd_ = cfg.get("decide_day")
             return m.month_end[i] if dd_ is None or dd_ < 0 else m.day_in_month[i] == dd_
@@ -781,8 +790,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             xr = cfg["buffer"] * N
             if paused:
                 xr = N
+            t_now = tranche_of(i) if cfg.get("stagger") else None
             for j in list(pos):
                 if j in exiting or pos[j]["stale"]:
+                    continue
+                if t_now is not None and pos[j].get("meta", {}).get("tr", 0) != t_now:
                     continue
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
                     continue
@@ -818,7 +830,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             ocfg = cfg if not (rebound[0] and cfg.get("rec_cut_rebound")) else dict(cfg, rec_cut=cfg["rec_cut_rebound"])
             _v5_orders(m, ocfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
         else:
-            _slot_orders(m, cfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
+            scfg = cfg if not cfg.get("stagger") else dict(cfg, _tr=tranche_of(i), _ntr=len(cfg["stagger"]))
+            _slot_orders(m, scfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
 
     out = dict(curve=pd.Series(curve, index=m.dates[i0:i1]), expo=pd.Series(expo, index=m.dates[i0:i1]),
                costs=costs, final_positions=len(pos))
@@ -967,8 +980,14 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             if g126 > uni_med and g[i] > np.nanmean(g[i - 200:i]):
                 n_stock = N - cfg["gold_slots"]
     slot = nav / N
-    held_after = len([j for j in pos if j not in exiting])
-    free = n_stock - held_after
+    tr, ntr = cfg.get("_tr"), cfg.get("_ntr", 1)
+    if tr is None:
+        held_after = len([j for j in pos if j not in exiting])
+        free = n_stock - held_after
+    else:
+        # this tranche owns its share of the slots; the other tranche's holdings are not touched
+        mine = [j for j in pos if j not in exiting and pos[j].get("meta", {}).get("tr", 0) == tr]
+        free = int(round(n_stock / ntr)) - len(mine)
     order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]
@@ -983,12 +1002,12 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
             continue
         out.append(dict(kind="new", j=j, dollars=slot, route=1 if P["cont"][i, j] else 2,
-                        stop=(P["SMA50"][i, j] - P["ATR"][i, j]), min_dollars=0.5 * slot))
+                        stop=(P["SMA50"][i, j] - P["ATR"][i, j]), min_dollars=0.5 * slot, meta={"tr": tr or 0}))
         free -= 1
     if cfg["adds"] == "india":
         adds = []
         for j, p in pos.items():
-            if j in exiting:
+            if j in exiting or (tr is not None and p.get("meta", {}).get("tr", 0) != tr):
                 continue
             val = p["sh"] * P["Cf"][i, j]
             if (pos_rank.get(j, 10 ** 9) < N and P["cont"][i, j] and P["Cf"][i, j] / p["cost"] - 1 >= cfg["add_gain"]
