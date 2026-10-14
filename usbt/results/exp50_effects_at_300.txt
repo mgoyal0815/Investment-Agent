@@ -1,0 +1,61 @@
+MAIN EFFECTS
+                          effect     sd  effect_early  effect_late  credible_train  same_sign_all  matters
+f:macd_pos_true            0.173  0.042         0.040       -0.016            True          False    False
+f:rsi_max_80               0.106  0.073         0.043       -0.007           False          False    False
+f:adx_min_20               0.090  0.041        -0.019       -0.012            True          False    False
+f:lock_trend_true          0.089  0.043         0.018       -0.024            True          False    False
+f:narrow_size_w_0.5        0.086  0.049        -0.008       -0.038           False          False    False
+f:vol_hard_true            0.058  0.038         0.010        0.021           False           True    False
+f:lock_trail_0.2           0.057  0.048        -0.003        0.004           False          False    False
+f:add_cap_5.0              0.056  0.047         0.004        0.006           False           True    False
+f:hi52_min_0.9             0.032  0.041        -0.025        0.003           False          False    False
+f:gold_slots_2             0.030  0.066         0.016       -0.009           False          False    False
+f:ramp_0                   0.029  0.046         0.004        0.042           False           True    False
+f:score_mix_"resmom"       0.027  0.073        -0.015       -0.061           False          False    False
+f:etf_in_universe_true     0.026  0.042        -0.021       -0.003           False          False    False
+f:bo_recent_60             0.020  0.040        -0.009        0.001           False          False    False
+f:add_gain_0.1             0.017  0.051        -0.000       -0.010           False          False    False
+f:score_mix_"mom12_7"      0.006  0.070        -0.051       -0.019           False          False    False
+f:vol_target_0.3           0.004  0.046         0.020        0.077           False           True    False
+f:buffer_2.0               0.004  0.041        -0.002       -0.012           False          False    False
+f:lock_at_0.3             -0.003  0.058        -0.022       -0.012           False           True    False
+f:p_vix30_true            -0.006  0.045         0.010        0.003           False          False    False
+f:N_12                    -0.009  0.051         0.011       -0.008           False          False    False
+f:rank_ladder_2           -0.010  0.042         0.001        0.009           False          False    False
+f:vol_max_pct_0.8         -0.011  0.048         0.068       -0.001           False          False    False
+f:pause_tight_exit_false  -0.014  0.040        -0.020        0.007           False          False    False
+f:p_momcrash_true         -0.020  0.045        -0.054       -0.018           False           True    False
+f:sector_w_0.25           -0.021  0.037        -0.057       -0.166           False           True    False
+f:weight_"invvol"         -0.021  0.042        -0.049       -0.017           False           True    False
+f:mkt_vol_target_0.15     -0.024  0.065        -0.014       -0.073           False           True    False
+f:rank_min_hold_42        -0.025  0.039         0.013        0.028           False          False    False
+f:score_mix_"mom12_1"     -0.032  0.059        -0.063       -0.002           False           True    False
+f:index_hurdle_true       -0.040  0.042         0.002        0.005           False          False    False
+f:dm_guard_true           -0.044  0.051         0.020       -0.003           False          False    False
+f:p_vixrel_true           -0.048  0.042        -0.009       -0.014           False           True    False
+f:sector_top_k_3          -0.049  0.054        -0.049       -0.116           False           True    False
+f:trend_hold_null         -0.058  0.042         0.008       -0.071           False          False    False
+f:rsi_sell_floor_40       -0.061  0.043         0.020       -0.002           False          False    False
+f:rank_exempt_gain_0.5    -0.081  0.054         0.007        0.007           False          False    False
+f:gold_slots_0            -0.110  0.047         0.044       -0.015            True          False    False
+f:lock_half_true          -0.114  0.047         0.015        0.038            True          False    False
+f:mkt_vol_target_0.2      -0.121  0.055         0.017       -0.065            True          False    False
+f:trend_false             -0.128  0.038        -0.012        0.015            True          False    False
+f:lock_trail_0.35         -0.128  0.057        -0.004        0.004            True          False    False
+f:N_8                     -0.146  0.052        -0.031        0.029            True          False    False
+f:lock_at_1.0             -0.149  0.065        -0.014       -0.001            True           True    False
+f:sector_top_k_5          -0.153  0.063        -0.065       -0.050            True           True     True
+f:rank_exempt_gain_null   -0.164  0.058         0.010       -0.008            True          False    False
+f:p_spymacd_true          -0.173  0.037        -0.053       -0.097            True           True     True
+f:thrust_days_63          -0.196  0.051        -0.572       -0.103            True           True     True
+f:pause_needs_bear_true   -0.223  0.041         0.009        0.040            True          False    False
+f:score_mix_"hi52"        -0.229  0.076         0.033       -0.084            True          False    False
+f:reenter_fast_true       -0.234  0.041         0.045       -0.008            True          False    False
+f:p_credit_true           -0.257  0.040         0.004       -0.045            True          False    False
+f:rsi_max_75              -0.303  0.058         0.009       -0.039            True          False    False
+f:chand_k_4               -0.428  0.046        -0.032       -0.085            True           True     True
+
+INTERACTIONS THAT MATTER
+Empty DataFrame
+Columns: [effect, sd, effect_early, effect_late, credible_train, same_sign_all, matters]
+Index: []
