@@ -129,6 +129,7 @@ class Market:
         self.large_idx = np.cumprod(1 + ew)
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
+        self._esma = {}
         # point-in-time S&P 500 membership (fja05680/sp500): no knowledge of the future
         try:
             h = pd.read_csv("../data/sp500_hist.csv", parse_dates=["date"]).sort_values("date")
@@ -160,6 +161,14 @@ class Market:
         self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
+
+    def etf_vs_sma(self, t, n, i):
+        """+1 if ETF t closes above its n-session average at session i, -1 below, 0 unknown."""
+        key = (t, n)
+        if key not in self._esma:
+            c = pd.Series(self.E[t]["c"])
+            self._esma[key] = np.sign((c - c.rolling(n, min_periods=n).mean()).fillna(0).to_numpy())
+        return self._esma[key][i]
 
     def universe(self, i, cfg):
         """Boolean mask of names that can be ranked and bought at session i."""
@@ -751,8 +760,18 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             r = cfg["pause_rules"]
             sig = [("breadth" in r and m.breadth[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
                    ("large" in r and lsma[i] == lsma[i] and m.large_idx[i] < lsma[i])]
+            # index / credit / bond votes: "<ETF><n>" = that ETF closes below its n-session average
+            # (e.g. spy200, qqq100, smh50, hyg63); "tlt_up" = TLT above its 63-session average (flight to safety)
+            for tok in r:
+                if tok in ("breadth", "hyg", "large"):
+                    continue
+                if tok == "tlt_up":
+                    sig.append(m.etf_vs_sma("TLT", 63, i) > 0)
+                else:
+                    t_, n_ = tok[:3].upper(), int(tok[3:])
+                    sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
-            paused = sum(sig) >= (2 if cfg.get("pause_mode", "any") == "two" else 1)
+            paused = sum(sig) >= (cfg["pause_k"] if cfg.get("pause_k") else (2 if cfg.get("pause_mode", "any") == "two" else 1))
             # a pause only counts inside a real bear market (SPY below its 200-session average)
             if cfg.get("pause_needs_bear") and m.b200[i]:
                 paused = False
