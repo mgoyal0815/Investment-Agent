@@ -107,6 +107,8 @@ class Market:
         self.month_end = (mo != mo.shift(-1)).to_numpy()
         self.day_in_month = mo.groupby(mo).cumcount().to_numpy()
         self.ym = (self.dates.year * 12 + self.dates.month).to_numpy()
+        wk = pd.Series(self.dates.to_period("W"), index=self.dates)
+        self.week_end = (wk != wk.shift(-1)).to_numpy()
         # India market signals on US data
         C, Cf = P["C"], P["Cf"]
         traded = ~np.isnan(C)
@@ -415,6 +417,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             return True
         if cfg["cadence"] == "monthly":
             return m.month_end[i]
+        if cfg["cadence"] == "weekly":
+            return m.week_end[i]
         return m.month_end[i] or m.day_in_month[i] == 10
 
     # -------------------------------------------------------------- the loop

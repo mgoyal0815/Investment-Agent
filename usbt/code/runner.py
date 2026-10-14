@@ -86,6 +86,12 @@ def objective(a):
     return a["beat_all"] + 0.25 * a["roll_win"] + 0.1 * a["beat_SPY"] - 1.0 * (1 - a["dd_ok"]) + 0.5 * a["cagr"]
 
 
+def objective2(a):
+    """Owner's rule from 14 Oct 2026: growth high, drawdown low, and beating the indexes.
+    1 point less drawdown is worth half a point of return."""
+    return a["cagr"] + 0.5 * a["maxdd"] + 0.1 * a["beat_all"]
+
+
 def fmt(lab, a):
     return (f"{lab:44s} CAGR {a['cagr']:6.1%} (min {a['cagr_min']:6.1%})  DD {a['maxdd']:6.1%} vs idx {a['dd_idx']:6.1%} ok {a['dd_ok']:.0%}"
             f"  beatAll {a['beat_all']:.0%} (min {a['beat_all_min']}/{a['years']})  SPY {a['beat_SPY']:.0%} QQQ {a['beat_QQQ']:.0%}"
