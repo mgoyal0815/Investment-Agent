@@ -463,7 +463,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         if cfg["cadence"] == "daily":
             return True
         if cfg["cadence"] == "monthly":
-            return m.month_end[i]
+            dd_ = cfg.get("decide_day")
+            return m.month_end[i] if dd_ is None or dd_ < 0 else m.day_in_month[i] == dd_
         if cfg["cadence"] == "weekly":
             return m.week_end[i]
         return m.month_end[i] or m.day_in_month[i] == 10
@@ -953,6 +954,10 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
     """India v8 review: fill free slots best-ranked first, then add to winners."""
     P = m.P
     N = cfg["N"]
+    na = cfg.get("N_adapt")
+    if na:
+        # adaptive book: fewer, larger slots when breadth is strong; more, smaller ones when weak
+        N = na[0] if m.breadth[i] >= na[2] else na[1]
     n_stock = N
     if cfg["gold_slots"]:
         g = m.E["GLD"]["c"]

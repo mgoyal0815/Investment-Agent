@@ -28,6 +28,12 @@ very large winners, which were different stocks in each window. A luck-robust se
 (scored with and without the biggest winner, `exp23`) found nothing that held up better on 2020-26
 and 2000-11, so System B stands.
 
+Decision-day luck (`exp24`): System B decides on the last session of each month. Moving that one day
+changes its 2012-19 result from 15% to 24% a year and its 2020-26 result from 26% to 35%. Its training
+lead was partly date luck. Splitting the account into two halves that decide on the last and the 11th
+session removes most of that luck: 20.4% a year (2012-19, worst fall -18%), 32.1% (2020-26, -33%),
+6.1% (2000-11, -41%). That is the honest expectation for this system on clean data.
+
 ---
 
 # System A (frozen 14 October 2026)
