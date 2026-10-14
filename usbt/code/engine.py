@@ -129,6 +129,7 @@ class Market:
         self.large_idx = np.cumprod(1 + ew)
         self.large_sma50 = pd.Series(self.large_idx).rolling(50, min_periods=50).mean().to_numpy()
         self._ucache = {}
+        self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
 
     def universe(self, i, cfg):
         """Boolean mask of names that can be ranked and bought at session i."""
@@ -234,6 +235,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     costs = 0.0
     paused = False
     vf = [1.0]                 # volatility-managed exposure factor (1 = no cap)
+    core = {"k": None, "w": 0.0}   # index core: ETF held while it is in a strong uptrend
+    pend_core = None
     flow = [0.0, 0.0]          # today's stock sells / buys at fill value (for the flow-free unit NAV)
     sv_prev, sleeve_base = 0.0, 0.0
     park_tk = cfg["park"]
@@ -487,14 +490,28 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         if alloc_changed and cfg["overlay"] in ("v5", "v5_soft"):
             set_etfs({k: w for k, w in alloc.items() if k != "stock"}, i, navo)
         # stock buys (new first by rank, then adds, India order)
+        # index core: switch or exit at this open
+        if pend_core is not None:
+            k_new, w_new = pend_core
+            pend_core = None
+            for k in list(parked):
+                park_trade(k, -parked[k], i)
+            for k in [k for k in etf if etf[k] and k != k_new]:
+                trade_etf(k, 0.0, i)
+            if k_new:
+                px = etf_px(k_new, i, "o")
+                if px == px and px > 0:
+                    trade_etf(k_new, math.floor(w_new * navo / px), i)
+            core["k"], core["w"] = k_new, (w_new if k_new else 0.0)
+        cw = core["w"] if cfg["overlay"] not in ("v5", "v5_soft") else 0.0
         sleeve_cash_cap = None
         if cfg["overlay"] in ("v5", "v5_soft"):
             wst = alloc.get("stock", 1.0)
             sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
             sleeve_cash_cap = max(0.0, wst * navo - sv_open)
-        elif ramp_factor(i) * vf[0] < 1:
+        elif ramp_factor(i) * vf[0] * (1 - cw) < 1:
             sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
-            cap_v = ramp_factor(i) * vf[0] * navo
+            cap_v = ramp_factor(i) * vf[0] * (1 - cw) * navo
             if cfg.get("vol_hard") and sv_open > 1.05 * cap_v:
                 scale_down(i, sv_open - cap_v)
                 sv_open = sum(p["sh"] * (O[i, j] if O[i, j] == O[i, j] else p["last"]) for j, p in pos.items())
@@ -607,6 +624,25 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         elif i == i0:
             pend_alloc, alloc_raw = {"stock": 1.0}, {"stock": 1.0}
 
+        # index core decision: hold core_w in the leading index ETF while its core_lb-session return
+        # is above core_min and it closes above its 50-session average; exit as soon as that fails
+        if cfg.get("core_w") and cfg["overlay"] not in ("v5", "v5_soft"):
+            lb = cfg.get("core_lb", 126)
+            def cm(t):
+                c = m.E[t]["c"]
+                return c[i] / c[i - lb] - 1 if i - lb >= 0 and c[i] == c[i] and c[i - lb] == c[i - lb] else -999
+            ldr = max(LEADERS, key=cm)
+            strong = cm(ldr) > cfg.get("core_min", 0.15) and m.E[ldr]["c"][i] > m.e_sma50[ldr][i]
+            if cfg.get("core_only_smh_qqq", True) and ldr == "SPY":
+                strong = False
+            want = ldr if strong else None
+            held_ok = core["k"] is not None and m.E[core["k"]]["c"][i] > m.e_sma50[core["k"]][i]
+            if want != core["k"]:
+                if want is None and not held_ok:
+                    pend_core = (None, 0.0)                     # fast exit, any session
+                elif want is not None and (is_decision(i) or core["k"] is None):
+                    pend_core = (want, cfg["core_w"])
+
         # India pause (checked every session; acts only on decision days)
         if cfg["overlay"] == "pause" or "pause" in str(cfg.get("extra_pause", "")):
             r = cfg["pause_rules"]
@@ -672,7 +708,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             sleeve_nav = wst * navd
             sleeve_cash = min(cash + park_v, max(0.0, sleeve_nav - sv))
         else:
-            f = ramp_factor(i) * vf[0]
+            f = ramp_factor(i) * vf[0] * (1 - (core["w"] if core["k"] else 0.0))
             sleeve_nav = navd
             sleeve_cash = cash + park_v if f >= 1 else min(cash + park_v, max(0.0, f * navd - sv))
         # projected cash: + queued exits
