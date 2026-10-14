@@ -235,9 +235,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     costs = 0.0
     paused = False
     vf = [1.0]                 # volatility-managed exposure factor (1 = no cap)
+    lsma = m.large_sma50 if cfg.get("large_n", 50) == 50 else \
+        pd.Series(m.large_idx).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
     core = {"k": None, "w": 0.0}   # index core: ETF held while it is in a strong uptrend
     pend_core = None
-    flow = [0.0, 0.0]          # today's stock sells / buys at fill value (for the flow-free unit NAV)
+    flow = [0.0, 0.0]
+    lots, daily = [], []          # today's stock sells / buys at fill value (for the flow-free unit NAV)
     sv_prev, sleeve_base = 0.0, 0.0
     park_tk = cfg["park"]
 
@@ -313,12 +316,20 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         costs += ch
         p["sh"] -= adj_sh
         flow[0] += val
+        p["pnl"] = p.get("pnl", 0.0) + adj_sh * (px - p["cost"]) - ch
+        p.setdefault("whys", []).append(why)
         if record:
             trades.append((m.dates[i], m.syms[j], "SELL", val, why, px / p["cost"] - 1))
         if p["sh"] <= 1e-9:
+            if record:
+                lots.append(dict(sym=m.syms[j], entry=m.dates[p["entry_i"]], exit=m.dates[i], held=i - p["entry_i"],
+                                 route=p["route"], zone=p.get("meta", {}).get("zone"), score=p.get("meta", {}).get("score"),
+                                 q=p.get("meta", {}).get("q"), adds=p["adds"], invested=p.get("inv", 0.0),
+                                 pnl=p["pnl"] - p.get("buyc", 0.0), peak_ret=p["peak"] / p["cost"] - 1,
+                                 exit_ret=px / p["cost"] - 1, why=p["whys"][-1], n_sells=len(p["whys"]), j=j, exit_i=i))
             del pos[j]
 
-    def buy_stock(j, dollars, i, route, kind, stop, min_val=0.0):
+    def buy_stock(j, dollars, i, route, kind, stop, min_val=0.0, meta=None):
         """Whole shares at the open, at the traded price. Returns $ spent."""
         nonlocal cash, costs
         px = O[i, j]
@@ -346,7 +357,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             p["adds"] += 1
         else:
             pos[j] = dict(sh=adj_sh, cost=px, entry_i=i, route=route, stop=stop, rung=0, below=0,
-                          peak=px, last=px, stale=0, adds=0, hold_done=False)
+                          peak=px, last=px, stale=0, adds=0, hold_done=False, meta=meta or {})
+        pos[j]["inv"] = pos[j].get("inv", 0.0) + val
+        pos[j]["buyc"] = pos[j].get("buyc", 0.0) + ch
         if record:
             trades.append((m.dates[i], m.syms[j], "BUY", val, kind, 0.0))
         return val + ch
@@ -530,7 +543,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             min_d = o.get("min_dollars", 0.0)
             if dollars < min_d:
                 continue
-            spent = buy_stock(j, dollars, i, o["route"], o["kind"], o.get("stop"), min_d)
+            spent = buy_stock(j, dollars, i, o["route"], o["kind"], o.get("stop"), min_d, o.get("meta"))
             if sleeve_cash_cap is not None:
                 sleeve_cash_cap -= spent
         # park idle cash (India: at least half a slot idle)
@@ -578,6 +591,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             rv = np.std(np.diff(u) / u[:-1], ddof=1) * np.sqrt(252)
             vf[0] = min(1.0, max(cfg.get("vol_floor", 0.3), cfg["vol_target"] / rv)) if rv > 0 else 1.0
         curve.append(navc)
+        if record:
+            daily.append((d, navc, sv, sum(sh * etf_px(k, i) for k, sh in parked.items()),
+                          sum(sh * etf_px(k, i) for k, sh in etf.items() if sh), cash, paused, len(pos)))
         expo.append(sv / navc if navc > 0 else 0.0)
         wst_now = alloc.get("stock", 1.0) if cfg["overlay"] in ("v5", "v5_soft") else 1.0
         sleeve_base = sv if cfg["overlay"] not in ("v5", "v5_soft") else max(wst_now * navc, sv)
@@ -647,15 +663,22 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         if cfg["overlay"] == "pause" or "pause" in str(cfg.get("extra_pause", "")):
             r = cfg["pause_rules"]
             sig = [("breadth" in r and m.breadth[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
-                   ("large" in r and m.large_sma50[i] == m.large_sma50[i] and m.large_idx[i] < m.large_sma50[i])]
+                   ("large" in r and lsma[i] == lsma[i] and m.large_idx[i] < lsma[i])]
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
             paused = sum(sig) >= (2 if cfg.get("pause_mode", "any") == "two" else 1)
 
         # ===== (4) at the close: stock exits and buys for the next open
         exiting = set()
+        if cfg.get("lock_at"):
+            for j, p in pos.items():
+                if p["stale"] or j in exiting:
+                    continue
+                if p["peak"] / p["cost"] - 1 >= cfg["lock_at"] and C[i, j] < p["peak"] * (1 - cfg["lock_trail"]):
+                    pend_stock.append(dict(kind="exit", j=j, why="lock", all=True))
+                    exiting.add(j)
         if use_stop:
             for j, p in pos.items():
-                if p["stale"]:
+                if p["stale"] or j in exiting:
                     continue
                 route = p["route"]
                 a = ATR[i, j]
@@ -688,6 +711,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
             nvalid = int((~np.isnan(sc)).sum())
             pos_rank = {int(j): k for k, j in enumerate(order[:nvalid])}
+        if use_rank and cfg.get("exit_score") == "pool":
+            P_ = m.P
+            a_ = pct_rank(np.where(u, P_["rs126"][i], np.nan))
+            b_ = pct_rank(np.where(u, P_["dist200"][i], np.nan))
+            ps = pct_rank(0.5 * a_ + 0.5 * b_)
+            order = np.argsort(-np.nan_to_num(ps, nan=-np.inf))
+            pos_rank = {int(j): k for k, j in enumerate(order[:int((~np.isnan(ps)).sum())])}
         if use_rank:
             xr = cfg["buffer"] * N
             if paused:
@@ -727,6 +757,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     if record:
         out["events"] = events
         out["trades"] = pd.DataFrame(trades, columns=["date", "sym", "side", "value", "why", "ret"])
+        out["lots"] = pd.DataFrame(lots)
+        out["daily"] = pd.DataFrame(daily, columns=["date", "nav", "stocks", "parked", "core", "cash", "paused", "npos"]).set_index("date")
     return out
 
 
@@ -837,7 +869,8 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         if kind == "new" and dollars < 0.005 * nav:
             continue
         out.append(dict(kind=kind, j=j, dollars=dollars, route=rt, stop=stop_line if kind == "new" else None,
-                        min_dollars=0.005 * nav if kind == "new" else 0.0))
+                        min_dollars=0.005 * nav if kind == "new" else 0.0,
+                        meta=dict(zone=zone, score=float(sc[j]), q=float(q[j]))))
         cash -= dollars + tcost(n, dollars)
         if kind == "new":
             n_held += 1
