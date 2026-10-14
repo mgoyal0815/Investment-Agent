@@ -1,0 +1,43 @@
+top 10 on 2012-2019:
+  0.804 C3+index unless paused, no ETFs, pause any, breadth 30%
+  0.804 C3+index unless paused, no ETFs, pause HYG or large
+  0.750 C3+index unless paused, ETFs x1, pause any, breadth 30%
+  0.750 C3+index unless paused, ETFs x2, pause HYG or large
+  0.750 C3+index unless paused, ETFs x3, pause any, breadth 30%
+  0.750 C3+index unless paused, ETFs x1, pause HYG or large
+  0.750 C3+index unless paused, ETFs x2, pause any, breadth 30%
+  0.750 C3+index unless paused, ETFs x3, pause HYG or large
+  0.652 C3, ETFs x2, pause large only
+  0.652 C3, ETFs x1, pause large only
+train C3, no ETFs, pause any of 3                  CAGR  15.0% (min  14.7%)  DD -18.0% vs idx -19.3% ok 100%  beatAll 28% (min 2/8)  SPY 56% QQQ 28% SMH 56%  roll12 28%  expo 76%
+train C3+index unless paused, no ETFs, pause any o CAGR  17.0% (min  15.8%)  DD -17.9% vs idx -19.3% ok 100%  beatAll 34% (min 2/8)  SPY 70% QQQ 34% SMH 58%  roll12 35%  expo 76%
+train C3+index unless paused, no ETFs, pause any,  CAGR  18.7% (min  17.5%)  DD -18.3% vs idx -19.3% ok 100%  beatAll 53% (min 3/8)  SPY 70% QQQ 53% SMH 58%  roll12 45%  expo 77%
+train C3+index unless paused, no ETFs, pause HYG o CAGR  18.7% (min  17.5%)  DD -18.3% vs idx -19.3% ok 100%  beatAll 53% (min 3/8)  SPY 70% QQQ 53% SMH 58%  roll12 45%  expo 77%
+train C3+index unless paused, ETFs x1, pause any,  CAGR  18.9% (min  17.1%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 47% (min 3/8)  SPY 72% QQQ 47% SMH 58%  roll12 45%  expo 77%
+train C3+index unless paused, ETFs x2, pause HYG o CAGR  18.9% (min  17.1%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 47% (min 3/8)  SPY 72% QQQ 47% SMH 58%  roll12 45%  expo 77%
+train C3, no ETFs, pause large only                CAGR  16.9% (min  15.9%)  DD -18.3% vs idx -19.3% ok 100%  beatAll 42% (min 3/8)  SPY 59% QQQ 45% SMH 56%  roll12 36%  expo 82%
+train C3+index unless paused, ETFs x3, pause any,  CAGR  18.9% (min  17.1%)  DD -18.2% vs idx -19.3% ok 100%  beatAll 47% (min 3/8)  SPY 72% QQQ 47% SMH 58%  roll12 45%  expo 77%
+test C3, no ETFs, pause any of 3                  CAGR  30.4% (min  20.5%)  DD -31.2% vs idx -33.7% ok 20%  beatAll 35% (min 1/6)  SPY 49% QQQ 53% SMH 35%  roll12 38%  expo 71%
+test C3+index unless paused, no ETFs, pause any o CAGR  31.9% (min  23.8%)  DD -31.8% vs idx -33.7% ok 20%  beatAll 38% (min 1/6)  SPY 57% QQQ 45% SMH 38%  roll12 39%  expo 71%
+test C3+index unless paused, no ETFs, pause any,  CAGR  32.7% (min  24.9%)  DD -30.4% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 61% QQQ 45% SMH 42%  roll12 43%  expo 72%
+test C3+index unless paused, no ETFs, pause HYG o CAGR  32.8% (min  25.5%)  DD -30.7% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 53% QQQ 45% SMH 42%  roll12 42%  expo 72%
+test C3+index unless paused, ETFs x1, pause any,  CAGR  32.0% (min  24.0%)  DD -31.2% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 57% QQQ 49% SMH 42%  roll12 42%  expo 72%
+test C3+index unless paused, ETFs x2, pause HYG o CAGR  32.0% (min  24.1%)  DD -30.4% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 57% QQQ 49% SMH 42%  roll12 41%  expo 72%
+test C3, no ETFs, pause large only                CAGR  26.9% (min  15.6%)  DD -35.1% vs idx -33.7% ok 20%  beatAll 38% (min 1/6)  SPY 42% QQQ 42% SMH 38%  roll12 26%  expo 76%
+test C3+index unless paused, ETFs x3, pause any,  CAGR  32.1% (min  23.9%)  DD -30.6% vs idx -33.7% ok 20%  beatAll 42% (min 2/6)  SPY 57% QQQ 49% SMH 42%  roll12 42%  expo 72%
+early C3, no ETFs, pause any of 3                  CAGR  12.9% (min  10.5%)  DD -27.0% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 63%  expo 64%
+early C3+index unless paused, no ETFs, pause any o CAGR  10.5% (min   8.6%)  DD -32.6% vs idx -55.2% ok 100%  beatAll 48% (min 5/12)  SPY 66% QQQ 73% SMH 55%  roll12 62%  expo 64%
+early C3+index unless paused, no ETFs, pause any,  CAGR  10.4% (min   9.9%)  DD -38.1% vs idx -55.2% ok 100%  beatAll 53% (min 5/12)  SPY 71% QQQ 73% SMH 55%  roll12 64%  expo 67%
+early C3+index unless paused, no ETFs, pause HYG o CAGR   9.2% (min   8.9%)  DD -36.7% vs idx -55.2% ok 100%  beatAll 52% (min 5/12)  SPY 70% QQQ 73% SMH 55%  roll12 63%  expo 69%
+early C3+index unless paused, ETFs x1, pause any,  CAGR   9.7% (min   9.3%)  DD -38.4% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 61%  expo 67%
+early C3+index unless paused, ETFs x2, pause HYG o CAGR   8.9% (min   8.6%)  DD -36.3% vs idx -55.2% ok 100%  beatAll 52% (min 5/12)  SPY 70% QQQ 73% SMH 55%  roll12 62%  expo 69%
+early C3, no ETFs, pause large only                CAGR   8.0% (min   5.5%)  DD -48.5% vs idx -55.2% ok 100%  beatAll 47% (min 5/12)  SPY 64% QQQ 73% SMH 55%  roll12 56%  expo 71%
+early C3+index unless paused, ETFs x3, pause any,  CAGR   9.7% (min   9.3%)  DD -38.4% vs idx -55.2% ok 100%  beatAll 50% (min 5/12)  SPY 77% QQQ 73% SMH 55%  roll12 61%  expo 67%
+C3, no ETFs, pause any of 3                                    beat all 3: 2000-11 6/12  2012-19 2/8  2020-25 2/6  total 10/26  years [2001, 2002, 2004, 2006, 2007, 2008, 2013, 2017, 2022, 2025]
+C3+index unless paused, no ETFs, pause any of 3                beat all 3: 2000-11 5/12  2012-19 2/8  2020-25 3/6  total 10/26  years [2001, 2002, 2004, 2007, 2008, 2013, 2017, 2020, 2022, 2025]
+C3+index unless paused, no ETFs, pause any, breadth 30%        beat all 3: 2000-11 7/12  2012-19 4/8  2020-25 3/6  total 14/26  years [2000, 2001, 2002, 2004, 2006, 2007, 2008, 2013, 2015, 2017, 2018, 2020, 2022, 2025]
+C3+index unless paused, no ETFs, pause HYG or large            beat all 3: 2000-11 6/12  2012-19 4/8  2020-25 3/6  total 13/26  years [2000, 2001, 2002, 2004, 2007, 2008, 2013, 2015, 2017, 2018, 2020, 2022, 2025]
+C3+index unless paused, ETFs x1, pause any, breadth 30%        beat all 3: 2000-11 6/12  2012-19 4/8  2020-25 3/6  total 13/26  years [2000, 2001, 2002, 2004, 2007, 2008, 2013, 2015, 2017, 2018, 2020, 2022, 2025]
+C3+index unless paused, ETFs x2, pause HYG or large            beat all 3: 2000-11 7/12  2012-19 4/8  2020-25 3/6  total 14/26  years [2000, 2001, 2002, 2004, 2006, 2007, 2008, 2013, 2015, 2017, 2018, 2020, 2022, 2025]
+C3, no ETFs, pause large only                                  beat all 3: 2000-11 5/12  2012-19 3/8  2020-25 3/6  total 11/26  years [2001, 2002, 2004, 2007, 2008, 2013, 2017, 2018, 2020, 2022, 2025]
+C3+index unless paused, ETFs x3, pause any, breadth 30%        beat all 3: 2000-11 6/12  2012-19 4/8  2020-25 3/6  total 13/26  years [2000, 2001, 2002, 2004, 2007, 2008, 2013, 2015, 2017, 2018, 2020, 2022, 2025]

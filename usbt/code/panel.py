@@ -15,6 +15,8 @@ import pandas as pd
 D = sys.argv[1]
 ETFS = ["SPY", "QQQ", "SMH", "TLT", "GLD", "UUP", "DBC", "SHY", "HYG", "BIL", "XLK", "IEF", "MTUM"]
 KEYS = "/home/user/v5-forward-test/keys"
+# sector / industry ETFs the stock picker may hold like a stock (engine switch etf_in_universe)
+SECTOR_ETFS = ["SMH", "SOXX", "XLK", "IGV", "XLE", "XLV", "XLF", "XLI", "XLY", "XLP", "XLU", "XLB", "XLC"]
 
 
 def load(sym):
@@ -42,9 +44,9 @@ def main():
         if not f.endswith(".parquet"):
             continue
         s = f[:-8]
-        if s in ETFS:
+        if s in ETFS and s not in SECTOR_ETFS:
             continue
-        if s not in live and s not in sp_win.index:
+        if s not in live and s not in sp_win.index and s not in SECTOR_ETFS:
             continue     # only in the superseded pit/mcap lists (live meta: DO NOT USE)
         df = load(s)
         df = df[(df.index >= "1999-01-01")]
@@ -52,7 +54,7 @@ def main():
         if len(df) < 60:
             dropped[s] = "fewer than 60 sessions"
             continue
-        if s not in live:
+        if s not in live and s not in SECTOR_ETFS:
             # an S&P-history ticker: FMP's history must overlap the index membership window,
             # otherwise the ticker now belongs to a different company (EMC, SGP, WB ...)
             st, en = sp_win.loc[s, "start"], sp_win.loc[s, "end"]
@@ -125,7 +127,7 @@ def main():
              SMA200=f32(SMA200), SMA50=f32(SMA50), EMA20=f32(EMA20), ATR=f32(ATR), RV30=f32(RV30),
              ADV20=f32(ADV20), cont=cont.to_numpy(), rec=rec.to_numpy(), rs126=f32(rs126), dist200=f32(dist200),
              medv=f32(medv), hist=f32(hist), m6=f32(m6), m12=f32(m12), ret1=f32(ret1),
-             in_live=np.array([s in live for s in syms]))
+             in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]))
     pd.to_pickle(P, f"{D}/panel.pkl")
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 

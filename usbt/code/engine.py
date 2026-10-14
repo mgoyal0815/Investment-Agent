@@ -112,8 +112,11 @@ class Market:
         traded = ~np.isnan(C)
         elig = traded & (P["hist"] >= 240) & ~np.isnan(P["medv"])
         medv = np.where(elig, P["medv"], np.nan)
-        trk = pd.DataFrame(medv).rank(axis=1, ascending=False).to_numpy()
+        self.is_etf = P.get("is_etf", np.zeros(self.N, bool))
+        # turnover rank among STOCKS (sector ETFs excluded) and among stocks + sector ETFs
+        trk = pd.DataFrame(np.where(self.is_etf, np.nan, medv)).rank(axis=1, ascending=False).to_numpy()
         self.trank = trk
+        self.trank_etf = pd.DataFrame(medv).rank(axis=1, ascending=False).to_numpy()
         top500 = trk <= 500
         above = Cf > P["SMA200"]
         self.breadth = (above & top500).sum(1) / np.maximum(top500.sum(1), 1)
@@ -129,8 +132,13 @@ class Market:
         """Boolean mask of names that can be ranked and bought at session i."""
         P = self.P
         base = ~np.isnan(P["C"][i]) & ~np.isnan(P["SMA200"][i]) & (P["ATR"][i] > 0)
+        etf_in = cfg.get("etf_in_universe", False)
+        if not etf_in:
+            base &= ~self.is_etf
         if cfg["universe"] == "adv50":
             return base & (P["ADV20"][i] >= cfg["min_adv"])
+        if etf_in:
+            return base & ((self.trank[i] <= cfg["universe_n"]) | self.is_etf)
         return base & (self.trank[i] <= cfg["universe_n"])
 
     def scores(self, i, cfg):
@@ -585,8 +593,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         # India pause (checked every session; acts only on decision days)
         if cfg["overlay"] == "pause" or "pause" in str(cfg.get("extra_pause", "")):
             r = cfg["pause_rules"]
-            paused = (("breadth" in r and m.breadth[i] < 0.40) or ("hyg" in r and not m.hyg_ok[i])
-                      or ("large" in r and m.large_sma50[i] == m.large_sma50[i] and m.large_idx[i] < m.large_sma50[i]))
+            sig = [("breadth" in r and m.breadth[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
+                   ("large" in r and m.large_sma50[i] == m.large_sma50[i] and m.large_idx[i] < m.large_sma50[i])]
+            # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
+            paused = sum(sig) >= (2 if cfg.get("pause_mode", "any") == "two" else 1)
 
         # ===== (4) at the close: stock exits and buys for the next open
         exiting = set()
@@ -732,9 +742,10 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         stop = held["stop"] if held else stop_line
         sh = held["sh"] if held else 0.0
         avg = held["cost"] if held else 0.0
-        base = (0.08 if zone == "Green" else 0.04) * nav * sm
+        em = cfg.get("etf_size_mult", 1.0) if m.is_etf[j] else 1.0
+        base = (0.08 if zone == "Green" else 0.04) * nav * sm * em
         target = min(base, cash)
-        rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm
+        rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm * em
         if stop is None or stop != stop or close <= stop:
             continue
         eff = sh
@@ -747,7 +758,7 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         target = min(target, rr * close)
         rv = RV30[i, j]
         if rv == rv and rv > 0:
-            vr = ((0.03 if zone == "Green" else 0.015) * nav * sm) / (3.0 * rv * close) - sh
+            vr = ((0.03 if zone == "Green" else 0.015) * nav * sm * em) / (3.0 * rv * close) - sh
             target = min(target, vr * close)
         raw_px = close * P["SF"][i, j]
         n = int(target // raw_px) if raw_px > 0 else 0
