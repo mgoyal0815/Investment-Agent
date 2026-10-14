@@ -1262,7 +1262,9 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         if cfg.get("macd_pos") and not (P["MACDH"][i, j] > 0):
             continue
         if cfg.get("rsi_max") and not (P["RSI"][i, j] <= cfg["rsi_max"]):
-            continue
+            continue                                            # rsi_max 40-50 = buy pullbacks only; 75-90 = skip overbought
+        if cfg.get("rsi_min") and not (P["RSI"][i, j] >= cfg["rsi_min"]):
+            continue                                            # buy only on strength
         if cfg.get("bo_recent") and not P["BO55"][max(0, i - cfg["bo_recent"]):i + 1, j].any():
             continue
         w = 1.0
