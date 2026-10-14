@@ -1,0 +1,41 @@
+System E
+buy only if MACD>=-0.01
+buy only if MACD>=-0.005
+buy only if MACD>=0.0
+buy only if MACD>=0.0025
+buy only if MACD>=0.005
+buy only if MACD>=0.01
+buy only if MACD<=-0.005
+buy only if MACD<=0.0
+buy only if MACD<=0.0025
+buy only if MACD<=0.005
+buy only if MACD<=0.01
+hold while MACD>-0.0025
+hold while MACD>0.0
+hold while MACD>0.0025
+hold while MACD>0.005
+sell if in profit and MACD<-0.01
+sell if in profit and MACD<-0.005
+sell if in profit and MACD<-0.0025
+sell if in profit and MACD<0.0
+                              rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                          System E                 0.64                 0.95                0.227               0.418               1.000               0.047               0.631               0.000               0.553
+           buy only if MACD>=-0.01                 0.64                 0.95                0.221               0.413               1.000               0.037               0.643               0.000               0.513
+          buy only if MACD>=-0.005                 0.65                 1.00                0.215               0.418               1.000               0.045               0.667               0.000               0.566
+             buy only if MACD>=0.0                 0.70                 1.00                0.232               0.534               1.000               0.081               0.619               0.042               0.399
+          buy only if MACD>=0.0025                 0.61                 0.25                0.217               0.513               1.000               0.103               0.583               0.042               0.375
+           buy only if MACD>=0.005                 0.53                 0.90                0.160               0.550               0.963               0.095               0.476               0.042               0.315
+            buy only if MACD>=0.01                 0.19                 1.00                0.088               0.593               1.000               0.079               0.369               0.000               0.274
+          buy only if MACD<=-0.005                 0.33                 0.00                0.087               0.550               1.000               0.066               0.607               0.042               0.352
+             buy only if MACD<=0.0                 0.57                 0.00                0.223               0.566               1.000               0.077               0.524               0.042               0.298
+          buy only if MACD<=0.0025                 0.58                 0.00                0.206               0.429               1.000               0.069               0.631               0.000               0.455
+           buy only if MACD<=0.005                 0.65                 0.95                0.226               0.476               1.000               0.074               0.548               0.000               0.324
+            buy only if MACD<=0.01                 0.63                 0.85                0.226               0.429               1.000               0.077               0.702               0.042               0.532
+           hold while MACD>-0.0025                 0.72                 1.00                0.240               0.429               1.000               0.020               0.607               0.000               0.487
+               hold while MACD>0.0                 0.66                 0.95                0.233               0.444               1.000               0.030               0.643               0.000               0.482
+            hold while MACD>0.0025                 0.65                 0.95                0.241               0.407               1.000               0.036               0.631               0.000               0.482
+             hold while MACD>0.005                 0.64                 0.95                0.232               0.418               1.000               0.037               0.643               0.000               0.542
+  sell if in profit and MACD<-0.01                 0.27                 1.00                0.101               0.413               1.000               0.046               0.512               0.042               0.317
+ sell if in profit and MACD<-0.005                 0.20                 1.00                0.095               0.376               1.000               0.022               0.536               0.000               0.322
+sell if in profit and MACD<-0.0025                 0.19                 1.00                0.092               0.429               1.000               0.038               0.500               0.000               0.301
+    sell if in profit and MACD<0.0                 0.20                 1.00                0.083               0.402               1.000               0.024               0.500               0.000               0.289
