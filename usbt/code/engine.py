@@ -722,6 +722,24 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 rebound[0] = strong
             want = ldr if strong else None
             held_ok = core["k"] is not None and m.E[core["k"]]["c"][i] > m.e_sma50[core["k"]][i]
+            if cfg.get("core_mode") == "fixed":
+                # a fixed share of the account in one index ETF (core_etf), rebalanced on decision days when
+                # it drifts more than core_band from target; core_trend: only while the ETF is above its
+                # 200-session average (checked on decision days)
+                ke = cfg.get("core_etf", "QQQ")
+                c = m.E[ke]["c"]
+                ok = c[i] == c[i]
+                if cfg.get("core_trend") and ok:
+                    s200 = np.nanmean(c[max(0, i - 199):i + 1])
+                    ok = i >= 199 and c[i] > s200
+                want = ke if ok else None
+                held_ok = not (want is None and is_decision(i))   # trend exit on decision days only
+                if want and core["k"] == want and is_decision(i):
+                    cur = etf.get(ke, 0) * etf_px(ke, i) / navc if navc > 0 else 0.0
+                    if abs(cur - cfg["core_w"]) > cfg.get("core_band", 0.05):
+                        pend_core = (want, cfg["core_w"])
+                if want != core["k"] and not is_decision(i) and core["k"] is not None:
+                    want = core["k"]                            # changes only on decision days
             if want != core["k"]:
                 if want is None and not held_ok:
                     pend_core = (None, 0.0)                     # fast exit, any session
