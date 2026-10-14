@@ -1,3 +1,48 @@
+# FINAL (15 October 2026): System E
+
+Charts page: https://claude.ai/artifact/5HyZo5Ma17oPMY15Zpqhb1 (built by `code/build_page_E.py`).
+Configuration: `system_E.json`. Numbers: `results/final_E_*`. Live system unchanged.
+
+**Goal (owner's yardstick):** beat SPY and QQQ every year from any start date, beat SMH over every rolling
+3 years, worst fall smaller than SPY's and QQQ's. **Not reached.** No long-only system on clean price
+data did it.
+
+| Clean S&P 500 data, Jan 2000 - 12 Oct 2026 | System E | live v5 | SPY | QQQ | SMH |
+|---|---|---|---|---|---|
+| $10,000 becomes | $861k | $211k | $86k | $93k | $205k |
+| Growth a year (one run from 2000) | 18.1% | 12.1% | 8.4% | 8.7% | 12.1% |
+| Worst fall (one run from 2000) | -38% | -34% | -55% | -83% | -84% |
+| Calendar years 2000-2025 beating SPY and QQQ | 14 of 26 | | | | |
+| Years beating SPY and QQQ, every monthly start | 52% | 33% | | | |
+| Median growth a year, every monthly start | 26% | 14% | | | |
+| Starts with a worst fall smaller than SPY's and QQQ's | 76% | 76% | | | |
+| Worst fall, any start | -53% | -38% | | | |
+
+**System E:** point-in-time S&P 500 members, rank by 6-month strength vs SPY plus distance above the
+200-day average; 10 equal slots in two halves reviewed on the last session and the 11th; buy only in an
+uptrend; add half a slot at +20% up to 3 slots; sell outside the top 15; winners up 100%+ exempt; no
+rank sale while above a rising 50-day EMA; profit lock at +50% with a 25% trail; buy pause on breadth,
+HYG or the large-cap index (point-in-time); idle money in the leading index ETF (Treasuries while
+paused); 4 gold slots when gold leads.
+
+**Why the goal was not reached (from 51 experiments, about 6,000 variations):** stock picking is fine
+(+17 points over the average S&P stock in winning years). Losing years come from the cost of crash
+protection in rebounds (about 11 points) and from a few giants carrying the index (about 7 points).
+The yearly edge (5-8 points) is small next to the yearly swing (about 20 points), so roughly half of
+years beat both indexes, as the research on active management predicts.
+
+**Ruled out:** leveraged ETFs; fixed index shares; indexes competing for slots; volatility targeting;
+own-book pause; industry momentum; momentum-crash guard; longer momentum windows; Nasdaq-100 universe;
+RSI, MACD, ADX, breakouts, VIX, credit and breadth signals on both the buy and sell side across full
+ranges; two Bayesian studies (500 and 600 combinations, exp43 and exp50) found no enhancement that helps
+in every period. Small open candidates: the index hurdle (exp48) and "hold while MACD is positive"
+(MACD check), both under the acceptance test.
+
+**Data integrity:** two look-ahead biases were found and removed: future winners in the stock list
+(exp21) and future-survivor names in the pause signals (exp47). Every number above is after both fixes.
+
+---
+
 # IMPORTANT: look-ahead bias found (14 October 2026)
 
 Most of the profit in System A, and in live v5's own backtests, comes from stocks that were not in the

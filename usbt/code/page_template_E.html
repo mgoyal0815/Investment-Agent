@@ -1,0 +1,145 @@
+<title>System E Scorecard</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column; a wide growth chart, then the year ledger and the verdict tables. Ledger feel: ruled rows, money-green for the system, muted index colors. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --ink: #18211d; --muted: #5c6862; --rule: #dde3df;
+  --accent: #17704f; --accent-soft: #e1f0e8; --warn: #a3462d; --warn-soft: #f6e4dd;
+  --c-e: #17704f; --c-v5: #8a948f; --c-spy: #c0841a; --c-qqq: #2f63b5; --c-smh: #8a4fb0;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --accent: #4cc392; --accent-soft: #173327; --warn: #e48a6f; --warn-soft: #3a211a;
+  --c-e: #4cc392; --c-v5: #7d8883; --c-spy: #e0a541; --c-qqq: #6f9df0; --c-smh: #bb86e0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --accent: #4cc392; --accent-soft: #173327; --warn: #e48a6f; --warn-soft: #3a211a;
+  --c-e: #4cc392; --c-v5: #7d8883; --c-spy: #e0a541; --c-qqq: #6f9df0; --c-smh: #bb86e0; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; display: grid; gap: 40px; }
+h1, h2 { font-family: var(--f-display); font-stretch: 85%; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.05; }
+h2 { font-size: 1.45rem; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font: 600 0.75rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header { display: grid; gap: 14px; }
+.lede { font-size: 1.12rem; color: var(--ink); }
+.lede b { color: var(--accent); }
+section { display: grid; gap: 14px; min-width: 0; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-block: 1px solid var(--rule); }
+.stat { padding: 14px 16px 14px 0; display: grid; gap: 4px; }
+.stat + .stat { padding-left: 16px; border-left: 1px solid var(--rule); }
+.stat .v { font: 600 1.6rem/1.1 var(--f-mono); font-variant-numeric: tabular-nums; color: var(--accent); }
+.stat .k { font-size: 0.85rem; color: var(--muted); }
+@media (max-width: 640px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stat:nth-child(3) { border-left: 0; padding-left: 0; } .stat:nth-child(n+3) { border-top: 1px solid var(--rule); } }
+figure { margin: 0; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 12px 8px 4px; overflow-x: auto; }
+figure svg { width: 100%; min-width: 620px; height: auto; display: block; }
+figcaption { font-size: 0.85rem; color: var(--muted); padding: 6px 8px 8px; }
+.grid { stroke: var(--rule); stroke-width: 1; }
+.ax { fill: var(--muted); font: 11px var(--f-mono); }
+.ln { fill: none; stroke-width: 1.6; stroke-linejoin: round; }
+.ln.e { stroke: var(--c-e); stroke-width: 2.6; } .ln.v5 { stroke: var(--c-v5); stroke-dasharray: 4 3; }
+.ln.spy { stroke: var(--c-spy); } .ln.qqq { stroke: var(--c-qqq); } .ln.smh { stroke: var(--c-smh); }
+.end { font: 600 11px var(--f-mono); } .end.e { fill: var(--c-e); } .end.v5 { fill: var(--c-v5); } .end.spy { fill: var(--c-spy); } .end.qqq { fill: var(--c-qqq); } .end.smh { fill: var(--c-smh); }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+thead th { font: 600 0.72rem/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--bg); position: sticky; top: 0; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; }
+td.hi { font-weight: 600; color: var(--accent); }
+td.neg { color: var(--warn); }
+td.hi.neg { color: var(--warn); }
+th small { color: var(--muted); font-weight: 400; }
+.pill { font: 600 0.72rem/1 var(--f-mono); padding: 4px 8px; border-radius: 999px; }
+.pill.w { background: var(--accent-soft); color: var(--accent); }
+.pill.l { background: var(--warn-soft); color: var(--warn); }
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+ul, ol { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 68ch; }
+li::marker { color: var(--muted); }
+.note { font-size: 0.88rem; color: var(--muted); }
+.verdict { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">US backtest · clean S&amp;P 500 data · Jan 2000 – 12 Oct 2026</div>
+    <h1>System E Scorecard</h1>
+    <p class="lede">The best system found after 51 experiments and about 6,000 tested variations. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><span class="v">{{E_CAGR}}</span><span class="k">growth a year, one run from 2000 (SPY {{S_CAGR}}, QQQ {{Q_CAGR}})</span></div>
+    <div class="stat"><span class="v">{{E_DD}}</span><span class="k">worst fall in that run (SPY {{S_DD}}, QQQ {{Q_DD}})</span></div>
+    <div class="stat"><span class="v">{{WINS}} of 26</span><span class="k">calendar years 2000–2025 beating both SPY and QQQ</span></div>
+    <div class="stat"><span class="v">{{BEAT}}</span><span class="k">years beating both, averaged over all 310 monthly start dates</span></div>
+  </div>
+
+  <section>
+    <h2>Growth of $10,000</h2>
+    <figure>
+      {{CHART}}
+      <figcaption>Log scale. Fresh $10,000 on 3 January 2000, whole shares, trading costs included. Live v5 is the current live system on the same clean data ({{V_CAGR}} a year, {{V_END}}).</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Year by year</h2>
+    <p class="note">Calendar-year returns in percent. "Beat both" means System E beat SPY and QQQ that year.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Year</th><th scope="col">System E</th><th scope="col">SPY</th><th scope="col">QQQ</th><th scope="col">SMH</th><th scope="col">Live v5</th><th scope="col">Result</th></tr></thead>
+      <tbody>
+{{YEARS}}
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>From any start date</h2>
+    <p class="note">Each row runs a fresh $10,000 from every month's first trading day in that period and holds it to today. "Fall smaller" is the share of start dates whose worst fall was smaller than both SPY's and QQQ's over the same time.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Start dates</th><th scope="col">Years beating SPY &amp; QQQ: E</th><th scope="col">v5</th><th scope="col">Median growth: E</th><th scope="col">v5</th><th scope="col">Fall smaller (E)</th><th scope="col">Worst fall (E)</th><th scope="col">3-yr windows beating SMH (E)</th></tr></thead>
+      <tbody>
+{{SCORE}}
+      </tbody>
+    </table></div>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2>How System E works</h2>
+      <ol>
+        <li>Each month, rank stocks that were S&amp;P 500 members that day by 6-month strength against SPY and distance above the 200-day average.</li>
+        <li>Hold 10 equal slots, split into two halves reviewed on the last trading day and on the 11th.</li>
+        <li>Buy only stocks in an uptrend. Add half a slot to a winner up 20%, up to 3 slots.</li>
+        <li>Sell when a stock drops out of the top 15. A stock up 100% or more is exempt.</li>
+        <li>Do not sell on rank while the stock is above a rising 50-day average.</li>
+        <li>Profit lock: once up 50%, sell if it falls 25% from its peak.</li>
+        <li>Pause new buying when market breadth, high-yield credit or the large-cap index weakens. Idle money sits in the leading index ETF, or short Treasuries while paused.</li>
+        <li>When gold is leading, 4 of the 10 slots stay out of stocks.</li>
+      </ol>
+    </section>
+    <section>
+      <h2>What was tested and ruled out</h2>
+      <ul>
+        <li>India v8 rules on US data, and every v5 ↔ India difference.</li>
+        <li>2× and 3× leveraged index ETFs: up to 58% of years, falls of 75–88%. Rejected.</li>
+        <li>A fixed QQQ, SPY or SMH share, indexes competing for slots, volatility targeting.</li>
+        <li>RSI, MACD, ADX, breakouts, 52-week highs, VIX, credit and breadth signals, on both the buy and sell side, across full ranges.</li>
+        <li>Industry momentum, a momentum-crash guard, longer momentum windows, the Nasdaq-100 universe.</li>
+        <li>Two Bayesian studies of 500 and 600 combinations: no enhancement helped in every period.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="verdict">
+    <h2>Verdict</h2>
+    <p>No long-only system on clean price data beat SPY and QQQ every year from every start date with a smaller fall. Its losing years come from the cost of crash protection in rebounds and from a few giant companies carrying the index. System E grows far faster than both indexes over time, and its worst fall is about SPY's. Two earlier data biases, future winners in the stock list and in the pause signals, were found and removed; every number here is after those fixes. The live system was not changed.</p>
+  </section>
+</div>
