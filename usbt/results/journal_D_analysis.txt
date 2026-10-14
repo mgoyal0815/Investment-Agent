@@ -1,0 +1,114 @@
+
+BUYS by RSI at entry (14-day)
+           trades  median next 3m %  share up %  vs SPY next 3m %
+rsi                                                              
+(0, 60]       144               5.0        58.0               4.5
+(60, 70]      300               0.6        52.0               2.2
+(70, 75]      158               4.8        61.0               1.6
+(75, 80]      101               0.4        51.0              -0.9
+(80, 85]       35               0.0        49.0              -2.3
+(85, 101]      21               2.7        57.0               6.1
+
+BUYS by ADX at entry
+           trades  median next 3m %  share up %  vs SPY next 3m %
+adx                                                              
+(0, 15]        37               1.5        54.0              -2.2
+(15, 20]       71              -0.7        48.0              -0.4
+(20, 25]       84               6.2        65.0               4.1
+(25, 35]      213               1.5        53.0               1.6
+(35, 100]     354               2.1        55.0               2.7
+
+BUYS by volatility (annualised, 30-day)
+              trades  median next 3m %  share up %  vs SPY next 3m %
+vol30                                                               
+(0.0, 0.25]      111               2.1        54.0              -0.3
+(0.25, 0.35]     167               3.8        60.0               3.1
+(0.35, 0.5]      209               2.0        54.0               1.8
+(0.5, 0.7]       160               0.0        50.0               0.9
+(0.7, 5.0]       111               2.9        56.0               4.1
+
+BUYS by distance from 52-week high
+              trades  median next 3m %  share up %  vs SPY next 3m %
+near_high                                                           
+(0.0, 0.85]       63               0.7        51.0               5.0
+(0.85, 0.95]     100               4.6        58.0               5.2
+(0.95, 0.99]     236               1.6        53.0               2.1
+(0.99, 1.01]     360               2.1        56.0               0.5
+
+BUYS by MACD above signal
+          trades  median next 3m %  share up %  vs SPY next 3m %
+macd_pos                                                        
+False        227               3.2        57.0               3.4
+True         532               1.6        54.0               1.4
+
+BUYS by market: narrow (mega caps leading)
+        trades  median next 3m %  share up %  vs SPY next 3m %
+narrow                                                        
+False      540               2.8        57.0               3.3
+True       219               0.0        50.0              -1.2
+
+BUYS by market: credit stress
+               trades  median next 3m %  share up %  vs SPY next 3m %
+credit_stress                                                        
+False             651               2.0        54.0               2.2
+True              108               2.2        57.0               0.9
+
+BUYS by VIX
+           trades  median next 3m %  share up %  vs SPY next 3m %
+vix                                                              
+(0, 15]       305               2.7        55.0               1.1
+(15, 20]      237               1.7        54.0               2.8
+(20, 25]      134               0.5        51.0               2.9
+(25, 35]       77               4.7        62.0               2.8
+(35, 100]       6              -1.4        50.0             -15.4
+
+BUYS by stock 6-month return at entry
+             trades  median next 3m %  share up %  vs SPY next 3m %
+ret6m                                                              
+(-1.0, 0.2]       4              -4.8        25.0              -4.5
+(0.2, 0.4]       97               3.9        64.0               0.3
+(0.4, 0.7]      317               1.8        55.0               2.0
+(0.7, 1.0]      163              -0.2        49.0               0.9
+(1.0, 10.0]     178               5.4        56.0               4.1
+
+SELLS by reason (next 3m = what the stock did AFTER we sold)
+          trades  median next 3m %  share up %  vs SPY next 3m %
+why                                                             
+delisted       3               0.0         0.0             -18.6
+lock          44              10.2        61.0              16.4
+rank         580               2.3        55.0               1.8
+
+SELLS by trend still intact (above a rising 50-day EMA)
+              trades  median next 3m %  share up %  vs SPY next 3m %
+ema50_rising                                                        
+False            391               4.1        55.0               4.1
+True             236               1.3        55.0               0.6
+
+SELLS by profit at sale
+                trades  median next 3m %  share up %  vs SPY next 3m %
+ret_vs_cost                                                           
+(-1.0, -0.15]       70               6.2        54.0               1.0
+(-0.15, -0.05]     153              -0.0        49.0               0.6
+(-0.05, 0.05]      205               2.0        57.0               2.0
+(0.05, 0.2]        114               2.9        57.0               3.4
+(0.2, 0.5]          64               3.0        56.0               8.7
+(0.5, 100.0]        21               6.6        76.0              10.8
+
+SELLS by RSI at sale
+           trades  median next 3m %  share up %  vs SPY next 3m %
+rsi                                                              
+(0, 35]       100               5.1        55.0               3.8
+(35, 45]      215               3.8        57.0               4.1
+(45, 55]      207               2.3        55.0               2.8
+(55, 100]     105               0.4        52.0              -1.1
+
+SELLS by ADX at sale
+           trades  median next 3m %  share up %  vs SPY next 3m %
+adx                                                              
+(0, 15]        76               1.0        53.0               0.7
+(15, 20]      157               3.0        57.0               0.1
+(20, 30]      260               2.2        56.0               5.6
+(30, 100]     134               2.4        53.0               1.5
+
+Rank sells of PROFITABLE stocks whose trend was still intact: 155; median next 3m 1.3%, next 6m 1.8%
+Rank sells of LOSING stocks whose trend had broken: 264; median next 3m 2.8%, next 6m 4.0%

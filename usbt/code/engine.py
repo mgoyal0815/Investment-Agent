@@ -843,6 +843,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                         trail = t_
                 if cfg.get("lock_half") and p.get("locked"):
                     trail = cfg.get("lock_trail2", trail)
+                e50_ = m.P["EMA50"]
+                if cfg.get("lock_trend") and C[i, j] > e50_[i, j] and e50_[i, j] > e50_[i - 10, j]:
+                    continue                                    # journal: lock sells of intact trends kept rising
                 if pg >= cfg["lock_at"] and C[i, j] < p["peak"] * (1 - trail):
                     if cfg.get("lock_half") and not p.get("locked"):
                         # first trigger sells half, the rest rides on a wider trail from a fresh peak
@@ -927,6 +930,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
+                if cfg.get("rsi_sell_floor") and not paused and m.P["RSI"][i, j] < cfg["rsi_sell_floor"]:
+                    continue                                    # journal: rank sells at oversold RSI bounced afterwards
                 if cfg.get("trend_hold") and not paused:
                     # keep a holding while its own trend is intact: above a rising 50-session EMA
                     e50 = m.P["EMA50"]
@@ -1132,6 +1137,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         # this tranche owns its share of the slots; the other tranche's holdings are not touched
         mine = [j for j in pos if j not in exiting and pos[j].get("meta", {}).get("tr", 0) == tr]
         free = int(round(n_stock / ntr)) - len(mine)
+    if cfg.get("narrow_index") and m.narrow[i]:
+        free = 0                                                # journal: new buys in narrow markets lagged SPY
     order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]

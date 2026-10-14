@@ -2,7 +2,8 @@
 (ADX trend strength, volatility cap, near 52-week high, MACD, RSI not overbought, recent 55-day breakout), score blends
 (52-week high, residual momentum, ADX, RSI), exits (keep while above a rising 50-day EMA; chandelier ATR
 stop), market pause votes with VIX, VIX spike, SPY/QQQ MACD, credit (HYG/IEF), 2-year momentum-crash risk;
-breadth-thrust restart; narrow-market tilt to the biggest companies. One change at a time, then coordinate ascent,
+breadth-thrust restart; narrow-market tilt to the biggest companies; journal-driven rules (lock_trend,
+rsi_sell_floor, narrow_index: no new picks while mega caps lead, money rides the leading index). One change at a time, then coordinate ascent,
 chosen on starts 2012-2016 stopping 2019 (yardstick score); judged on starts 2000-2008, 2020-2025, all."""
 import json, multiprocessing as mp
 import pandas as pd
@@ -19,7 +20,8 @@ SPACE = dict(N=[8, 10, 12, 15, 20, 30], adx_min=[None, 15, 20, 25], hi52_min=[No
                           ("hyg", "large", "vix30"), ("breadth", "hyg", "large", "spymacd"), ("breadth", "hyg", "large", "credit"),
                           ("breadth", "hyg", "large", "vixrel1.3"), ("breadth", "hyg", "large", "momcrash"), ("breadth", "large", "credit")],
              rank_exempt_gain=[None, 0.5, 1.0], buffer=[1.5, 2.0, 3.0],
-             narrow_size_w=[None, 0.25, 0.5, 1.0], thrust_days=[None, 21, 63], vol_max_pct=[None, 0.8, 0.9])
+             narrow_size_w=[None, 0.25, 0.5, 1.0], thrust_days=[None, 21, 63], vol_max_pct=[None, 0.8, 0.9],
+             lock_trend=[None, True], rsi_sell_floor=[None, 35, 40, 45], narrow_index=[None, True], lock_at=[0.3, 0.5, 1.0, None])
 PER = None
 
 
