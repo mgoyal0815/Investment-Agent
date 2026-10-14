@@ -18,7 +18,15 @@ On a universe with no look-ahead (stocks that were S&P 500 members on that day; 
 System B: 10 equal slots from S&P 500 members, RobustPair rank with the trend route, monthly decisions,
 sell outside the top 20, India adds to winners, India buy pause (breadth line 20%), idle cash in the
 leading index ETF (Treasuries while paused), gold takes 4 slots while it leads, profit lock 30%/25%.
-Configuration in `results/exp22_finalists.json`. Treat every System A number below as an upper bound.
+Configuration in `system_B.json`. Treat every System A number below as an upper bound.
+
+Root cause and luck test for System B (`code/analyze_train.py`, `code/luck_test.py`): one trade, NVDA
+2015-2018, made 91% of its 2012-2019 profit. Removing each window's single biggest winner from the
+universe, System B still makes 18.3% (2012-19), 17.9% (2020-26) and 6.8% (2000-11) against SPY's 14.6%,
+15.4% and 0.6%; removing its top three, 12.8%, 12.3% and 5.9%. Its edge is catching and holding a few
+very large winners, which were different stocks in each window. A luck-robust search around it
+(scored with and without the biggest winner, `exp23`) found nothing that held up better on 2020-26
+and 2000-11, so System B stands.
 
 ---
 

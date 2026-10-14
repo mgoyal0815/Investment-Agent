@@ -1,0 +1,23 @@
+                                                                     label  score  cagr     dd  beat  cagr_wo_top  dd_wo_top  top
+ N 8, exit top 24, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.163 0.283 -0.207 0.554        0.159     -0.191 NVDA
+N 10, exit top 20, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.143 0.243 -0.213 0.582        0.151     -0.181 NVDA
+ N 8, exit top 16, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.142 0.251 -0.204 0.525        0.158     -0.201 NVDA
+ N 8, exit top 12, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.139 0.234 -0.202 0.443        0.170     -0.198 NVDA
+N 8, exit top 24, monthly, gold 4, park leader_safe, adds india, lock None  0.136 0.276 -0.251 0.554        0.156     -0.236 NVDA
+  N 8, exit top 16, monthly, gold 4, park leader_safe, adds None, lock 0.3  0.135 0.229 -0.203 0.304        0.181     -0.201 NVDA
+N 10, exit top 15, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.129 0.230 -0.186 0.386        0.145     -0.178 NVDA
+N 15, exit top 22, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.128 0.207 -0.164 0.361        0.150     -0.165 NVDA
+N 10, exit top 30, monthly, gold 4, park leader_safe, adds india, lock 0.3  0.127 0.242 -0.218 0.554        0.143     -0.211 NVDA
+  N 8, exit top 24, monthly, gold 4, park leader_safe, adds None, lock 0.3  0.125 0.226 -0.207 0.275        0.167     -0.189 NVDA
+train System B                                     CAGR  24.3% (min  22.0%)  DD -21.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 72% QQQ 72% SMH 58%  roll12 52%  expo nan% | without top winner: CAGR 15.1% DD -18.1% (NVDA)
+train N 8, exit top 24, monthly, gold 4, park lead CAGR  28.3% (min  25.7%)  DD -20.7% vs idx -19.3% ok 0%  beatAll 55% (min 3/8)  SPY 72% QQQ 69% SMH 72%  roll12 64%  expo nan% | without top winner: CAGR 15.9% DD -19.1% (NVDA)
+train N 10, exit top 20, monthly, gold 4, park lea CAGR  24.3% (min  22.0%)  DD -21.3% vs idx -19.3% ok 0%  beatAll 58% (min 4/8)  SPY 72% QQQ 72% SMH 58%  roll12 52%  expo nan% | without top winner: CAGR 15.1% DD -18.1% (NVDA)
+train N 8, exit top 16, monthly, gold 4, park lead CAGR  25.1% (min  22.6%)  DD -20.4% vs idx -19.3% ok 0%  beatAll 52% (min 3/8)  SPY 72% QQQ 52% SMH 58%  roll12 54%  expo nan% | without top winner: CAGR 15.8% DD -20.1% (NVDA)
+test System B                                     CAGR  28.6% (min  26.3%)  DD -31.8% vs idx -33.7% ok 20%  beatAll 31% (min 1/6)  SPY 42% QQQ 39% SMH 31%  roll12 29%  expo nan% | without top winner: CAGR 18.1% DD -33.1% (WDC)
+test N 8, exit top 24, monthly, gold 4, park lead CAGR  25.0% (min  23.3%)  DD -32.3% vs idx -33.7% ok 20%  beatAll 19% (min 1/6)  SPY 42% QQQ 39% SMH 19%  roll12 18%  expo nan% | without top winner: CAGR 18.2% DD -33.0% (WDC)
+test N 10, exit top 20, monthly, gold 4, park lea CAGR  28.6% (min  26.3%)  DD -31.8% vs idx -33.7% ok 20%  beatAll 31% (min 1/6)  SPY 42% QQQ 39% SMH 31%  roll12 29%  expo nan% | without top winner: CAGR 18.1% DD -33.1% (WDC)
+test N 8, exit top 16, monthly, gold 4, park lead CAGR  25.0% (min  23.9%)  DD -34.2% vs idx -33.7% ok 0%  beatAll 19% (min 1/6)  SPY 42% QQQ 39% SMH 19%  roll12 21%  expo nan% | without top winner: CAGR 22.6% DD -31.5% (WDC)
+early System B                                     CAGR   6.6% (min   5.0%)  DD -34.0% vs idx -55.2% ok 100%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 51%  expo nan% | without top winner: CAGR 4.8% DD -46.1% (DLX)
+early N 8, exit top 24, monthly, gold 4, park lead CAGR   4.0% (min   1.6%)  DD -39.0% vs idx -55.2% ok 100%  beatAll 37% (min 4/12)  SPY 53% QQQ 55% SMH 37%  roll12 44%  expo nan% | without top winner: CAGR 3.1% DD -39.7% (WMB)
+early N 10, exit top 20, monthly, gold 4, park lea CAGR   6.6% (min   5.0%)  DD -34.0% vs idx -55.2% ok 100%  beatAll 46% (min 5/12)  SPY 64% QQQ 55% SMH 64%  roll12 51%  expo nan% | without top winner: CAGR 4.8% DD -46.1% (DLX)
+early N 8, exit top 16, monthly, gold 4, park lead CAGR   6.3% (min   4.0%)  DD -35.8% vs idx -55.2% ok 100%  beatAll 37% (min 4/12)  SPY 57% QQQ 55% SMH 37%  roll12 47%  expo nan% | without top winner: CAGR 4.9% DD -36.4% (WMB)
