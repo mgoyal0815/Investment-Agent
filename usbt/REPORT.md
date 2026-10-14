@@ -68,7 +68,27 @@ year drag was used; it checks within 1-2 points a year against the real QQQ/SPY 
   whipsaw and System C is also weak.
 
 Conclusion so far: nothing found reaches 75% of calendar years. Above 55%, every variant needs 3x
-leverage and falls further than SPY (-55%). That breaks the drawdown rule.
+leverage and falls further than SPY (-55%). That breaks the drawdown rule. The owner rejected
+leveraged ETFs.
+
+## Wider universe: S&P 500 + Nasdaq-100 (exp32, exp32b, exp33, 14 October 2026)
+
+- Nasdaq-100 membership is point-in-time from 2004 (shardul0701/NQ100-Survivorship-bias-data-2004-2026).
+  It is upstream-accurate from 2015; 2004-2014 is reconstructed from public add/remove events. There
+  is no Nasdaq-100 data for 2000-2003, so those years stay S&P 500 only.
+- FMP has prices for 251 of the 299 Nasdaq-100 names. The 48 missing are mostly delisted before 2012
+  (YHOO, RIMM, BEAS, CEPH ...). The panel with them is `panel_ndx.pkl`; `panel.pkl` and System C are
+  unchanged.
+- Ceiling check: each year, take with hindsight whichever of six rules did best (top 3/5/10 by 6-month
+  gain, two versions limited to names moving with the leading index, and System C). On the S&P 500 that
+  beats all three indexes in 64% of 2001-2025. With the Nasdaq-100 added, 72%. No real system knows the
+  best rule in advance, so the real figure is lower.
+- Years even hindsight loses: 2009, 2011, 2014, 2018, 2019, 2023, 2024. In 2019, 2023 and 2024 the
+  best S&P/Nasdaq-100 picks that move with SMH made 51%, 59% and 38%; SMH made 64%, 73% and 39%.
+  Part of SMH's lead comes from TSMC, which is in neither index.
+- System C on the wider universe (exp33, one run from 2000): 38% of years beating all three, against
+  42% for the same system on the same panel with S&P 500 members only. Ten nearby variants scored
+  27-50%, CAGR 10-21%, worst fall -36% to -50%.
 
 ---
 

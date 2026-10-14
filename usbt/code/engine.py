@@ -143,6 +143,20 @@ class Market:
             self.sp_member = snap[np.clip(pos_, 0, None)]
         except Exception:
             self.sp_member = None
+        # point-in-time Nasdaq-100 membership 2004-2026 (ndx_members.py); nobody counts as a member before 2004
+        try:
+            h = pd.read_csv("../data/ndx_hist.csv", parse_dates=["date"]).sort_values("date")
+            J = {s: j for j, s in enumerate(self.syms)}
+            snap = np.zeros((len(h) + 1, self.N), bool)
+            for k, t in enumerate(h.tickers):
+                for s in t.split(","):
+                    j = J.get(s)
+                    if j is not None:
+                        snap[k + 1, j] = True
+            pos_ = np.searchsorted(h.date.values, self.dates.values, side="right")
+            self.ndx_member = snap[pos_]
+        except Exception:
+            self.ndx_member = None
         self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
@@ -164,6 +178,8 @@ class Market:
             base &= self._ucache[key]
         if cfg["universe"] == "sp500":
             return base & self.sp_member[i]
+        if cfg["universe"] == "sp500+ndx":
+            return base & (self.sp_member[i] | self.ndx_member[i])
         if etf_in:
             return base & ((self.trank[i] <= cfg["universe_n"]) | self.is_etf)
         u = base & (self.trank[i] <= cfg["universe_n"])

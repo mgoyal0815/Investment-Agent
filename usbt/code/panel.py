@@ -39,6 +39,17 @@ def main():
     sp = pd.read_csv(f"{D}/sp500_ticker_start_end.csv")
     sp["ticker"] = sp["ticker"].str.replace(".", "-", regex=False)
     sp_win = sp.groupby("ticker").agg(start=("start_date", "min"), end=("end_date", lambda x: x.fillna("2099").max()))
+    if os.environ.get("NDX"):
+        # add point-in-time Nasdaq-100 members (ndx_members.py) as their own membership windows
+        h = pd.read_csv(f"{D}/ndx_hist.csv", parse_dates=["date"]).sort_values("date")
+        w = {}
+        for d, t in zip(h.date, h.tickers):
+            for s in t.split(","):
+                a, b = w.get(s, (d, d))
+                w[s] = (min(a, d), max(b, d))
+        nd = pd.DataFrame({s: dict(start=str(a.date()), end=("2099" if b == h.date.max() else str(b.date()))) for s, (a, b) in w.items()}).T
+        nd = nd[~nd.index.isin(sp_win.index)]
+        sp_win = pd.concat([sp_win, nd])
     syms, frames, dropped = [], {}, {}
     for f in sorted(os.listdir(f"{D}/raw")):
         if not f.endswith(".parquet"):
@@ -71,7 +82,7 @@ def main():
         frames[s] = df
         syms.append(s)
     print(len(syms), "stocks kept,", len(dropped), "dropped", flush=True)
-    json.dump(dropped, open(f"{D}/dropped.json", "w"), indent=0)
+    json.dump(dropped, open(f"{D}/dropped_ndx.json" if os.environ.get("NDX") else f"{D}/dropped.json", "w"), indent=0)
 
     def wide(col):
         return pd.DataFrame({s: frames[s][col] for s in syms}).reindex(idx)
@@ -145,7 +156,7 @@ def main():
              medv=f32(medv), hist=f32(hist), m6=f32(m6), m12=f32(m12), ret1=f32(ret1),
              in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]),
              corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52))
-    pd.to_pickle(P, f"{D}/panel.pkl")
+    pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else f"{D}/panel.pkl")
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
 
