@@ -74,7 +74,16 @@ if __name__ == "__main__":
            "late": (Y.starts("2020-01-01", "2025-10-31", 3), None)}
     rng = random.Random(43)
     rows = []
-    design = [{k: v[0] for k, v in F.items()}] + [{k: rng.choice(v) for k, v in F.items()} for _ in range(n)]
+    # sparse random design: each configuration changes 1-6 enhancements away from System D. A design where
+    # half of everything is switched on at once lands far from any sensible system (first 10 such runs beat
+    # SPY&QQQ in 30% of years vs System D's 68%) and would estimate effects in a region nobody would trade.
+    base = {k: v[0] for k, v in F.items()}
+    design = [dict(base)]
+    for _ in range(n):
+        x = dict(base)
+        for k in rng.sample(list(F), rng.randint(1, 6)):
+            x[k] = rng.choice(F[k][1:])
+        design.append(x)
     for k, x in enumerate(design):
         r = evaluate(pool, build(x))
         rows.append({**{f"f:{a}": json.dumps(b) for a, b in x.items()}, **r})
