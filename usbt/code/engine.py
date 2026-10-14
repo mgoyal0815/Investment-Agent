@@ -884,6 +884,20 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     pend_stock.append(dict(kind="exit", j=j, why="hard", all=True)); exiting.add(j)
                 elif cfg.get("pause_cut") and paused and C[i, j] < p["cost"] * (1 - cfg.get("pause_cut_loss", 0.0)):
                     pend_stock.append(dict(kind="exit", j=j, why="pausecut", all=True)); exiting.add(j)
+        if cfg.get("rsi_take"):
+            # overbought take-profit (owner, 15 Oct 2026): a holding in profit whose 14-day RSI is above rsi_take
+            # sells rsi_take_frac of itself (once per run-up; re-armed when RSI falls back below 60)
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j]:
+                    continue
+                rs_ = m.P["RSI"][i, j]
+                if rs_ < 60:
+                    p["rsi_armed"] = True
+                if rs_ > cfg["rsi_take"] and p.get("rsi_armed", True) and C[i, j] > p["cost"] * (1 + cfg.get("rsi_take_min_gain", 0.1)):
+                    fr = cfg.get("rsi_take_frac", 0.5)
+                    pend_stock.append(dict(kind="exit", j=j, why="rsi_take", all=fr >= 0.999, frac=fr))
+                    p["rsi_armed"] = False
+                    exiting.add(j)
         if cfg.get("lock_at"):
             for j, p in pos.items():
                 if p["stale"] or j in exiting:

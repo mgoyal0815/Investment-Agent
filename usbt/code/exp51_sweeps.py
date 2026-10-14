@@ -13,6 +13,8 @@ base_file = "../system_F.json" if os.path.exists("../system_F.json") else "../sy
 BASE = json.load(open(base_file))["cfg"]
 SW = {"rsi_max (skip buys above this RSI)": ("rsi_max", [None, 95, 90, 85, 82, 80, 78, 75, 72, 70, 65, 60]),
       "rsi_sell_floor (no rank sale below this RSI)": ("rsi_sell_floor", [None, 25, 30, 35, 40, 45, 50]),
+      "rsi_take (sell HALF when RSI above, in profit)": ("rsi_take", [None, 95, 92, 90, 88, 85, 82, 80, 75]),
+      "rsi_take_all (sell ALL when RSI above, in profit)": ("rsi_take", [None, 95, 92, 90, 88, 85, 82, 80]),
       "adx_min (buy only above this ADX)": ("adx_min", [None, 10, 15, 18, 20, 22, 25, 30, 35]),
       "hi52_min (buy only within x of 52-week high)": ("hi52_min", [None, 0.7, 0.8, 0.85, 0.9, 0.95]),
       "lock_at (profit lock starts at +x)": ("lock_at", [None, 0.2, 0.3, 0.4, 0.5, 0.6, 0.75, 1.0]),
@@ -43,6 +45,8 @@ if __name__ == "__main__":
             c = dict(BASE, **{key: v})
             if key == "vol_target" and v:
                 c["vol_hard"] = True
+            if lab.startswith("rsi_take_all") and v:
+                c["rsi_take_frac"] = 1.0
             r = B.evaluate(pool, c, PER)
             rows.append(dict(setting=lab, value=json.dumps(v), is_base=json.dumps(v) == json.dumps(BASE.get(key)), **r))
         pd.DataFrame(rows).to_csv("../results/exp51_sweeps.csv", index=False)
