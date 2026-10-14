@@ -147,6 +147,18 @@ class Market:
         self.credit_bad = (cr < cr.rolling(50, min_periods=50).mean()).to_numpy()
         self.mom_crash = (spy_c / spy_c.shift(504) - 1 < 0).to_numpy()            # market down over 2 years
         self.size_pct = 1 - pd.DataFrame(trk).rank(axis=1, pct=True).to_numpy()   # 1 = biggest by turnover
+        # ---- point-in-time versions of the market signals (audit, 15 Oct 2026): the originals rank the top
+        # 500/100 by turnover over the WHOLE panel, which includes the live list's future survivors (20-50% of
+        # that set were not S&P 500 members on the day). These use only that day's S&P 500 members.
+        if self.sp_member is not None:
+            spm = self.sp_member
+            self.breadth_pit = (above & spm).sum(1) / np.maximum(spm.sum(1), 1)
+            self.b50_pit = (a50 & spm).sum(1) / np.maximum(spm.sum(1), 1)
+            trk_sp = pd.DataFrame(np.where(spm & ~self.is_etf, medv, np.nan)).rank(axis=1, ascending=False).to_numpy()
+            t100 = pd.DataFrame(trk_sp <= 100).shift(1, fill_value=False).to_numpy()
+            ew_p = np.where(t100.sum(1) > 0, np.nansum(np.where(t100, np.nan_to_num(P["ret1"]), 0), 1) / np.maximum(t100.sum(1), 1), 0.0)
+            self.large_idx_pit = np.cumprod(1 + ew_p)
+            self.large_sma50_pit = pd.Series(self.large_idx_pit).rolling(50, min_periods=50).mean().to_numpy()
         # point-in-time S&P 500 membership (fja05680/sp500): no knowledge of the future
         try:
             h = pd.read_csv("../data/sp500_hist.csv", parse_dates=["date"]).sort_values("date")
@@ -315,7 +327,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     lsma = m.large_sma50 if cfg.get("large_n", 50) == 50 else \
         pd.Series(m.large_idx).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
     core = {"k": None, "w": 0.0}
-    thrust_until = [-1]   # index core: ETF held while it is in a strong uptrend
+    thrust_until = [-1]
+    if cfg.get("pit_signals"):
+        BREADTH, LARGE, LSMA_PIT = m.breadth_pit, m.large_idx_pit, m.large_sma50_pit
+    else:
+        BREADTH, LARGE, LSMA_PIT = m.breadth, m.large_idx, None
+    prev_paused = [False]   # index core: ETF held while it is in a strong uptrend
     rebound = [False]
     park_state = [None]
     pend_core = None
@@ -784,8 +801,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         # India pause (checked every session; acts only on decision days)
         if cfg["overlay"] == "pause" or "pause" in str(cfg.get("extra_pause", "")):
             r = cfg["pause_rules"]
-            sig = [("breadth" in r and m.breadth[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
-                   ("large" in r and lsma[i] == lsma[i] and m.large_idx[i] < lsma[i])]
+            ls_ = LSMA_PIT if LSMA_PIT is not None else lsma
+            sig = [("breadth" in r and BREADTH[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
+                   ("large" in r and ls_[i] == ls_[i] and LARGE[i] < ls_[i])]
             # index / credit / bond votes: "<ETF><n>" = that ETF closes below its n-session average
             # (e.g. spy200, qqq100, smh50, hyg63); "tlt_up" = TLT above its 63-session average (flight to safety)
             for tok in r:
@@ -907,7 +925,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     exiting.add(j)
                 else:
                     p["below"] = 0
-        if not is_decision(i):
+        # re-enter at the first session after a pause ends instead of waiting for the next decision day
+        fast_re = bool(cfg.get("reenter_fast") and prev_paused[0] and not paused)
+        prev_paused[0] = paused
+        if not is_decision(i) and not fast_re:
             continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
@@ -932,8 +953,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             pos_rank = {int(j): k for k, j in enumerate(order[:int((~np.isnan(ps)).sum())])}
         if use_rank:
             xr = cfg["buffer"] * N
-            if paused:
-                xr = N
+            if paused and cfg.get("pause_tight_exit", True):
+                xr = N                                          # hard-coded India rule: a pause tightens the sell rank
             t_now = tranche_of(i) if cfg.get("stagger") else None
             for j in list(pos):
                 if j in exiting or pos[j]["stale"]:
