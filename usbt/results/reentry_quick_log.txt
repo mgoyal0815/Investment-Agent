@@ -1,0 +1,37 @@
+System F
+Coppock, unpause 21 days
+Coppock, unpause 42 days
+Coppock, unpause 63 days
+Coppock, unpause 126 days
+Coppock, unpause 252 days
+McClellan depth 100, 21 days
+McClellan depth 100, 42 days
+McClellan depth 150, 21 days
+McClellan depth 150, 42 days
+McClellan depth 200, 21 days
+McClellan depth 200, 42 days
+NH-NL depth 0.1, 21 days
+NH-NL depth 0.1, 42 days
+NH-NL depth 0.2, 21 days
+NH-NL depth 0.2, 42 days
+NH-NL depth 0.3, 21 days
+NH-NL depth 0.3, 42 days
+                        rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                    System F                 0.64                  1.0                0.227               0.439               1.000               0.082               0.655               0.042               0.536
+    Coppock, unpause 21 days                 0.64                  1.0                0.227               0.444               1.000               0.086               0.702               0.042               0.554
+    Coppock, unpause 42 days                 0.64                  1.0                0.227               0.434               1.000               0.086               0.690               0.042               0.545
+    Coppock, unpause 63 days                 0.64                  1.0                0.227               0.444               1.000               0.086               0.702               0.042               0.544
+   Coppock, unpause 126 days                 0.64                  1.0                0.227               0.466               1.000               0.083               0.655               0.042               0.551
+   Coppock, unpause 252 days                 0.64                  1.0                0.227               0.487               1.000               0.069               0.702               0.042               0.579
+McClellan depth 100, 21 days                 0.58                  0.0                0.220               0.524               1.000               0.091               0.702               0.042               0.576
+McClellan depth 100, 42 days                 0.61                  0.0                0.212               0.529               1.000               0.081               0.655               0.042               0.592
+McClellan depth 150, 21 days                 0.64                  1.0                0.237               0.487               1.000               0.092               0.643               0.042               0.541
+McClellan depth 150, 42 days                 0.64                  1.0                0.237               0.519               1.000               0.093               0.631               0.042               0.537
+McClellan depth 200, 21 days                 0.64                  1.0                0.227               0.439               1.000               0.082               0.655               0.042               0.536
+McClellan depth 200, 42 days                 0.64                  1.0                0.227               0.439               1.000               0.082               0.655               0.042               0.536
+    NH-NL depth 0.1, 21 days                 0.65                  1.0                0.233               0.423               1.000               0.042               0.536               0.042               0.510
+    NH-NL depth 0.1, 42 days                 0.65                  1.0                0.234               0.317               0.926               0.028               0.619               0.042               0.517
+    NH-NL depth 0.2, 21 days                 0.64                  1.0                0.227               0.439               1.000               0.085               0.655               0.042               0.536
+    NH-NL depth 0.2, 42 days                 0.64                  1.0                0.227               0.439               1.000               0.085               0.655               0.042               0.536
+    NH-NL depth 0.3, 21 days                 0.64                  1.0                0.227               0.439               1.000               0.082               0.655               0.042               0.536
+    NH-NL depth 0.3, 42 days                 0.64                  1.0                0.227               0.439               1.000               0.082               0.655               0.042               0.536
