@@ -884,6 +884,15 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     pend_stock.append(dict(kind="exit", j=j, why="hard", all=True)); exiting.add(j)
                 elif cfg.get("pause_cut") and paused and C[i, j] < p["cost"] * (1 - cfg.get("pause_cut_loss", 0.0)):
                     pend_stock.append(dict(kind="exit", j=j, why="pausecut", all=True)); exiting.add(j)
+        if cfg.get("macd_exit") is not None:
+            # sell a profitable holding when its MACD histogram falls below macd_exit (momentum rolling over)
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j]:
+                    continue
+                if m.P["MACDH"][i, j] < cfg["macd_exit"] and C[i, j] > p["cost"] * (1 + cfg.get("macd_exit_min_gain", 0.1)) \
+                        and i - p["entry_i"] >= 21:
+                    fr = cfg.get("macd_exit_frac", 1.0)
+                    pend_stock.append(dict(kind="exit", j=j, why="macd_exit", all=fr >= 0.999, frac=fr)); exiting.add(j)
         if cfg.get("rsi_take"):
             # overbought take-profit (owner, 15 Oct 2026): a holding in profit whose 14-day RSI is above rsi_take
             # sells rsi_take_frac of itself (once per run-up; re-armed when RSI falls back below 60)
@@ -1022,6 +1031,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
+                if cfg.get("macd_hold") is not None and not paused and m.P["MACDH"][i, j] > cfg["macd_hold"]:
+                    continue                                    # MACD still rising: keep it despite the rank
                 if cfg.get("rsi_sell_floor") and not paused and m.P["RSI"][i, j] < cfg["rsi_sell_floor"]:
                     continue                                    # journal: rank sells at oversold RSI bounced afterwards
                 if cfg.get("trend_hold") and not paused:
@@ -1261,6 +1272,10 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg.get("macd_pos") and not (P["MACDH"][i, j] > 0):
             continue
+        if cfg.get("macd_buy_min") is not None and not (P["MACDH"][i, j] >= cfg["macd_buy_min"]):
+            continue                                            # buy only with MACD histogram >= x (share of price)
+        if cfg.get("macd_buy_max") is not None and not (P["MACDH"][i, j] <= cfg["macd_buy_max"]):
+            continue                                            # buy only with MACD histogram <= x (momentum pause / pullback)
         if cfg.get("rsi_max") and not (P["RSI"][i, j] <= cfg["rsi_max"]):
             continue                                            # rsi_max 40-50 = buy pullbacks only; 75-90 = skip overbought
         if cfg.get("rsi_min") and not (P["RSI"][i, j] >= cfg["rsi_min"]):
