@@ -730,6 +730,21 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
                 zone = "Yellow"
             kind = "new"
         cand.append((-sc[j], route[j] != 1, j, zone, kind))
+    # leader tilt: while SMH (or QQQ) is the leading index, names that move with it get priority
+    # and a bigger position
+    tilt = {}
+    if cfg.get("tilt_mult", 1.0) != 1.0:
+        lb = cfg.get("leader_lb", 126)
+        def mom(t):
+            c = m.E[t]["c"]
+            return c[i] / c[i - lb] - 1 if i - lb >= 0 and c[i] == c[i] and c[i - lb] == c[i - lb] else -999
+        ldr = max(LEADERS, key=mom)
+        if ldr in cfg.get("tilt_leaders", ("SMH",)):
+            cr = P["corr_" + ldr][i]
+            for k, (a0, a1, j, z, kd) in enumerate(cand):
+                if cr[j] == cr[j] and cr[j] >= cfg.get("tilt_corr", 0.7):
+                    tilt[j] = cfg["tilt_mult"]
+                    cand[k] = (a0 - 1.0, a1, j, z, kd)      # moves ahead of every untilted name
     cand.sort()
     mp = cfg.get("max_pos")
     n_held = len([j for j in pos if j not in exiting])
@@ -747,6 +762,7 @@ def _v5_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out):
         sh = held["sh"] if held else 0.0
         avg = held["cost"] if held else 0.0
         em = cfg.get("etf_size_mult", 1.0) if m.is_etf[j] else 1.0
+        em *= tilt.get(j, 1.0)
         base = (0.08 if zone == "Green" else 0.04) * nav * sm * em
         target = min(base, cash)
         rb = min(0.015 if zone == "Green" else 0.010, 0.02) * sm * em

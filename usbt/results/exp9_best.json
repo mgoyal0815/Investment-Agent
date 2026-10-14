@@ -1,0 +1,28 @@
+{
+ "sizing": "v5",
+ "universe": "topN",
+ "universe_n": 500,
+ "overlay": "pause",
+ "intramonth": false,
+ "zone_gate": false,
+ "cadence": "twice",
+ "park": "leader_safe",
+ "adds": null,
+ "exit": "stop+rank",
+ "min_hold": 126,
+ "cont_cut": 0.88,
+ "rec_cut": 0.95,
+ "regime_w": "LEADER_MID",
+ "ramp": 3,
+ "N": 30,
+ "leader_lb": 126,
+ "etf_in_universe": false,
+ "pause_rules": [
+  "breadth",
+  "hyg",
+  "large"
+ ],
+ "pause_mode": "any",
+ "breadth_level": 0.3,
+ "size_mult": 1.5
+}

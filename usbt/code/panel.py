@@ -121,13 +121,21 @@ def main():
     m12 = (Cf / Cf.shift(252) - 1) / vol
     ret1 = Cf.pct_change(fill_method=None)
 
+    # how closely each name has moved with SMH and with QQQ over the last 126 sessions (daily
+    # returns, correlation), for the "lean into the leading index" tilt. Prices only, so delisted
+    # names are covered.
+    corr = {}
+    for k in ("SMH", "QQQ"):
+        er = etf[k]["close"].ffill().pct_change(fill_method=None)
+        corr[k] = ret1.rolling(126, min_periods=100).corr(er)
     f32 = lambda x: x.to_numpy(dtype=np.float32)
     P = dict(dates=idx, syms=np.array(syms), etf={k: (v["open"].to_numpy(), v["close"].to_numpy()) for k, v in etf.items()},
              O=f32(raw_O), C=f32(raw_C), Cf=f32(Cf), SF=f32(SF),
              SMA200=f32(SMA200), SMA50=f32(SMA50), EMA20=f32(EMA20), ATR=f32(ATR), RV30=f32(RV30),
              ADV20=f32(ADV20), cont=cont.to_numpy(), rec=rec.to_numpy(), rs126=f32(rs126), dist200=f32(dist200),
              medv=f32(medv), hist=f32(hist), m6=f32(m6), m12=f32(m12), ret1=f32(ret1),
-             in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]))
+             in_live=np.array([s in live for s in syms]), is_etf=np.array([s in SECTOR_ETFS for s in syms]),
+             corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]))
     pd.to_pickle(P, f"{D}/panel.pkl")
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
