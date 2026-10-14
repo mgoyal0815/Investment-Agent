@@ -1,5 +1,5 @@
 """One round of the iterative Bayesian protocol around any base system (owner, 15 Oct 2026).
-  python3 round.py ../system_X.json TAG [N] -> results/TAG_*; candidate written to ../TAG_candidate.json
+  python3 bayes_round.py ../system_X.json TAG [N] -> results/TAG_*; candidate written to ../TAG_candidate.json
 Phase 1: sparse random design (1-6 changes from the base) over every enhancement in exp50; Phase 2: Bayesian
 ridge effects; Phase 3: Optuna on 2012-2016 starts only; the best non-base pick is the round's candidate.
 The candidate is then put through accept.py against the base."""
