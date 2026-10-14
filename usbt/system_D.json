@@ -1,0 +1,31 @@
+{
+ "name": "System D",
+ "frozen": "2026-10-15",
+ "description": "System C plus one change: a holding up 100% or more from its cost is exempt from the top-15 rank exit and leaves only on the profit lock. Chosen on starts 2012-2016 (exp39), confirmed on unseen starts 2000-2008 and 2020-2025 (exp39b).",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.3,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0
+ }
+}

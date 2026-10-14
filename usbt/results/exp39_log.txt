@@ -1,0 +1,50 @@
+System C train score 1.274
+single rank_ladder 2 1.275 0.58 0.188
+single rank_ladder 3 1.208 0.56 0.181
+single rank_ladder 4 1.002 0.547 0.175
+single lock_half False 1.274 0.56 0.192
+single lock_half True 1.256 0.553 0.185
+single lock_trail2 0.3 1.274 0.56 0.192
+single lock_trail2 0.4 1.274 0.56 0.192
+single lock_trail2 0.5 1.274 0.56 0.192
+single lock_tiers [[1.0, 0.35]] 1.274 0.56 0.192
+single lock_tiers [[0.6, 0.3], [1.5, 0.45]] 0.88 0.56 0.178
+single rank_exempt_gain 0.5 1.532 0.627 0.231
+single rank_exempt_gain 1.0 1.544 0.633 0.231
+single rank_exempt_gain 2.0 1.539 0.633 0.228
+single scale_in [0.5, 0.1, 1] 1.094 0.48 0.16
+single scale_in [0.3333333333333333, 0.1, 2] 0.48 0.413 0.141
+single scale_in [0.5, 0.2, 1] 1.085 0.467 0.166
+single weight rank 0.832 0.627 0.151
+single weight invvol 1.158 0.507 0.178
+single weight mom 0.831 0.607 0.155
+single lock_at None 0.759 0.56 0.178
+single lock_at 0.2 1.268 0.553 0.192
+single lock_at 0.5 1.273 0.56 0.192
+single lock_trail 0.15 0.962 0.427 0.142
+single lock_trail 0.2 1.241 0.54 0.186
+single lock_trail 0.3 0.759 0.56 0.177
+single buffer 1.0 0.977 0.433 0.127
+single buffer 2.0 0.918 0.593 0.195
+single buffer 3.0 0.819 0.6 0.185
+single add_gain 0.1 1.296 0.58 0.189
+single add_gain 0.2 1.274 0.56 0.192
+single add_gain 0.3 1.231 0.547 0.178
+single add_cap 2.0 1.242 0.56 0.177
+single add_cap 3.0 1.274 0.56 0.192
+single add_cap 4.0 1.355 0.573 0.201
+single N 8 0.685 0.493 0.148
+single N 12 1.136 0.507 0.154
+  better rank_exempt_gain 0.5 1.532
+  better rank_exempt_gain 1.0 1.544
+  better buffer 2.0 1.562
+  better add_cap 4.0 1.585
+  better lock_at 0.2 1.592
+train System C {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.56), 'starts_all_years': np.float64(0.0), 'cal_years_beat': np.float64(0.489), 'r3_beat_SMH': np.float64(0.428), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(1.0), 'med_cagr': np.float64(0.192), 'worst_dd': np.float64(-0.163), 'score': np.float64(1.274)}
+test 2000-08 System C {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.505), 'starts_all_years': np.float64(0.0), 'cal_years_beat': np.float64(0.319), 'r3_beat_SMH': np.float64(0.928), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.981), 'med_cagr': np.float64(0.055), 'worst_dd': np.float64(-0.394), 'score': np.float64(1.46)}
+test 2020-25 System C {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.504), 'starts_all_years': np.float64(0.214), 'cal_years_beat': np.float64(0.448), 'r3_beat_SMH': np.float64(0.0), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.029), 'med_cagr': np.float64(0.408), 'worst_dd': np.float64(-0.34), 'score': np.float64(0.518)}
+all starts System C {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.479), 'starts_all_years': np.float64(0.048), 'cal_years_beat': np.float64(0.436), 'r3_beat_SMH': np.float64(0.318), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.781), 'med_cagr': np.float64(0.226), 'worst_dd': np.float64(-0.394), 'score': np.float64(1.029)}
+train exp39 tuned {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.66), 'starts_all_years': np.float64(0.067), 'cal_years_beat': np.float64(0.678), 'r3_beat_SMH': np.float64(0.865), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(1.0), 'med_cagr': np.float64(0.235), 'worst_dd': np.float64(-0.19), 'score': np.float64(1.592)}
+test 2000-08 exp39 tuned {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.532), 'starts_all_years': np.float64(0.0), 'cal_years_beat': np.float64(0.377), 'r3_beat_SMH': np.float64(0.854), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.981), 'med_cagr': np.float64(0.041), 'worst_dd': np.float64(-0.397), 'score': np.float64(1.45)}
+test 2020-25 exp39 tuned {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.492), 'starts_all_years': np.float64(0.2), 'cal_years_beat': np.float64(0.424), 'r3_beat_SMH': np.float64(0.0), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.029), 'med_cagr': np.float64(0.377), 'worst_dd': np.float64(-0.342), 'score': np.float64(0.506)}
+all starts exp39 tuned {'PASS': np.float64(0.0), 'pass_3y_plus': np.float64(0.0), 'yrs_beat_SPY_QQQ': np.float64(0.511), 'starts_all_years': np.float64(0.045), 'cal_years_beat': np.float64(0.523), 'r3_beat_SMH': np.float64(0.395), 'starts_all_r3': np.float64(0.0), 'dd_ok': np.float64(0.532), 'med_cagr': np.float64(0.228), 'worst_dd': np.float64(-0.397), 'score': np.float64(0.975)}
