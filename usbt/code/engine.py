@@ -144,6 +144,16 @@ class Market:
         m127[252:] = Cf_[126:-126] / Cf_[:-252] - 1         # 12-7 month (Novy-Marx)
         m63[63:] = Cf_[63:] / Cf_[:-63] - 1
         P["mom12_1"], P["mom12_7"], P["mom63"] = m121, m127, m63
+        # volume indicators (volume_ind.py), matched to this panel by shape
+        for fn in ("../data/vol_panel.npz", "../data/vol_panel_idx.npz"):
+            try:
+                z = np.load(fn)
+                if z["UDVR"].shape == (self.T, self.N):
+                    for k in z.files:
+                        P[k] = z[k]
+                    break
+            except Exception:
+                pass
         # ---- regime indicators (exp43); all use closes up to the session itself, acted on at the next open
         a50 = Cf > P["SMA50"]
         self.b50 = (a50 & top500).sum(1) / np.maximum(top500.sum(1), 1)            # share of top-500 above 50-day
@@ -884,6 +894,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     pend_stock.append(dict(kind="exit", j=j, why="hard", all=True)); exiting.add(j)
                 elif cfg.get("pause_cut") and paused and C[i, j] < p["cost"] * (1 - cfg.get("pause_cut_loss", 0.0)):
                     pend_stock.append(dict(kind="exit", j=j, why="pausecut", all=True)); exiting.add(j)
+        if cfg.get("udvr_exit"):
+            # distribution: sell a profitable holding when down-day volume dominates (UDVR below udvr_exit)
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or C[i, j] != C[i, j] or i - p["entry_i"] < 21:
+                    continue
+                if m.P["UDVR"][i, j] < cfg["udvr_exit"] and C[i, j] > p["cost"] * 1.1:
+                    pend_stock.append(dict(kind="exit", j=j, why="distribution", all=True)); exiting.add(j)
         if cfg.get("adx_exit"):
             # sell a profitable holding when its trend weakens: ADX below adx_exit, or sellers take over (-DI > +DI)
             for j, p in pos.items():
@@ -1039,6 +1056,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
+                if cfg.get("udvr_hold") and not paused and m.P["UDVR"][i, j] > cfg["udvr_hold"]:
+                    continue                                    # still being accumulated: keep it despite the rank
                 if cfg.get("adx_hold") and not paused and m.P["ADX"][i, j] > cfg["adx_hold"] and m.P["PDI_GT"][i, j]:
                     continue                                    # strong uptrend (ADX high, buyers in charge): keep it
                 if cfg.get("macd_hold") is not None and not paused and m.P["MACDH"][i, j] > cfg["macd_hold"]:
@@ -1276,6 +1295,14 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
                 cfg["_rvp"] = (i, pct_rank(np.where(u, P["RV30"][i].astype(float), np.nan)))
             if not (cfg["_rvp"][1][j] <= cfg["vol_max_pct"]):
                 continue
+        if cfg.get("udvr_min") and not (P["UDVR"][i, j] >= cfg["udvr_min"]):
+            continue                                            # more volume on up days than down days (accumulation)
+        if cfg.get("cmf_min") is not None and not (P["CMF"][i, j] >= cfg["cmf_min"]):
+            continue
+        if cfg.get("obv_min") is not None and not (P["OBVT"][i, j] >= cfg["obv_min"]):
+            continue
+        if cfg.get("rvol_min") and not (P["RVOL"][i, j] >= cfg["rvol_min"]):
+            continue
         if cfg.get("adx_max") and not (P["ADX"][i, j] <= cfg["adx_max"]):
             continue                                            # buy only early in a trend (ADX still low)
         if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
