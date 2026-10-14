@@ -3,3 +3,4 @@ data/*.parquet
 data/*.pkl
 __pycache__/
 data/lev/
+data/*.npy
