@@ -1,0 +1,32 @@
+{
+ "name": "System E (provisional)",
+ "frozen": "2026-10-15",
+ "description": "System D + trend-hold (no rank sale while the stock is above a rising 50-day EMA) + profit lock at +50% (instead of +30%). Each part was in the exp43 Bayesian test; the combination was spotted with knowledge of the check periods, so it is provisional. exp44: better than System D on starts 2000-11, 2012-19 and 2020-25.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true
+ }
+}

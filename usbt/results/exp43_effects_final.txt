@@ -1,0 +1,36 @@
+MAIN EFFECTS (change in [share of years beating SPY&QQQ - 0.5 x drawdown-rule failures], per period)
+                         effect     sd  effect_early  effect_late  credible_train  same_sign_all  matters
+f:rsi_max_80.0            0.115  0.045         0.000       -0.009            True          False    False
+f:adx_min_20.0            0.049  0.030        -0.019       -0.017           False          False    False
+f:bo_recent_60.0          0.048  0.032         0.003       -0.008           False          False    False
+f:lock_at_0.5             0.044  0.039         0.008        0.018           False           True    False
+f:rank_ladder_2.0         0.030  0.031        -0.014       -0.013           False          False    False
+f:buffer_2.0              0.025  0.031        -0.005       -0.014           False          False    False
+f:lock_trend_True         0.020  0.029         0.002       -0.018           False          False    False
+f:p_vix30_True            0.018  0.029         0.009        0.000           False           True    False
+f:weight_"invvol"         0.018  0.031        -0.052       -0.011           False          False    False
+f:N_12                    0.007  0.040        -0.009       -0.020           False          False    False
+f:add_cap_4.0             0.004  0.029        -0.004       -0.010           False          False    False
+f:N_15                   -0.001  0.038        -0.022       -0.005           False           True    False
+f:p_momcrash_True        -0.004  0.031        -0.037        0.017           False          False    False
+f:hi52_min_0.9           -0.010  0.030        -0.011        0.021           False          False    False
+f:macd_pos_True          -0.014  0.030        -0.009        0.010           False          False    False
+f:p_vixrel_True          -0.021  0.029        -0.006        0.008           False          False    False
+f:narrow_size_w_0.5      -0.029  0.029        -0.019        0.010           False          False    False
+f:trend_hold_True        -0.049  0.031        -0.023        0.077           False          False    False
+f:rsi_sell_floor_40.0    -0.056  0.030         0.022       -0.023           False          False    False
+f:lock_half_True         -0.080  0.027         0.002       -0.004            True          False    False
+f:rsi_max_75.0           -0.108  0.039         0.027       -0.014            True          False    False
+f:score_mix_"hi52"       -0.126  0.036        -0.030       -0.089            True           True     True
+f:score_mix_"resmom"     -0.132  0.036        -0.057       -0.021            True           True     True
+f:vol_max_pct_0.8        -0.173  0.030        -0.003        0.034            True          False    False
+f:p_spymacd_True         -0.219  0.031        -0.050        0.008            True          False    False
+f:pause_needs_bear_True  -0.220  0.030        -0.002       -0.020            True           True     True
+f:thrust_days_63.0       -0.297  0.031        -0.602       -0.140            True           True     True
+f:p_credit_True          -0.321  0.029         0.020       -0.065            True          False    False
+f:chand_k_4.0            -0.376  0.031        -0.061       -0.042            True           True     True
+
+INTERACTIONS THAT MATTER
+Empty DataFrame
+Columns: [effect, sd, effect_early, effect_late, credible_train, same_sign_all, matters]
+Index: []

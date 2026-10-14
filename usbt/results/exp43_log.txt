@@ -1,0 +1,56 @@
+10 best train beat 0.68
+20 best train beat 0.71
+30 best train beat 0.71
+40 best train beat 0.71
+50 best train beat 0.71
+60 best train beat 0.71
+70 best train beat 0.71
+80 best train beat 0.71
+90 best train beat 0.71
+INTERIM 100
+100 best train beat 0.71
+110 best train beat 0.71
+120 best train beat 0.71
+130 best train beat 0.71
+140 best train beat 0.71
+150 best train beat 0.71
+160 best train beat 0.71
+170 best train beat 0.71
+180 best train beat 0.71
+190 best train beat 0.71
+INTERIM 200
+200 best train beat 0.71
+210 best train beat 0.71
+220 best train beat 0.71
+230 best train beat 0.71
+240 best train beat 0.74
+250 best train beat 0.74
+260 best train beat 0.74
+270 best train beat 0.74
+280 best train beat 0.74
+290 best train beat 0.74
+INTERIM 300
+300 best train beat 0.74
+310 best train beat 0.74
+320 best train beat 0.74
+330 best train beat 0.74
+340 best train beat 0.74
+350 best train beat 0.74
+360 best train beat 0.74
+370 best train beat 0.74
+380 best train beat 0.74
+390 best train beat 0.74
+INTERIM 400
+400 best train beat 0.74
+410 best train beat 0.74
+420 best train beat 0.74
+430 best train beat 0.74
+440 best train beat 0.74
+450 best train beat 0.74
+460 best train beat 0.74
+470 best train beat 0.74
+480 best train beat 0.74
+490 best train beat 0.74
+INTERIM 500
+500 best train beat 0.74
+PHASE1_DONE
