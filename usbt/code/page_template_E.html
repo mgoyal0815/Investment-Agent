@@ -71,7 +71,7 @@ li::marker { color: var(--muted); }
   <header>
     <div class="eyebrow">US backtest · corrected S&amp;P 500 data (audit standard) · Jan 2000 – 12 Oct 2026</div>
     <h1>{{SYS}} Scorecard</h1>
-    <p class="lede">The best system found after 62 experiments, two Bayesian studies and indicator range checks, each change passed through an acceptance test on every start date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
+    <p class="lede">The best system found after 66 experiments, two Bayesian studies and indicator range checks, each change passed through an acceptance test on every start date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
   </header>
 
   <div class="stats">
@@ -123,7 +123,7 @@ li::marker { color: var(--muted); }
         <li>Profit lock: once up 50%, sell if it falls 25% from its peak.</li>
         <li>Pause new buying when market breadth, high-yield credit or the large-cap index weakens. Resume buying for 42 sessions even while paused when the Coppock Curve turns up from below zero, or when cyclical sectors (discretionary, tech, industrials, financials) cross back above their 100-day average against defensive ones (staples, utilities, health care). Idle money sits in the leading index ETF, or short Treasuries while paused.</li>
         <li>A stock is bought only if its 6-month return beats the best of SPY, QQQ and SMH; otherwise the money stays in the leading index.</li>
-        <li>During a pause, if SPY's 14-day RSI closes at 25 or below (a panic sell-off), hold the leading index for 21 sessions instead of short Treasuries.</li>
+        <li>During a pause, if SPY's 14-day RSI closes at 25 or below, or SPY falls 18% or more below its 20-day high (a crash), hold the leading index for 21 sessions instead of short Treasuries.</li>
         <li>When gold is leading, 4 of the 10 slots stay out of stocks.</li>
       </ol>
     </section>
@@ -134,7 +134,7 @@ li::marker { color: var(--muted); }
         <li>2× and 3× leveraged index ETFs: up to 58% of years, falls of 75–88%. Rejected.</li>
         <li>A fixed QQQ, SPY or SMH share, indexes competing for slots, volatility targeting.</li>
         <li>Re-entry signals (Coppock, McClellan, new highs minus new lows, risk-appetite ratios) with and without confirmation, and a new-low guard on them.</li>
-        <li>Buying oversold stocks during a pause (rejected); index hurdle and index dip-buying (adopted, the dip rule holds across RSI 20–27 and 14–30 day holds).</li>
+        <li>Buying oversold stocks during a pause (rejected); index hurdle and index dip-buying on an RSI panic or a steep percentage fall (adopted; both hold across nearby settings). VIX spikes, MACD and buying oversold stocks were rejected.</li>
         <li>Index parking during pauses (full and partial), a giants entry path, looser profit locks, pause hysteresis, grace periods for new buys.</li>
         <li>RSI, MACD, ADX, breakouts, 52-week highs, VIX, credit and breadth signals, on both the buy and sell side, across full ranges.</li>
         <li>Industry momentum, a momentum-crash guard, longer momentum windows, the Nasdaq-100 universe.</li>

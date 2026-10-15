@@ -1,3 +1,29 @@
+# UPDATE (15 October 2026): System K adopted (standard data)
+
+System K = J + the pause-time index hold also triggers when SPY closes 18% or more below its 20-day high
+(`system_K.json`, `results/final_K_*`). Acceptance test vs J (`results/accept_K_vs_J.txt`): +1.1 points,
+2000-11 +1.4, other eras unchanged, held-back +1.4, drawdown record unchanged; below the 2-point bar,
+adopted by the owner as a small, low-risk improvement. Neighbouring settings (`audit/a11_fall_neighbours.csv`):
+18% within 15-20 days is the safe zone; 12-15% falls or 30-day windows deepen the worst fall to -42..-51%.
+
+| Standard data, every monthly start 2000-2025 | System K | System J | System G | live v5 |
+|---|---|---|---|---|
+| Years beating SPY and QQQ | 67.1% | 66.0% | 56.9% | 34.8% |
+| Starts 2000-11 / 2012-19 / 2020-25 | 67.1 / 64.0 / 78.8 | 65.7 / 64.0 / 78.8 | 56.6 / 54.9 / 69.2 | |
+| 3-year windows beating SMH | 58.1% | 57.7% | 52.1% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 39.4% | 39.4% | 78.1% | 76.5% |
+| Worst fall, any start | -46.6% | -46.6% | -38.1% | -37.7% |
+| One run from 2000: $10k becomes / growth / worst fall | $4.00M / 25.1% / -35% | $3.29M / 24.2% / -35% | $2.04M / 22.0% / -31% | $263k / 13.0% / -36% |
+| Calendar years 2000-2025 beating both | 17 of 26 | 16 of 26 | 16 of 26 | |
+
+Also tested on J and rejected: QQQ RSI as the panic signal; a panic ending the pause; gold, TLT or IEF instead of
+Treasuries during pauses (all within a point); giants during pauses; giants skipping entry gates, giant rank bonus,
+size tilt; MACD on the market and on stocks; VIX spikes as the panic signal. Studies: indicators on J's own account
+do not predict lagging the index (`audit/a9_book_signals.csv`); index indicators predict bigger rebounds on average
+but not their timing (`audit/a10_index_signals.csv`).
+
+---
+
 # UPDATE (15 October 2026): System J adopted (standard data)
 
 System I = H + index hurdle (a stock is bought only if its 6-month return beats the best of SPY/QQQ/SMH):
