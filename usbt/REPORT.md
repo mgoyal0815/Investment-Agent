@@ -1,3 +1,25 @@
+# UPDATE (15 October 2026): System J adopted (standard data)
+
+System I = H + index hurdle (a stock is bought only if its 6-month return beats the best of SPY/QQQ/SMH):
++0.9 points, every era slightly better, adopted by the owner. System J = I + during a pause, hold the leading
+index for 21 sessions after SPY's 14-day RSI closes at or below 25 (`system_J.json`, `results/final_J_*`).
+Acceptance test vs I: +4.4 points, every era better, held-back +3.5, smaller-fall share 42.3% -> 39.4%,
+worst fall unchanged; adopted by the owner. Neighbouring settings (`audit/a7_dip_neighbours.csv`): RSI 20-27
+with 14-30 day holds all give +3 to +5.4 points over I with the same worst fall: a plateau, not a spike.
+Buying oversold stocks during a pause did not help (`results/dip_quick.csv`).
+
+| Standard data, every monthly start 2000-2025 | System J | System H | System G | live v5 |
+|---|---|---|---|---|
+| Years beating SPY and QQQ | 66.0% | 60.7% | 56.9% | 34.8% |
+| Starts 2000-11 / 2012-19 / 2020-25 | 65.7 / 64.0 / 78.8 | 61.5 / 55.3 / 72.9 | 56.6 / 54.9 / 69.2 | |
+| 3-year windows beating SMH | 57.7% | 53.5% | 52.1% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 39.4% | 42.3% | 78.1% | 76.5% |
+| Worst fall, any start | -46.6% | -45.6% | -38.1% | -37.7% |
+| Median growth a year | 33.6% | 30.8% | 28.9% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $3.29M / 24.2% / -35% | $2.69M / 23.2% / -35% | $2.04M / 22.0% / -31% | $263k / 13.0% / -36% |
+
+---
+
 # STANDARD DATA (15 October 2026): G and H on the corrected panel
 
 `data/panel.pkl` is now the corrected panel (old one kept as `panel_v1.pkl`): Signature Bank, Rite Aid and
