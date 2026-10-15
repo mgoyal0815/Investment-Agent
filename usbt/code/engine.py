@@ -1249,7 +1249,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     exiting.add(j)
                 else:
                     pos[j]["out_n"] = 0
-        if paused:
+        dip = cfg.get("pause_dip_rsi")
+        if paused and not dip:
             continue
         park_v = sum(sh * etf_px(k, i) for k, sh in parked.items())
         if cfg["overlay"] in ("v5", "v5_soft"):
@@ -1271,6 +1272,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             _v5_orders(m, ocfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
         else:
             scfg = cfg if not cfg.get("stagger") else dict(cfg, _tr=tranche_of(i), _ntr=len(cfg["stagger"]))
+            if paused:
+                # exp61: buy the dip during a pause. Only top-ranked candidates whose RSI is at or below pause_dip_rsi,
+                # and at most pause_dip_slots new names per decision day.
+                scfg = dict(scfg, rsi_max=dip, _dip_max=cfg.get("pause_dip_slots", 2))
             _slot_orders(m, scfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
 
     out = dict(curve=pd.Series(curve, index=m.dates[i0:i1]), expo=pd.Series(expo, index=m.dates[i0:i1]),
@@ -1291,6 +1296,26 @@ def _park_name(park, m, i, cfg=None, paused=False):
     cfg["leader_lb"] sessions to yesterday's close. "leader_safe": the same, but SHY while the
     buy pause is on, so parked cash does not ride a falling market."""
     if park in ("leader", "leader_safe"):
+        if park == "leader_safe" and paused and (cfg or {}).get("pause_dip_index_rsi"):
+            # exp61: during a pause, park in the leading index for dip_hold sessions once SPY's 14-day RSI closes
+            # at or below pause_dip_index_rsi (capitulation); otherwise short Treasuries as before
+            c_ = cfg
+            if c_.get("_dipx_last", -1) > i:
+                c_["_dipx_until"] = -1                      # a new run started: forget the previous run's timer
+            c_["_dipx_last"] = i
+            if c_.get("_dipx_until", -1) < i:
+                if not hasattr(m, "_spy_rsi"):
+                    s_ = pd.Series(m.E["SPY"]["c"]); d_ = s_.diff()
+                    up = d_.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean(); dn = (-d_.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+                    m._spy_rsi = (100 - 100 / (1 + up / dn)).to_numpy()
+                if m._spy_rsi[i - 1] <= c_["pause_dip_index_rsi"]:
+                    c_["_dipx_until"] = i + c_.get("dip_hold", 42)
+            if c_.get("_dipx_until", -1) >= i:
+                lb = c_.get("leader_lb", 126)
+                def mom(t):
+                    c = m.E[t]["c"]; a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
+                    return a / b - 1 if (a == a and b == b and b > 0) else -999
+                return max(LEADERS, key=mom)
         if park == "leader_safe" and paused:
             # exp57: optionally keep idle money in the leading index during a pause while that index is still
             # above its park_sma-session average (the pause stops new stock buys, not index exposure)
@@ -1439,6 +1464,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         # this tranche owns its share of the slots; the other tranche's holdings are not touched
         mine = [j for j in pos if j not in exiting and pos[j].get("meta", {}).get("tr", 0) == tr]
         free = int(round(n_stock / ntr)) - len(mine)
+    if cfg.get("_dip_max") is not None:
+        free = min(free, cfg["_dip_max"])
     if cfg.get("narrow_index") and m.narrow[i]:
         free = 0                                                # journal: new buys in narrow markets lagged SPY
     gs = cfg.get("giant_slots")

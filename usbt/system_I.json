@@ -1,0 +1,43 @@
+{
+ "name": "System I",
+ "frozen": "2026-10-15",
+ "description": "System H + index hurdle: a stock is bought only if its 6-month return beats the best of SPY/QQQ/SMH; otherwise the money stays in the leading index. Acceptance test on the standard (corrected) data: +0.9 pts overall, every era slightly better, held-back +0.9, drawdown record unchanged; below the 2-point bar, adopted by the owner. Margins -5..+10 pts all give the same gain.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.0,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0
+ }
+}
