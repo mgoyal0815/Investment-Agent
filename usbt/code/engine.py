@@ -977,7 +977,23 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 for u_ in ue:
                     if u_.startswith("ra_"):         # e.g. ra_hblv50: ratio crosses above its 50-session average
                         rr, nn = m.ra_series(u_[3:])
-                        fire |= rr is not None and not m.ra_below(rr, nn, i) and m.ra_below(rr, nn, i - 1)
+                        f_ = rr is not None and not m.ra_below(rr, nn, i) and m.ra_below(rr, nn, i - 1)
+                        # exp59: a second signal must agree on the day (all listed): "spy50" SPY above its 50-day,
+                        # "b50_40" over 40% of members above their 50-day, "mcc" McClellan oscillator > 0,
+                        # "hblv50" high-beta/low-vol above its 50-day, "vixrel1" VIX below its 50-day average
+                        for cf_ in cfg.get("unpause_confirm", []):
+                            if cf_.startswith("spy"):
+                                f_ &= m.etf_vs_sma("SPY", int(cf_[3:]), i) > 0
+                            elif cf_.startswith("b50_"):
+                                b_ = getattr(m, "b50_pit", m.b50); f_ &= bool(b_[i] > float(cf_[4:]) / 100)
+                            elif cf_ == "mcc":
+                                f_ &= bool(m.mcc_osc[i] > 0)
+                            elif cf_.startswith("vixrel"):
+                                f_ &= bool(m.vix_rel[i] == m.vix_rel[i] and m.vix_rel[i] < float(cf_[6:]))
+                            else:
+                                r2, n2 = m.ra_series(cf_)
+                                f_ &= r2 is not None and not m.ra_below(r2, n2, i)
+                        fire |= f_
                 if "nhnl" in ue:
                     fire |= m.nhnl[i] > 0 and np.nanmin(m.nhnl[i - 40:i]) < -cfg.get("nhnl_depth", 0.05)
                 spy_now = m.E["SPY"]["c"][i]
