@@ -1,3 +1,32 @@
+# UPDATE (15 October 2026): System G adopted
+
+System G = System F + two changes (`system_G.json`, numbers in `results/final_G_*`):
+- resume buying for 21 sessions when the Coppock Curve turns up from below zero, even while paused;
+- buy only stocks whose on-balance-volume trend is >= 0.
+
+Acceptance test (`results/accept_copp21_obv0.txt`): +2.4 points of years beating SPY and QQQ over every
+monthly start, every era better (2000-11 +0.8, 2012-19 +5.3, 2020-25 +9.6), drawdown-ok 77.7% -> 78.1%,
+worst fall -47.9% -> -41.6%. Held-back mid-month starts +0.7 points against a 1-point bar: a near-pass,
+adopted by the owner.
+
+| Clean data, Jan 2000 - 12 Oct 2026 | System G | System F | live v5 | SPY | QQQ |
+|---|---|---|---|---|---|
+| $10,000 becomes | $1,650k | $1,562k | $211k | $86k | $93k |
+| Growth a year (one run from 2000) | 21.0% | 20.8% | 12.1% | 8.4% | 8.7% |
+| Worst fall (one run from 2000) | -32% | -35% | -34% | -55% | -83% |
+| Calendar years 2000-2025 beating SPY and QQQ | 15 of 26 | 16 of 26 | | | |
+| Years beating SPY and QQQ, every monthly start | 55.9% | 53.5% | 33.3% | | |
+| Median growth a year, every monthly start | 28.8% | 28.6% | 13.6% | | |
+| Starts with a worst fall smaller than SPY's and QQQ's | 78% | 78% | 76% | | |
+| Worst fall, any start | -42% | -48% | -38% | | |
+
+Tested and rejected on the way (results/accept_*.txt, *_quick.csv): Coppock 21 or 252 days alone,
+McClellan depth 150, new highs minus new lows, a SPY new-low guard on the re-entry window (it cancelled
+almost every restart), and the Minervini trend template (2000-08 starts down 6-10 points, 2020-25 down
+3-6 points). The goal (beat SPY and QQQ every year from every start) is still not reached.
+
+---
+
 # UPDATE (15 October 2026): System F adopted
 
 System F = System E + buy only when ADX >= 25 with buyers in charge (`system_F.json`). Acceptance test:

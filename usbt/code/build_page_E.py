@@ -14,12 +14,13 @@ SER = [(NAME, "e"), ("live v5", "v5"), ("SPY", "spy"), ("QQQ", "qqq"), ("SMH", "
 # ---- growth chart (log scale), weekly points
 W, H, L, Rt, T, B = 920, 400, 64, 118, 18, 34
 c = cur.resample("W-FRI").last()
-lo, hi = 1500, 1_200_000
+lo, hi = 1500, max(1_200_000, cur.max().max() * 1.15)
 x0, x1 = c.index[0], c.index[-1]
 fx = lambda t: L + (t - x0).days / (x1 - x0).days * (W - L - Rt)
 fy = lambda v: T + (math.log10(hi) - math.log10(v)) / (math.log10(hi) - math.log10(lo)) * (H - T - B)
 g = []
-for v, lab in [(2000, "$2k"), (5000, "$5k"), (10000, "$10k"), (20000, "$20k"), (50000, "$50k"), (100000, "$100k"), (200000, "$200k"), (500000, "$500k"), (1000000, "$1M")]:
+for v, lab in [(2000, "$2k"), (5000, "$5k"), (10000, "$10k"), (20000, "$20k"), (50000, "$50k"), (100000, "$100k"), (200000, "$200k"), (500000, "$500k"), (1000000, "$1M"), (2000000, "$2M")]:
+    if v > hi: continue
     y = fy(v); g.append(f'<line class="grid" x1="{L}" x2="{W-Rt}" y1="{y:.1f}" y2="{y:.1f}"/><text class="ax" x="{L-8}" y="{y+4:.1f}" text-anchor="end">{lab}</text>')
 for yr in range(2000, 2027, 2):
     x = fx(pd.Timestamp(f"{yr}-01-01")); g.append(f'<text class="ax" x="{x:.1f}" y="{H-10}" text-anchor="middle">{yr}</text>')
