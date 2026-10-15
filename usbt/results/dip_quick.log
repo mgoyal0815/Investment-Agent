@@ -1,0 +1,27 @@
+System I
+Paused: buy top-ranked stocks with RSI <= 30, up to 2 per review
+Paused: buy top-ranked stocks with RSI <= 35, up to 2 per review
+Paused: buy top-ranked stocks with RSI <= 40, up to 2 per review
+Paused: buy top-ranked stocks with RSI <= 50, up to 2 per review
+Paused: buy top-ranked stocks with RSI <= 35, up to 1 per review
+Paused: buy top-ranked stocks with RSI <= 35, up to 5 per review
+Paused: hold the leading index 21 sessions after SPY RSI <= 25
+Paused: hold the leading index 42 sessions after SPY RSI <= 25
+Paused: hold the leading index 21 sessions after SPY RSI <= 30
+Paused: hold the leading index 42 sessions after SPY RSI <= 30
+Paused: hold the leading index 21 sessions after SPY RSI <= 35
+Paused: hold the leading index 42 sessions after SPY RSI <= 35
+                                                            rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                        System I                 0.67                 1.00                0.240               0.603               1.000               0.111               0.774               0.042               0.609
+Paused: buy top-ranked stocks with RSI <= 30, up to 2 per review                 0.66                 1.00                0.235               0.640               1.000               0.116               0.750               0.042               0.594
+Paused: buy top-ranked stocks with RSI <= 35, up to 2 per review                 0.66                 1.00                0.235               0.640               1.000               0.116               0.750               0.042               0.594
+Paused: buy top-ranked stocks with RSI <= 40, up to 2 per review                 0.66                 1.00                0.235               0.640               1.000               0.116               0.750               0.042               0.594
+Paused: buy top-ranked stocks with RSI <= 50, up to 2 per review                 0.64                 1.00                0.243               0.672               1.000               0.100               0.762               0.042               0.658
+Paused: buy top-ranked stocks with RSI <= 35, up to 1 per review                 0.66                 1.00                0.235               0.640               1.000               0.116               0.750               0.042               0.594
+Paused: buy top-ranked stocks with RSI <= 35, up to 5 per review                 0.66                 1.00                0.235               0.640               1.000               0.116               0.750               0.042               0.594
+  Paused: hold the leading index 21 sessions after SPY RSI <= 25                 0.81                 1.00                0.257               0.619               1.000               0.112               0.786               0.042               0.653
+  Paused: hold the leading index 42 sessions after SPY RSI <= 25                 0.73                 1.00                0.250               0.603               1.000               0.095               0.786               0.042               0.653
+  Paused: hold the leading index 21 sessions after SPY RSI <= 30                 0.66                 1.00                0.251               0.683               1.000               0.098               0.738               0.042               0.583
+  Paused: hold the leading index 42 sessions after SPY RSI <= 30                 0.63                 0.00                0.256               0.677               1.000               0.099               0.774               0.042               0.616
+  Paused: hold the leading index 21 sessions after SPY RSI <= 35                 0.72                 0.05                0.264               0.423               0.296               0.048               0.786               0.042               0.635
+  Paused: hold the leading index 42 sessions after SPY RSI <= 35                 0.57                 0.00                0.252               0.545               0.296               0.062               0.786               0.042               0.634
