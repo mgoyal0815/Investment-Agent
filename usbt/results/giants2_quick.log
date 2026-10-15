@@ -1,0 +1,23 @@
+System J
+A. 10 most-traded skip the ADX and OBV gates
+A. 20 most-traded skip the ADX and OBV gates
+A. 50 most-traded skip the ADX and OBV gates
+B. 20 most-traded get +5 rank points
+B. 20 most-traded get +10 rank points
+B. 20 most-traded get +20 rank points
+B. 50 most-traded get +10 rank points
+C. Ranking always tilted to the most-traded, weight 0.25
+C. Ranking always tilted to the most-traded, weight 0.5
+A+B. 20 most-traded skip gates and get +10 points
+                                                    rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                System J                 0.81                 1.00                0.257               0.619                 1.0               0.112               0.786               0.042               0.653
+            A. 10 most-traded skip the ADX and OBV gates                 0.80                 1.00                0.264               0.603                 1.0               0.112               0.750               0.042               0.715
+            A. 20 most-traded skip the ADX and OBV gates                 0.74                 0.90                0.258               0.640                 1.0               0.107               0.750               0.042               0.741
+            A. 50 most-traded skip the ADX and OBV gates                 0.79                 0.95                0.260               0.598                 1.0               0.107               0.762               0.042               0.714
+                    B. 20 most-traded get +5 rank points                 0.79                 1.00                0.256               0.571                 1.0               0.097               0.786               0.042               0.551
+                   B. 20 most-traded get +10 rank points                 0.76                 1.00                0.251               0.529                 1.0               0.087               0.786               0.042               0.684
+                   B. 20 most-traded get +20 rank points                 0.84                 1.00                0.278               0.603                 1.0               0.096               0.750               0.042               0.600
+                   B. 50 most-traded get +10 rank points                 0.78                 0.70                0.281               0.582                 1.0               0.088               0.821               0.042               0.583
+C. Ranking always tilted to the most-traded, weight 0.25                 0.60                 0.75                0.240               0.381                 1.0               0.029               0.714               0.042               0.444
+ C. Ranking always tilted to the most-traded, weight 0.5                 0.68                 0.10                0.257               0.402                 1.0               0.015               0.738               0.042               0.505
+       A+B. 20 most-traded skip gates and get +10 points                 0.75                 0.55                0.262               0.444                 1.0               0.073               0.774               0.042               0.683
