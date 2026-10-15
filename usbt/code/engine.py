@@ -421,6 +421,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     else:
         BREADTH, LARGE, LSMA_PIT = m.breadth, m.large_idx, None
     prev_paused = [False]
+    hyst = [False, -10 ** 6]   # exp60 pause hysteresis: current vote state, session it last flipped
     unpause_until = [-1]   # index core
     up_anchor, up_block = [np.nan], [-1]   # re-entry guard (exp54): SPY level when the window opened; refire blocked until: ETF held while it is in a strong uptrend
     rebound = [False]
@@ -952,6 +953,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
             paused = sum(sig) >= (cfg["pause_k"] if cfg.get("pause_k") else (2 if cfg.get("pause_mode", "any") == "two" else 1))
+            pmd = cfg.get("pause_min_days")
+            if pmd:                                     # exp60: once the vote flips, hold the new state at least pmd sessions
+                if paused != hyst[0] and i - hyst[1] < pmd:
+                    paused = hyst[0]
+                elif paused != hyst[0]:
+                    hyst[0], hyst[1] = paused, i
             # own-book stress (owner, 15 Oct 2026): pause on OUR stock book's own drawdown / trend instead of, or
             # together with, the market signals. unit = the stock book's flow-free value.
             bp = cfg.get("book_pause")
@@ -1190,7 +1197,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if t_now is not None and pos[j].get("meta", {}).get("tr", 0) != t_now:
                     continue
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
-                    continue
+                    # exp60: a new buy is given time, unless it is already down more than rank_grace_loss
+                    if not (cfg.get("rank_grace_loss") and C[i, j] / pos[j]["cost"] - 1 < -cfg["rank_grace_loss"]):
+                        continue
+                if cfg.get("crash_no_rank") and m.spy_dd[i] == m.spy_dd[i] and m.spy_dd[i] < -cfg["crash_no_rank"]:
+                    continue                                    # exp60: no rank sells while SPY is deep below its 1-year high
                 if cfg.get("giant_slots") and pos[j].get("meta", {}).get("giant") and not paused:
                     top_, up_ = m.giants(i, 2 * cfg.get("giant_top", 20))
                     if top_[j] and up_[j]:
