@@ -181,6 +181,12 @@ class Market:
         self.narrow = ((rel > rel.rolling(63, min_periods=63).mean()) & (spy_c > spy_c.rolling(50, min_periods=50).mean())).to_numpy()
         vix = pd.Series(P["VIX"]) if P.get("VIX") is not None else None
         self.vix_rel = (vix / vix.rolling(50, min_periods=50).mean()).to_numpy() if vix is not None else np.ones(self.T)
+        try:                                            # exp68: 10y-2y Treasury spread (FRED T10Y2Y), known the next day
+            yc = pd.read_csv("../data/t10y2y.csv", parse_dates=["observation_date"]).set_index("observation_date")["T10Y2Y"]
+            yc = pd.to_numeric(yc, errors="coerce").reindex(self.dates, method="ffill").shift(1)
+            self.curve = yc.to_numpy()
+        except Exception:
+            self.curve = np.full(self.T, np.nan)
         hy, ie = pd.Series(E["HYG"]["c"]).ffill(), pd.Series(E["IEF"]["c"]).ffill()
         cr = hy / ie
         self.credit_bad = (cr < cr.rolling(50, min_periods=50).mean()).to_numpy()
@@ -351,7 +357,8 @@ class Market:
         if cfg["score"] == "robust":      # India's "robust" option: one pool, no route split
             a = pct_rank(np.where(u, P["rs126"][i], np.nan))
             b = pct_rank(np.where(u, P["dist200"][i], np.nan))
-            return pct_rank(0.5 * a + 0.5 * b), route, u
+            w_ = cfg.get("robust_w", 0.5)                  # exp68: weight on 6-month strength vs distance above the 200-day
+            return pct_rank(w_ * a + (1 - w_) * b), route, u
         a = np.where(u, P["m6"][i], np.nan)
         b = np.where(u, P["m12"][i], np.nan)
         z = lambda x: (x - np.nanmean(x)) / np.nanstd(x, ddof=1)
@@ -956,6 +963,17 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     sig.append(bool(m.credit_bad[i]))
                 elif tok == "momcrash":              # market down over two years: momentum-crash risk
                     sig.append(bool(m.mom_crash[i]))
+                elif tok == "maytooct":             # exp68: 'sell in May' - May to October counts as a pause vote
+                    sig.append(m.dates[i].month in (5, 6, 7, 8, 9, 10))
+                elif tok == "midterm":              # exp68: January-September of US midterm years
+                    sig.append(m.dates[i].year % 4 == 2 and m.dates[i].month <= 9)
+                elif tok == "uupup63":              # exp68: the dollar above its 63-day average (risk-off)
+                    sig.append(m.etf_vs_sma("UUP", 63, i) > 0)
+                elif tok == "curve_inv":            # exp68: yield curve inverted (10y below 2y)
+                    sig.append(bool(m.curve[i] == m.curve[i] and m.curve[i] < 0))
+                elif tok == "curve_uninv":          # exp68: curve un-inverting: was inverted in the last year, now positive
+                    w_ = m.curve[max(0, i - 252):i + 1]
+                    sig.append(bool(m.curve[i] == m.curve[i] and m.curve[i] > 0 and np.nanmin(w_) < 0))
                 elif tok.startswith("ra_"):          # e.g. ra_dp50: risk-appetite ratio below its 50-session average
                     rr, nn = m.ra_series(tok[3:])
                     sig.append(rr is not None and m.ra_below(rr, nn, i))
@@ -1582,6 +1600,21 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
                 continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
             continue
+        if cfg.get("buy_dip5") and not (i >= 5 and P["Cf"][i, j] <= P["Cf"][i - 5, j]):
+            continue                                            # exp68: buy only after the stock dipped over the last 5 sessions
+        if cfg.get("buy_qqq_macd_down") and not (m.etf_macd("QQQ", i) < m.etf_macd("QQQ", i - 5)):
+            continue                                            # exp68: buy only while QQQ's MACD histogram is falling (market dipping)
+        if cfg.get("max_per_sector") and m.sector is not None and m.sector[i, j] >= 0:
+            held_s = [k for k in pos if k not in exiting and m.sector[i, k] == m.sector[i, j]] + [o["j"] for o in out if o.get("kind") == "new" and m.sector[i, o["j"]] == m.sector[i, j]]
+            if len(held_s) >= cfg["max_per_sector"]:
+                continue                                        # exp68: at most this many holdings per industry
+        if cfg.get("corr_max"):
+            hold = [k for k in pos if k not in exiting] + [o["j"] for o in out if o.get("kind") == "new"]
+            if hold and i >= 63:
+                rr = np.nan_to_num(P["ret1"][i - 62:i + 1][:, [j] + hold].astype(float))
+                cc = np.corrcoef(rr.T)[0, 1:]
+                if np.nanmax(cc) > cfg["corr_max"]:
+                    continue                                    # exp68: skip a name that moves almost in step with a holding
         if cfg.get("rs_rising") and not (i >= 5 and P["rs126"][i, j] > P["rs126"][i - 5, j]):
             continue                                            # exp67: 6-month strength vs SPY rising over the last week
         if cfg.get("dist200_min") is not None and not (P["dist200"][i, j] >= cfg["dist200_min"]):
