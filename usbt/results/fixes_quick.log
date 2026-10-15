@@ -1,0 +1,27 @@
+System G
+A. Paused: keep idle money in leading index while it is above its 50d
+A. Paused: keep idle money in leading index while it is above its 100d
+A. Paused: keep idle money in leading index while it is above its 200d
+B. Top 20% by 6-month strength skip the ADX gate
+B. Top 10% by 6-month strength skip the ADX gate
+B. Top 5% by 6-month strength skip the ADX gate
+C. Profit lock trail 30% (lock at +50%)
+C. Profit lock trail 35% (lock at +50%)
+C. Profit lock trail 40% (lock at +50%)
+C. Profit lock from +75% (trail 25%)
+C. Profit lock from +100% (trail 25%)
+C. Profit lock from +900% (trail 25%)
+                                                                  rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                              System G                 0.71                 1.00                0.231               0.471                 1.0               0.081               0.738               0.042               0.558
+ A. Paused: keep idle money in leading index while it is above its 50d                 0.56                 1.00                0.215               0.481                 1.0               0.077               0.607               0.042               0.548
+A. Paused: keep idle money in leading index while it is above its 100d                 0.51                 0.15                0.216               0.466                 1.0               0.075               0.762               0.000               0.603
+A. Paused: keep idle money in leading index while it is above its 200d                 0.57                 0.00                0.216               0.423                 1.0               0.073               0.738               0.000               0.651
+                      B. Top 20% by 6-month strength skip the ADX gate                 0.71                 1.00                0.236               0.413                 1.0               0.047               0.690               0.042               0.561
+                      B. Top 10% by 6-month strength skip the ADX gate                 0.71                 1.00                0.236               0.413                 1.0               0.047               0.690               0.042               0.561
+                       B. Top 5% by 6-month strength skip the ADX gate                 0.71                 1.00                0.236               0.413                 1.0               0.047               0.690               0.042               0.561
+                               C. Profit lock trail 30% (lock at +50%)                 0.70                 0.80                0.223               0.487                 1.0               0.081               0.690               0.042               0.549
+                               C. Profit lock trail 35% (lock at +50%)                 0.70                 0.75                0.224               0.540                 1.0               0.087               0.702               0.000               0.543
+                               C. Profit lock trail 40% (lock at +50%)                 0.70                 0.75                0.224               0.540                 1.0               0.090               0.667               0.000               0.509
+                                  C. Profit lock from +75% (trail 25%)                 0.71                 0.75                0.228               0.492                 1.0               0.079               0.738               0.042               0.573
+                                 C. Profit lock from +100% (trail 25%)                 0.70                 0.10                0.225               0.492                 1.0               0.081               0.714               0.042               0.586
+                                 C. Profit lock from +900% (trail 25%)                 0.70                 0.10                0.225               0.540                 1.0               0.090               0.738               0.000               0.586
