@@ -1,0 +1,21 @@
+System J
+Dip rule triggered by QQQ RSI <= 22
+Dip rule triggered by QQQ RSI <= 25
+Dip rule triggered by QQQ RSI <= 30
+Dip rule triggered by SPY or QQQ RSI <= 22
+Dip rule triggered by SPY or QQQ RSI <= 25
+Panic ends the pause: SPY RSI <= 20
+Panic ends the pause: SPY RSI <= 25
+Panic ends the pause: SPY RSI <= 30
+Panic ends the pause: QQQ RSI <= 25
+                                      rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                  System J                 0.81                  1.0                0.257               0.619               1.000               0.112               0.786               0.042               0.653
+       Dip rule triggered by QQQ RSI <= 22                 0.67                  1.0                0.241               0.603               1.000               0.094               0.774               0.042               0.609
+       Dip rule triggered by QQQ RSI <= 25                 0.68                  1.0                0.244               0.598               1.000               0.094               0.786               0.042               0.653
+       Dip rule triggered by QQQ RSI <= 30                 0.75                  1.0                0.268               0.418               0.889               0.052               0.762               0.042               0.594
+Dip rule triggered by SPY or QQQ RSI <= 22                 0.81                  1.0                0.257               0.603               1.000               0.100               0.786               0.042               0.649
+Dip rule triggered by SPY or QQQ RSI <= 25                 0.82                  1.0                0.259               0.614               1.000               0.090               0.786               0.042               0.653
+       Panic ends the pause: SPY RSI <= 20                 0.60                  0.0                0.233               0.619               1.000               0.112               0.786               0.042               0.653
+       Panic ends the pause: SPY RSI <= 25                 0.59                  0.0                0.215               0.619               1.000               0.085               0.786               0.042               0.642
+       Panic ends the pause: SPY RSI <= 30                 0.55                  0.0                0.209               0.418               1.000               0.042               0.774               0.042               0.612
+       Panic ends the pause: QQQ RSI <= 25                 0.65                  0.0                0.229               0.614               1.000               0.070               0.786               0.042               0.642
