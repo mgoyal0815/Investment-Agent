@@ -1329,6 +1329,10 @@ def _park_name(park, m, i, cfg=None, paused=False):
                     return a / b - 1 if (a == a and b == b and b > 0) else -999
                 return max(LEADERS, key=mom)
         pp = (cfg or {}).get("pause_park")
+        if park == "leader_safe" and paused and pp and pp not in ("GLD", "GLD_trend") and pp in m.E:
+            g = m.E[pp]["c"]                            # exp63: any other ETF as the pause refuge (TLT, IEF ...)
+            if g[i] == g[i]:
+                return pp
         if park == "leader_safe" and paused and pp in ("GLD", "GLD_trend"):
             # exp63: park in gold during a pause (always, or only while gold is above its 200-day average)
             g = m.E["GLD"]["c"]

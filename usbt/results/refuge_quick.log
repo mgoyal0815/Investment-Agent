@@ -1,0 +1,21 @@
+System J
+Paused: park in gold instead of Treasuries
+Paused: park in gold while gold is above its 200d
+Paused: up to 2 slots for the 10 most-traded stocks above a rising 200d
+Paused: up to 2 slots for the 20 most-traded stocks above a rising 200d
+Paused: up to 4 slots for the 10 most-traded stocks above a rising 200d
+Paused: up to 4 slots for the 20 most-traded stocks above a rising 200d
+Paused: up to 6 slots for the 10 most-traded stocks above a rising 200d
+Paused: up to 6 slots for the 20 most-traded stocks above a rising 200d
+Paused: gold (uptrend) + 4 giant slots of top 20
+                                                                   rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                               System J                 0.81                 1.00                0.257               0.619                 1.0               0.112               0.786               0.042               0.653
+                             Paused: park in gold instead of Treasuries                 0.87                 1.00                0.306               0.698                 1.0               0.143               0.786               0.042               0.665
+                      Paused: park in gold while gold is above its 200d                 0.82                 1.00                0.277               0.677                 1.0               0.096               0.786               0.042               0.648
+Paused: up to 2 slots for the 10 most-traded stocks above a rising 200d                 0.73                 0.95                0.291               0.503                 1.0               0.076               0.798               0.042               0.642
+Paused: up to 2 slots for the 20 most-traded stocks above a rising 200d                 0.73                 0.95                0.281               0.534                 1.0               0.081               0.798               0.042               0.668
+Paused: up to 4 slots for the 10 most-traded stocks above a rising 200d                 0.66                 0.30                0.270               0.571                 1.0               0.094               0.750               0.042               0.632
+Paused: up to 4 slots for the 20 most-traded stocks above a rising 200d                 0.67                 0.05                0.274               0.492                 1.0               0.081               0.774               0.042               0.667
+Paused: up to 6 slots for the 10 most-traded stocks above a rising 200d                 0.65                 0.10                0.267               0.614                 1.0               0.105               0.774               0.042               0.627
+Paused: up to 6 slots for the 20 most-traded stocks above a rising 200d                 0.59                 0.00                0.261               0.545                 1.0               0.076               0.774               0.042               0.655
+                       Paused: gold (uptrend) + 4 giant slots of top 20                 0.72                 0.00                0.282               0.497                 1.0               0.076               0.786               0.042               0.669
