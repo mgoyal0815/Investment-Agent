@@ -1,0 +1,43 @@
+{
+ "name": "H + index hurdle",
+ "frozen": "2026-10-15",
+ "description": "System G + also resume buying for 42 sessions when cyclicals/defensives (XLY+XLK+XLI+XLF vs XLP+XLU+XLV) crosses above its 100-day average (Coppock restart window becomes 42 sessions too). Acceptance test: +4.5 pts overall, every era better (2000-11 +5.5, 2012-19 +1.4, 2020-25 +5.0), held-back starts +4.1 pts; drawdown-ok 78.1%->76.8% and worst fall -41.6%->-45.8% (bar 3 pts). Adopted by the owner despite the drawdown misses.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.0,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0
+ }
+}
