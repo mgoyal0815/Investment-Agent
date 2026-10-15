@@ -1,0 +1,44 @@
+{'boundary': 2008, 'system': 'F', 'past_8y': np.float64(0.5297619047619048), 'next_4y': np.float64(0.5331632653061225)}
+{'boundary': 2008, 'system': 'G', 'past_8y': np.float64(0.5654761904761905), 'next_4y': np.float64(0.5561224489795918)}
+{'boundary': 2008, 'system': 'H', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.5841836734693877)}
+{'boundary': 2008, 'system': 'I', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.5943877551020408)}
+{'boundary': 2008, 'system': 'J', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.6454081632653061)}
+{'boundary': 2008, 'system': 'K', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.6556122448979592)}
+{'boundary': 2012, 'system': 'F', 'past_8y': np.float64(0.375), 'next_4y': np.float64(0.5472972972972973)}
+{'boundary': 2012, 'system': 'G', 'past_8y': np.float64(0.38095238095238093), 'next_4y': np.float64(0.6047297297297297)}
+{'boundary': 2012, 'system': 'H', 'past_8y': np.float64(0.5059523809523809), 'next_4y': np.float64(0.6013513513513513)}
+{'boundary': 2012, 'system': 'I', 'past_8y': np.float64(0.5059523809523809), 'next_4y': np.float64(0.6081081081081081)}
+{'boundary': 2012, 'system': 'J', 'past_8y': np.float64(0.5238095238095238), 'next_4y': np.float64(0.6756756756756757)}
+{'boundary': 2012, 'system': 'K', 'past_8y': np.float64(0.625), 'next_4y': np.float64(0.6756756756756757)}
+{'boundary': 2016, 'system': 'F', 'past_8y': np.float64(0.47023809523809523), 'next_4y': np.float64(0.38)}
+{'boundary': 2016, 'system': 'G', 'past_8y': np.float64(0.4642857142857143), 'next_4y': np.float64(0.485)}
+{'boundary': 2016, 'system': 'H', 'past_8y': np.float64(0.44642857142857145), 'next_4y': np.float64(0.485)}
+{'boundary': 2016, 'system': 'I', 'past_8y': np.float64(0.44642857142857145), 'next_4y': np.float64(0.49)}
+{'boundary': 2016, 'system': 'J', 'past_8y': np.float64(0.4523809523809524), 'next_4y': np.float64(0.6)}
+{'boundary': 2016, 'system': 'K', 'past_8y': np.float64(0.47619047619047616), 'next_4y': np.float64(0.6)}
+{'boundary': 2020, 'system': 'F', 'past_8y': np.float64(0.5773809523809523), 'next_4y': np.float64(0.5576923076923077)}
+{'boundary': 2020, 'system': 'G', 'past_8y': np.float64(0.6130952380952381), 'next_4y': np.float64(0.6826923076923077)}
+{'boundary': 2020, 'system': 'H', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.7019230769230769)}
+{'boundary': 2020, 'system': 'I', 'past_8y': np.float64(0.5714285714285714), 'next_4y': np.float64(0.7211538461538461)}
+{'boundary': 2020, 'system': 'J', 'past_8y': np.float64(0.7619047619047619), 'next_4y': np.float64(0.75)}
+{'boundary': 2020, 'system': 'K', 'past_8y': np.float64(0.7619047619047619), 'next_4y': np.float64(0.75)}
+{'boundary': 2024, 'system': 'F', 'past_8y': np.float64(0.25595238095238093), 'next_4y': np.float64(0.75)}
+{'boundary': 2024, 'system': 'G', 'past_8y': np.float64(0.27380952380952384), 'next_4y': np.float64(0.6875)}
+{'boundary': 2024, 'system': 'H', 'past_8y': np.float64(0.36904761904761907), 'next_4y': np.float64(0.75)}
+{'boundary': 2024, 'system': 'I', 'past_8y': np.float64(0.36904761904761907), 'next_4y': np.float64(0.8125)}
+{'boundary': 2024, 'system': 'J', 'past_8y': np.float64(0.47023809523809523), 'next_4y': np.float64(1.0)}
+{'boundary': 2024, 'system': 'K', 'past_8y': np.float64(0.47023809523809523), 'next_4y': np.float64(1.0)}
+system        F      G      H      I      J      K
+boundary                                          
+2008      0.533  0.556  0.584  0.594  0.645  0.656
+2012      0.547  0.605  0.601  0.608  0.676  0.676
+2016      0.380  0.485  0.485  0.490  0.600  0.600
+2020      0.558  0.683  0.702  0.721  0.750  0.750
+2024      0.750  0.688  0.750  0.812  1.000  1.000
+ boundary picked  past_8y  next_4y  K_next_4y  G_next_4y  best_next_4y
+     2008      H    0.571    0.584      0.656      0.556         0.656
+     2012      K    0.625    0.676      0.676      0.605         0.676
+     2016      K    0.476    0.600      0.600      0.485         0.600
+     2020      J    0.762    0.750      0.750      0.683         0.750
+     2024      J    0.470    1.000      1.000      0.688         1.000
+average next-4y: walk-forward pick 0.722, always K 0.736, always G 0.603

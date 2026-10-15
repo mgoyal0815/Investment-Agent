@@ -1,0 +1,49 @@
+System K
+1. Hold 8 stocks
+1. Hold 12 stocks
+1. Hold 15 stocks
+1. Sell below rank 1.2x holdings
+1. Sell below rank 2.0x holdings
+1. Review monthly (one review)
+1. Review about weekly (4 staggered reviews)
+1. Ranking: 30% 6m strength / 70% distance above 200d
+1. Ranking: 70% 6m strength / 30% distance above 200d
+1. Ranking blended with mom12_1 (weight 0.3)
+1. Ranking blended with mom63 (weight 0.3)
+2. At most 2 holdings per industry
+2. At most 3 holdings per industry
+2. Skip names correlated above 0.7 with a holding
+2. Skip names correlated above 0.8 with a holding
+3. Buy only stocks that dipped over the last 5 days
+3. Buy only while QQQ MACD is falling
+3. Sell in May: May-Oct is a pause vote
+3. Midterm years Jan-Sep are a pause vote
+4. Dollar rising (UUP above 63d) is a pause vote
+4. Commodities falling (DBC below 50d) is a pause vote
+4. Yield curve inverted is a pause vote
+4. Yield curve un-inverting is a pause vote
+                                                  rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                              System K                 0.81                  1.0                0.257               0.667                 1.0               0.135               0.786               0.042               0.653
+                                      1. Hold 8 stocks                 0.78                  1.0                0.293               0.661                 1.0               0.136               0.774               0.042               0.748
+                                     1. Hold 12 stocks                 0.54                  1.0                0.214               0.683                 1.0               0.122               0.786               0.042               0.594
+                                     1. Hold 15 stocks                 0.55                  1.0                0.190               0.487                 1.0               0.092               0.714               0.042               0.475
+                      1. Sell below rank 1.2x holdings                 0.74                  1.0                0.247               0.683                 1.0               0.135               0.786               0.042               0.658
+                      1. Sell below rank 2.0x holdings                 0.80                  1.0                0.258               0.672                 1.0               0.142               0.774               0.042               0.565
+                        1. Review monthly (one review)                 0.65                  1.0                0.243               0.497                 1.0               0.092               0.667               0.042               0.520
+          1. Review about weekly (4 staggered reviews)                 0.61                  0.0                0.205               0.698                 1.0               0.163               0.738               0.042               0.624
+ 1. Ranking: 30% 6m strength / 70% distance above 200d                 0.78                  1.0                0.243               0.545                 1.0               0.115               0.786               0.042               0.652
+ 1. Ranking: 70% 6m strength / 30% distance above 200d                 0.77                  1.0                0.251               0.667                 1.0               0.125               0.786               0.042               0.615
+          1. Ranking blended with mom12_1 (weight 0.3)                 0.44                  0.0                0.200               0.386                 1.0               0.062               0.762               0.042               0.536
+            1. Ranking blended with mom63 (weight 0.3)                 0.66                  1.0                0.189               0.402                 1.0               0.088               0.560               0.042               0.607
+                    2. At most 2 holdings per industry                 0.70                  0.0                0.258               0.688                 1.0               0.134               0.690               0.042               0.575
+                    2. At most 3 holdings per industry                 0.80                  1.0                0.256               0.688                 1.0               0.126               0.786               0.042               0.648
+     2. Skip names correlated above 0.7 with a holding                 0.81                  1.0                0.270               0.667                 1.0               0.131               0.786               0.042               0.519
+     2. Skip names correlated above 0.8 with a holding                 0.79                  1.0                0.255               0.672                 1.0               0.135               0.786               0.042               0.583
+   3. Buy only stocks that dipped over the last 5 days                 0.58                  0.5                0.223               0.513                 1.0               0.108               0.702               0.042               0.345
+                 3. Buy only while QQQ MACD is falling                 0.54                  0.0                0.230               0.582                 1.0               0.108               0.667               0.042               0.576
+               3. Sell in May: May-Oct is a pause vote                 0.74                  0.8                0.255               0.429                 1.0               0.107               0.774               0.042               0.583
+             3. Midterm years Jan-Sep are a pause vote                 0.76                  1.0                0.255               0.709                 1.0               0.143               0.774               0.042               0.678
+      4. Dollar rising (UUP above 63d) is a pause vote                 0.71                  1.0                0.256               0.661                 1.0               0.145               0.571               0.042               0.538
+4. Commodities falling (DBC below 50d) is a pause vote                 0.67                  0.9                0.234               0.635                 1.0               0.122               0.560               0.042               0.513
+               4. Yield curve inverted is a pause vote                 0.81                  1.0                0.257               0.667                 1.0               0.124               0.619               0.042               0.566
+           4. Yield curve un-inverting is a pause vote                 0.81                  1.0                0.257               0.667                 1.0               0.119               0.774               0.042               0.700

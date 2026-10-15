@@ -1,0 +1,50 @@
+{
+ "name": "K + industry cap 3",
+ "frozen": "2026-10-15",
+ "description": "System J + the pause-time index hold (21 sessions) also triggers when SPY closes 18% or more below its 20-day high (a crash in percentage terms), not only on SPY RSI <= 25. Neighbouring settings: 18% within 15-20 days +1.5 pts over J on every second monthly start, same worst fall; gentler triggers (12-15%, or 30-day windows) deepen the worst fall. Adopted by the owner as a small, low-risk improvement.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 10,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.0,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ],
+  "max_per_sector": 3
+ }
+}
