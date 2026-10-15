@@ -1,0 +1,27 @@
+System G
+Park 25% in leading index during pauses while it is above its 200d
+Park 50% in leading index during pauses while it is above its 200d
+Park 75% in leading index during pauses while it is above its 200d
+Park 25% in leading index during pauses while it is above its 100d
+Park 50% in leading index during pauses while it is above its 100d
+Park 75% in leading index during pauses while it is above its 100d
+Giants path: 2 slots for the 10 most-traded above a rising 200d
+Giants path: 2 slots for the 20 most-traded above a rising 200d
+Giants path: 2 slots for the 50 most-traded above a rising 200d
+Giants path: 4 slots for the 10 most-traded above a rising 200d
+Giants path: 4 slots for the 20 most-traded above a rising 200d
+Giants path: 4 slots for the 50 most-traded above a rising 200d
+                                                              rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                          System G                 0.71                  1.0                0.231               0.471                 1.0               0.081               0.738               0.042               0.558
+Park 25% in leading index during pauses while it is above its 200d                 0.65                  1.0                0.230               0.439                 1.0               0.079               0.762               0.042               0.590
+Park 50% in leading index during pauses while it is above its 200d                 0.59                  1.0                0.226               0.434                 1.0               0.078               0.750               0.042               0.617
+Park 75% in leading index during pauses while it is above its 200d                 0.59                  0.0                0.223               0.434                 1.0               0.075               0.738               0.000               0.641
+Park 25% in leading index during pauses while it is above its 100d                 0.70                  1.0                0.229               0.434                 1.0               0.080               0.750               0.042               0.578
+Park 50% in leading index during pauses while it is above its 100d                 0.60                  1.0                0.224               0.471                 1.0               0.080               0.762               0.042               0.591
+Park 75% in leading index during pauses while it is above its 100d                 0.58                  1.0                0.220               0.466                 1.0               0.077               0.738               0.000               0.592
+   Giants path: 2 slots for the 10 most-traded above a rising 200d                 0.76                  1.0                0.284               0.397                 1.0               0.054               0.679               0.042               0.556
+   Giants path: 2 slots for the 20 most-traded above a rising 200d                 0.72                  1.0                0.283               0.476                 1.0               0.070               0.679               0.042               0.555
+   Giants path: 2 slots for the 50 most-traded above a rising 200d                 0.67                  1.0                0.260               0.450                 1.0               0.063               0.667               0.042               0.532
+   Giants path: 4 slots for the 10 most-traded above a rising 200d                 0.66                  1.0                0.280               0.386                 1.0               0.040               0.667               0.042               0.471
+   Giants path: 4 slots for the 20 most-traded above a rising 200d                 0.71                  1.0                0.274               0.545                 1.0               0.060               0.464               0.042               0.330
+   Giants path: 4 slots for the 50 most-traded above a rising 200d                 0.71                  1.0                0.280               0.561                 1.0               0.067               0.595               0.042               0.446
