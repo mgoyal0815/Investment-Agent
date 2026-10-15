@@ -1,0 +1,21 @@
+{'test': 'System J', 'beat': np.float64(0.6509615384615385), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'RSI 25 or SPY 12% below its 15-day high', 'beat': np.float64(0.6581730769230769), 'ddok': np.float64(0.4), 'cagr': np.float64(0.3416950579838782), 'worst': np.float64(-0.4256032713879321)}
+{'test': 'RSI 25 or SPY 12% below its 20-day high', 'beat': np.float64(0.6533653846153846), 'ddok': np.float64(0.3935483870967742), 'cagr': np.float64(0.3416950579838782), 'worst': np.float64(-0.5036527150479646)}
+{'test': 'RSI 25 or SPY 12% below its 30-day high', 'beat': np.float64(0.6365384615384615), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.3401694567742317), 'worst': np.float64(-0.5047336801172667)}
+{'test': 'RSI 25 or SPY 15% below its 15-day high', 'beat': np.float64(0.6639423076923077), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.4177370580442954)}
+{'test': 'RSI 25 or SPY 15% below its 20-day high', 'beat': np.float64(0.6639423076923077), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.4177370580442954)}
+{'test': 'RSI 25 or SPY 15% below its 30-day high', 'beat': np.float64(0.645673076923077), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33981466363599866), 'worst': np.float64(-0.4755782848358189)}
+{'test': 'RSI 25 or SPY 18% below its 15-day high', 'beat': np.float64(0.6658653846153846), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'RSI 25 or SPY 18% below its 20-day high', 'beat': np.float64(0.6658653846153846), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'RSI 25 or SPY 18% below its 30-day high', 'beat': np.float64(0.6644230769230769), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.4755782848358189)}
+                                   test  beat  ddok  cagr  worst
+                               System J 0.651 0.400 0.335 -0.367
+RSI 25 or SPY 12% below its 15-day high 0.658 0.400 0.342 -0.426
+RSI 25 or SPY 12% below its 20-day high 0.653 0.394 0.342 -0.504
+RSI 25 or SPY 12% below its 30-day high 0.637 0.381 0.340 -0.505
+RSI 25 or SPY 15% below its 15-day high 0.664 0.400 0.335 -0.418
+RSI 25 or SPY 15% below its 20-day high 0.664 0.400 0.335 -0.418
+RSI 25 or SPY 15% below its 30-day high 0.646 0.400 0.340 -0.476
+RSI 25 or SPY 18% below its 15-day high 0.666 0.400 0.335 -0.367
+RSI 25 or SPY 18% below its 20-day high 0.666 0.400 0.335 -0.367
+RSI 25 or SPY 18% below its 30-day high 0.664 0.400 0.335 -0.476
