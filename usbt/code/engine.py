@@ -1330,14 +1330,17 @@ def _park_name(park, m, i, cfg=None, paused=False):
                 c_["_dipx_until"] = -1                      # a new run started: forget the previous run's timer
             c_["_dipx_last"] = i
             if c_.get("_dipx_until", -1) < i:
-                trig = bool(c_.get("pause_dip_index_rsi")) and any(m.etf_rsi(t_)[i - 1] <= c_["pause_dip_index_rsi"] for t_ in c_.get("dip_on", ("SPY",)))
-                dv = c_.get("dip_vix")
+                if c_.get("_dip_rand") is not None:          # audit placebo: the index hold starts on random dates instead
+                    trig = (i - 1) in c_["_dip_rand"]
+                else:
+                  trig = bool(c_.get("pause_dip_index_rsi")) and any(m.etf_rsi(t_)[i - 1] <= c_["pause_dip_index_rsi"] for t_ in c_.get("dip_on", ("SPY",)))
+                dv = None if c_.get("_dip_rand") is not None else c_.get("dip_vix")
                 if dv and not trig:
                     # exp66: VIX spike. VIX peaked at or above dv[0] within 10 sessions and is now dv[1] below that peak
                     v_ = m.P.get("VIX")
                     if v_ is not None and i > 12:
                         pk = np.nanmax(v_[i - 11:i]); trig = bool(pk >= dv[0] and v_[i - 1] <= pk * (1 - dv[1]))
-                df_ = c_.get("dip_fall")
+                df_ = None if c_.get("_dip_rand") is not None else c_.get("dip_fall")
                 if df_ and not trig:
                     # exp66: steep fall. SPY closed at least df_[0] below its highest close of the last df_[1] sessions
                     sp_ = m.E["SPY"]["c"]
