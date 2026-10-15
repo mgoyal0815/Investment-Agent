@@ -1,0 +1,31 @@
+System G
+Cyc/def crosses 75d, no confirmation
+Cyc/def crosses 100d, no confirmation
+Cyc/def crosses 150d, no confirmation
+Cyc/def crosses 100d + SPY above 50d
+Cyc/def crosses 100d + 40%+ of stocks above 50d
+Cyc/def crosses 100d + 50%+ of stocks above 50d
+Cyc/def crosses 100d + McClellan > 0
+Cyc/def crosses 100d + high-beta/low-vol above 50d
+Cyc/def crosses 100d + high-beta/low-vol above 100d
+Cyc/def crosses 100d + VIX below its 50d average
+Cyc/def crosses 100d, 42-day window
+Disc/staples crosses 50d + SPY above 50d
+Disc/staples crosses 50d + McClellan > 0
+Disc/staples crosses 50d + 50%+ of stocks above 50d
+                                               rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                           System G                 0.71                 1.00                0.231               0.471               1.000               0.081               0.738               0.042               0.558
+               Cyc/def crosses 75d, no confirmation                 0.74                 1.00                0.253               0.455               1.000               0.046               0.774               0.000               0.566
+              Cyc/def crosses 100d, no confirmation                 0.64                 1.00                0.242               0.640               1.000               0.111               0.690               0.042               0.534
+              Cyc/def crosses 150d, no confirmation                 0.64                 1.00                0.235               0.481               1.000               0.090               0.774               0.000               0.603
+               Cyc/def crosses 100d + SPY above 50d                 0.66                 1.00                0.241               0.471               1.000               0.073               0.750               0.042               0.556
+    Cyc/def crosses 100d + 40%+ of stocks above 50d                 0.66                 1.00                0.243               0.519               1.000               0.080               0.726               0.042               0.543
+    Cyc/def crosses 100d + 50%+ of stocks above 50d                 0.68                 1.00                0.245               0.471               1.000               0.071               0.750               0.042               0.567
+               Cyc/def crosses 100d + McClellan > 0                 0.63                 1.00                0.236               0.593               1.000               0.102               0.750               0.042               0.595
+ Cyc/def crosses 100d + high-beta/low-vol above 50d                 0.69                 1.00                0.247               0.513               1.000               0.080               0.714               0.042               0.528
+Cyc/def crosses 100d + high-beta/low-vol above 100d                 0.68                 1.00                0.244               0.556               1.000               0.081               0.750               0.042               0.556
+   Cyc/def crosses 100d + VIX below its 50d average                 0.68                 1.00                0.240               0.519               1.000               0.080               0.750               0.042               0.549
+                Cyc/def crosses 100d, 42-day window                 0.67                 1.00                0.235               0.577               1.000               0.106               0.762               0.042               0.593
+           Disc/staples crosses 50d + SPY above 50d                 0.66                 0.95                0.245               0.386               0.963               0.019               0.631               0.000               0.607
+           Disc/staples crosses 50d + McClellan > 0                 0.75                 1.00                0.253               0.254               0.037               0.012               0.655               0.000               0.584
+Disc/staples crosses 50d + 50%+ of stocks above 50d                 0.65                 0.95                0.242               0.249               0.037               0.005               0.631               0.000               0.592
