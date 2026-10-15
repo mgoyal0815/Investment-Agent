@@ -252,6 +252,16 @@ class Market:
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
 
+    def etf_rsi(self, t):
+        """14-day Wilder RSI of an index ETF from its closes (exp62), cached."""
+        if not hasattr(self, "_ersi"):
+            self._ersi = {}
+        if t not in self._ersi:
+            s_ = pd.Series(self.E[t]["c"]); d_ = s_.diff()
+            up = d_.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean(); dn = (-d_.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+            self._ersi[t] = (100 - 100 / (1 + up / dn)).to_numpy()
+        return self._ersi[t]
+
     def giants(self, i, k, rise=63):
         """exp58: the k most-traded (median dollar volume) S&P 500 members that day, as a boolean mask, and
         whether each is above a rising 200-session average (rising over `rise` sessions). Dollar volume only, no caps."""
@@ -984,6 +994,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     fire |= m.coppock[i] < 0 and m.coppock[i] > m.coppock[i - 21] and m.coppock[i - 21] <= m.coppock[i - 42]
                 if "mcclellan" in ue:
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
+                for u_ in ue:
+                    if u_[:3] in ("spy", "qqq") and u_[3:6] == "rsi":  # exp62: a panic (RSI <= NN) ends the pause
+                        fire |= bool(m.etf_rsi(u_[:3].upper())[i] <= float(u_[6:]))
                 if "random" in ue and i in cfg.get("_rand_days", ()):
                     fire = True                      # audit placebo: restart on random dates at the real signal's frequency
                 for u_ in ue:
@@ -1304,11 +1317,7 @@ def _park_name(park, m, i, cfg=None, paused=False):
                 c_["_dipx_until"] = -1                      # a new run started: forget the previous run's timer
             c_["_dipx_last"] = i
             if c_.get("_dipx_until", -1) < i:
-                if not hasattr(m, "_spy_rsi"):
-                    s_ = pd.Series(m.E["SPY"]["c"]); d_ = s_.diff()
-                    up = d_.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean(); dn = (-d_.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
-                    m._spy_rsi = (100 - 100 / (1 + up / dn)).to_numpy()
-                if m._spy_rsi[i - 1] <= c_["pause_dip_index_rsi"]:
+                if any(m.etf_rsi(t_)[i - 1] <= c_["pause_dip_index_rsi"] for t_ in c_.get("dip_on", ("SPY",))):
                     c_["_dipx_until"] = i + c_.get("dip_hold", 42)
             if c_.get("_dipx_until", -1) >= i:
                 lb = c_.get("leader_lb", 126)
