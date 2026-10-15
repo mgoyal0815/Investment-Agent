@@ -372,7 +372,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     else:
         BREADTH, LARGE, LSMA_PIT = m.breadth, m.large_idx, None
     prev_paused = [False]
-    unpause_until = [-1]   # index core: ETF held while it is in a strong uptrend
+    unpause_until = [-1]   # index core
+    up_anchor, up_block = [np.nan], [-1]   # re-entry guard (exp54): SPY level when the window opened; refire blocked until: ETF held while it is in a strong uptrend
     rebound = [False]
     park_state = [None]
     pend_core = None
@@ -899,8 +900,14 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
                 if "nhnl" in ue:
                     fire |= m.nhnl[i] > 0 and np.nanmin(m.nhnl[i - 40:i]) < -cfg.get("nhnl_depth", 0.05)
-                if fire:
+                spy_now = m.E["SPY"]["c"][i]
+                if fire and i > up_block[0]:
+                    if i > unpause_until[0]:
+                        up_anchor[0] = spy_now
                     unpause_until[0] = i + cfg.get("unpause_days", 42)
+                us = cfg.get("unpause_stop")
+                if us is not None and i <= unpause_until[0] and spy_now < up_anchor[0] * (1 - us):
+                    unpause_until[0], up_block[0] = -1, i + cfg.get("unpause_cool", 63)
                 if i <= unpause_until[0]:
                     paused = False
             # breadth thrust: a broad surge off a washout ends any pause for thrust_days sessions
