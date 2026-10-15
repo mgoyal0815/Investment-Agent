@@ -1468,9 +1468,9 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg.get("index_hurdle") and not m.is_etf[j]:
             # a stock is only bought if its 6-month return beats the best of SPY/QQQ/SMH (else the index wins the slot)
-            c_ = P["Cf"]
-            if i < 126 or not (c_[i, j] / c_[i - 126, j] - 1 > max(m.E[t]["c"][i] / m.E[t]["c"][i - 126] - 1 for t in ("SPY", "QQQ", "SMH")
-                                                                     if m.E[t]["c"][i - 126] == m.E[t]["c"][i - 126])):
+            c_ = P["Cf"]; hl = cfg.get("index_hurdle_lb", 126); hm = cfg.get("index_hurdle_margin", 0.0)
+            if i < hl or not (c_[i, j] / c_[i - hl, j] - 1 > hm + max(m.E[t]["c"][i] / m.E[t]["c"][i - hl] - 1 for t in ("SPY", "QQQ", "SMH")
+                                                                          if m.E[t]["c"][i - hl] == m.E[t]["c"][i - hl])):
                 continue
         if cfg.get("vol_max_pct"):
             if "_rvp" not in cfg or cfg["_rvp"][0] != i:
