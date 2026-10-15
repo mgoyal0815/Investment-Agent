@@ -154,6 +154,12 @@ class Market:
                     break
             except Exception:
                 pass
+        # Minervini trend template parts (exp55), from closes up to the session itself
+        _cf = pd.DataFrame(Cf_)
+        P["SMA150"] = _cf.rolling(150, min_periods=150).mean().to_numpy(np.float32)
+        P["LO52"] = _cf.rolling(252, min_periods=200).min().to_numpy(np.float32)
+        P["HI52C"] = _cf.rolling(252, min_periods=200).max().to_numpy(np.float32)
+        del _cf
         # ---- regime indicators (exp43); all use closes up to the session itself, acted on at the next open
         a50 = Cf > P["SMA50"]
         self.b50 = (a50 & top500).sum(1) / np.maximum(top500.sum(1), 1)            # share of top-500 above 50-day
@@ -1345,6 +1351,13 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
             continue
+        if cfg.get("minervini"):                                 # stage-2 trend template (Minervini 2013), RS left to the rank
+            c_, s50, s150, s200 = P["Cf"][i, j], P["SMA50"][i, j], P["SMA150"][i, j], P["SMA200"][i, j]
+            s200p = P["SMA200"][i - cfg.get("minv_rise", 21), j] if i >= 21 else np.nan
+            if not (c_ > s150 and c_ > s200 and s150 > s200 and s200 > s200p and c_ > s50
+                    and (cfg["minervini"] == "core" or (s50 > s150 and c_ >= cfg.get("minv_lo", 1.3) * P["LO52"][i, j]
+                                                        and c_ >= cfg.get("minv_hi", 0.75) * P["HI52C"][i, j]))):
+                continue
         if cfg.get("macd_pos") and not (P["MACDH"][i, j] > 0):
             continue
         if cfg.get("macd_buy_min") is not None and not (P["MACDH"][i, j] >= cfg["macd_buy_min"]):
