@@ -1,0 +1,18 @@
+{'refuge': 'J (Treasuries, SHY)', 'era': 'all', 'beat': np.float64(0.6509615384615385), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}
+{'refuge': 'gold (GLD)', 'era': 'all', 'beat': np.float64(0.6528846153846154), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.35119589376384597), 'worst': np.float64(-0.3671440216232935)}
+{'refuge': 'gold in uptrend only', 'era': 'all', 'beat': np.float64(0.6461538461538462), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.3384412156031693), 'worst': np.float64(-0.3671440216232935)}
+{'refuge': 'long Treasuries (TLT)', 'era': 'all', 'beat': np.float64(0.6634615384615384), 'ddok': np.float64(0.3935483870967742), 'cagr': np.float64(0.3430995297717363), 'worst': np.float64(-0.3671440216232935)}
+{'refuge': '7-10y Treasuries (IEF)', 'era': 'all', 'beat': np.float64(0.6528846153846154), 'ddok': np.float64(0.3935483870967742), 'cagr': np.float64(0.34577248370675373), 'worst': np.float64(-0.3671440216232935)}
+era                     2000-11  2012-19  2020-25    all
+refuge                                                  
+7-10y Treasuries (IEF)    0.640    0.655    0.800  0.653
+J (Treasuries, SHY)       0.642    0.645    0.783  0.651
+gold (GLD)                0.644    0.647    0.783  0.653
+gold in uptrend only      0.637    0.639    0.783  0.646
+long Treasuries (TLT)     0.655    0.659    0.783  0.663
+                refuge era  beat  ddok  cagr  worst
+   J (Treasuries, SHY) all 0.651 0.400 0.335 -0.367
+            gold (GLD) all 0.653 0.381 0.351 -0.367
+  gold in uptrend only all 0.646 0.381 0.338 -0.367
+ long Treasuries (TLT) all 0.663 0.394 0.343 -0.367
+7-10y Treasuries (IEF) all 0.653 0.394 0.346 -0.367
