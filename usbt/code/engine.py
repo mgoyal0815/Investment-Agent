@@ -154,6 +154,14 @@ class Market:
                     break
             except Exception:
                 pass
+        # sector risk-appetite ratios (exp56): discretionary/staples, cyclicals/defensives (sector ETFs in the panel)
+        _sy = list(P["syms"])
+        def _px(t):
+            return pd.Series(Cf_[:, _sy.index(t)]).ffill().to_numpy() if t in _sy else None
+        self.ra_etf = {}
+        if all(_px(t) is not None for t in ("XLY", "XLP", "XLK", "XLI", "XLF", "XLU", "XLV")):
+            self.ra_etf["dp"] = _px("XLY") / _px("XLP")
+            self.ra_etf["cd"] = (_px("XLY") + _px("XLK") + _px("XLI") + _px("XLF")) / (_px("XLP") + _px("XLU") + _px("XLV"))
         # Minervini trend template parts (exp55), from closes up to the session itself
         _cf = pd.DataFrame(Cf_)
         P["SMA150"] = _cf.rolling(150, min_periods=150).mean().to_numpy(np.float32)
@@ -213,6 +221,14 @@ class Market:
             lo = pd.DataFrame(Cf).rolling(252, min_periods=200).min().to_numpy()
             nh = ((Cf >= hi * 0.999) & spm).sum(1); nl = ((Cf <= lo * 1.001) & spm).sum(1)
             self.nhnl = pd.Series((nh - nl) / np.maximum(spm.sum(1), 1)).rolling(10, min_periods=5).mean().to_numpy()
+            # ---- risk-appetite ratios (exp56): rising = investors paying up for risk. hblv: equal-weight 100 most volatile
+            # vs 100 least volatile of that day's S&P 500 members (30-day volatility known the day before)
+            rv = pd.DataFrame(np.where(spm & ~self.is_etf & np.isfinite(P["RV30"]), P["RV30"], np.nan))
+            rk_hi, rk_lo = rv.rank(axis=1, ascending=False).shift(1).to_numpy(), rv.rank(axis=1).shift(1).to_numpy()
+            r0 = np.nan_to_num(P["ret1"])
+            def _ew(mask):
+                return np.cumprod(1 + np.where(mask.sum(1) > 0, (np.where(mask, r0, 0)).sum(1) / np.maximum(mask.sum(1), 1), 0.0))
+            self.ra = {"hblv": _ew(rk_hi <= 100) / _ew(rk_lo <= 100)}
             spy_ = pd.Series(E["SPY"]["c"]).ffill()
             roc = (spy_ / spy_.shift(294) - 1) + (spy_ / spy_.shift(231) - 1)
             w = np.arange(1, 211, dtype=float)
@@ -234,6 +250,19 @@ class Market:
         self.e_sma50 = {t: pd.Series(E[t]["c"]).rolling(50, min_periods=50).mean().to_numpy() for t in LEADERS}
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
+
+    def ra_series(self, tok):
+        name = tok.rstrip("0123456789"); n = int(tok[len(name):] or 50)
+        rr = {**getattr(self, "ra_etf", {}), **getattr(self, "ra", {})}.get(name)
+        if rr is not None and not hasattr(self, "_ra_sma"):
+            self._ra_sma = {}
+        if rr is not None and (name, n) not in self._ra_sma:
+            self._ra_sma[(name, n)] = pd.Series(rr).rolling(n, min_periods=n).mean().to_numpy()
+        return (None if rr is None else (rr, self._ra_sma[(name, n)])), n
+
+    def ra_below(self, rs, n, i):
+        rr, sma = rs
+        return sma[i] == sma[i] and rr[i] < sma[i]
 
     def etf_vs_sma(self, t, n, i):
         """+1 if ETF t closes above its n-session average at session i, -1 below, 0 unknown."""
@@ -875,6 +904,9 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     sig.append(bool(m.credit_bad[i]))
                 elif tok == "momcrash":              # market down over two years: momentum-crash risk
                     sig.append(bool(m.mom_crash[i]))
+                elif tok.startswith("ra_"):          # e.g. ra_dp50: risk-appetite ratio below its 50-session average
+                    rr, nn = m.ra_series(tok[3:])
+                    sig.append(rr is not None and m.ra_below(rr, nn, i))
                 elif tok.startswith("b50_"):         # e.g. b50_20: under 20% of stocks above their 50-day
                     sig.append(m.b50[i] < float(tok[4:]) / 100)
                 else:
@@ -904,6 +936,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     fire |= m.coppock[i] < 0 and m.coppock[i] > m.coppock[i - 21] and m.coppock[i - 21] <= m.coppock[i - 42]
                 if "mcclellan" in ue:
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
+                for u_ in ue:
+                    if u_.startswith("ra_"):         # e.g. ra_hblv50: ratio crosses above its 50-session average
+                        rr, nn = m.ra_series(u_[3:])
+                        fire |= rr is not None and not m.ra_below(rr, nn, i) and m.ra_below(rr, nn, i - 1)
                 if "nhnl" in ue:
                     fire |= m.nhnl[i] > 0 and np.nanmin(m.nhnl[i - 40:i]) < -cfg.get("nhnl_depth", 0.05)
                 spy_now = m.E["SPY"]["c"][i]
@@ -915,6 +951,11 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if us is not None and i <= unpause_until[0] and spy_now < up_anchor[0] * (1 - us):
                     unpause_until[0], up_block[0] = -1, i + cfg.get("unpause_cool", 63)
                 if i <= unpause_until[0]:
+                    paused = False
+            rv_ = cfg.get("ra_veto")                 # e.g. "dp50": no pause while the ratio is above its average and rising
+            if rv_ and paused and i > 260:
+                rr, nn = m.ra_series(rv_)
+                if rr is not None and not m.ra_below(rr, nn, i) and rr[0][i] > rr[0][i - cfg.get("ra_veto_lb", 21)]:
                     paused = False
             # breadth thrust: a broad surge off a washout ends any pause for thrust_days sessions
             if cfg.get("thrust_days"):
