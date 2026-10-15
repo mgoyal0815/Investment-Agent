@@ -1,0 +1,25 @@
+{
+ "summary": {
+  "positions": 559,
+  "open_now": 0,
+  "win_rate": 0.4525939177101968,
+  "avg_win": 0.25255125761032104,
+  "avg_loss": -0.09876734018325806,
+  "median_win": 0.12695634365081787,
+  "median_loss": -0.0770634114742279,
+  "profit_factor": 5.077754020690918,
+  "avg_days_held": 80.46690518783542,
+  "median_days_held": 63.0,
+  "beat_spy_same_period": 0.39892665474060823,
+  "total_costs": 114924.79017723862,
+  "buys": 675,
+  "sells": 559,
+  "top10_share_of_profit": 0.9843690395355225,
+  "top1pct_share_of_profit": 0.8501509428024292
+ },
+ "crash_holds": 11,
+ "crash_hold_avg": 0.04653586619266432,
+ "restarts": 15,
+ "restart_avg": 0.0413128319708441,
+ "pauses": 116
+}

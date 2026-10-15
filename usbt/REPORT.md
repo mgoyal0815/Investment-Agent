@@ -1,3 +1,18 @@
+# AUDIT AND TRADE REVIEW (15 October 2026): System K
+
+Page: https://claude.ai/artifact/W8yWYGrdyq72x31HBccuzE. Files: `audit/a12-a14`, `audit/k_trades_*`.
+- Cut-off test at 7 dates: identical. Placebo for the crash triggers (69 random days, 16 seeds): K 66.6% vs random
+  59.5% average (best 64.5%), no trigger 60.4%. Cyclicals/defensives restart at 75/90/125/150 days: 60.2/63.7/65.4/63.6%
+  vs 66.6% at 100: still the most fitted rule; expect roughly 64-66% going forward. Survivorship gap unchanged.
+- Trades: 559 closed positions, 45% winners, average win +25% / loss -10%, profit factor 5.1, median hold 63 days.
+  Under 3 months: 281 positions, 78% losers, -$349k; 6+ months: 97 positions, 99% winners, +$2.86M.
+  Profit lock exits: 17 positions, +$2.64M; best 10 trades = 98% of trading profit (WDC 2025-26 alone $1.33M).
+- Pauses: 116 episodes (19 of a month or more); SPY summed +4% during pauses, K +103%. Crash holds: 11, SPY +4.7%
+  over the next 21 sessions, up 9 of 11. Cyclicals/defensives restarts during pauses: 15, SPY +4.1% over 42 sessions.
+- Losing years (9 of 26): gap -15.4 points = missed giants -9.4, idle money -5.3, stock picking -0.7.
+
+---
+
 # UPDATE (15 October 2026): System K adopted (standard data)
 
 System K = J + the pause-time index hold also triggers when SPY closes 18% or more below its 20-day high

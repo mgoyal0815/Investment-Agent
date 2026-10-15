@@ -1,0 +1,47 @@
+real trigger days: 69
+[{'test': 'System K', 'beat': np.float64(0.6658653846153846), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}, {'test': 'K without any crash trigger (I + hurdle only)', 'beat': np.float64(0.6038461538461538), 'ddok': np.float64(0.41935483870967744), 'cagr': np.float64(0.31486250237365954), 'worst': np.float64(-0.3671440216232935)}]
+{'test': 'placebo seed 0', 'beat': np.float64(0.6451923076923077), 'ddok': np.float64(0.3741935483870968), 'cagr': np.float64(0.343188039905743), 'worst': np.float64(-0.3490954618907912)}
+{'test': 'placebo seed 1', 'beat': np.float64(0.5889423076923077), 'ddok': np.float64(0.3935483870967742), 'cagr': np.float64(0.2970401078791216), 'worst': np.float64(-0.4665043057692241)}
+{'test': 'placebo seed 2', 'beat': np.float64(0.5870192307692308), 'ddok': np.float64(0.432258064516129), 'cagr': np.float64(0.3063771248576854), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'placebo seed 3', 'beat': np.float64(0.5769230769230769), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.3006217402914122), 'worst': np.float64(-0.48259466345491153)}
+{'test': 'placebo seed 4', 'beat': np.float64(0.5894230769230769), 'ddok': np.float64(0.432258064516129), 'cagr': np.float64(0.3079406364528121), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'placebo seed 5', 'beat': np.float64(0.6014423076923077), 'ddok': np.float64(0.4258064516129032), 'cagr': np.float64(0.31869265282813264), 'worst': np.float64(-0.37737043269921977)}
+{'test': 'placebo seed 6', 'beat': np.float64(0.6014423076923077), 'ddok': np.float64(0.41935483870967744), 'cagr': np.float64(0.32263148707654854), 'worst': np.float64(-0.47467230506185876)}
+{'test': 'placebo seed 7', 'beat': np.float64(0.5923076923076923), 'ddok': np.float64(0.4258064516129032), 'cagr': np.float64(0.314577989549641), 'worst': np.float64(-0.46959383315215564)}
+{'test': 'placebo seed 8', 'beat': np.float64(0.5774038461538461), 'ddok': np.float64(0.36129032258064514), 'cagr': np.float64(0.3198097479157689), 'worst': np.float64(-0.5603032337351662)}
+{'test': 'placebo seed 9', 'beat': np.float64(0.5581730769230769), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.29858197174611556), 'worst': np.float64(-0.36892248368305103)}
+{'test': 'placebo seed 10', 'beat': np.float64(0.6177884615384616), 'ddok': np.float64(0.4129032258064516), 'cagr': np.float64(0.3248461838084482), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'placebo seed 11', 'beat': np.float64(0.5783653846153847), 'ddok': np.float64(0.4), 'cagr': np.float64(0.2974775515178547), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'placebo seed 12', 'beat': np.float64(0.6153846153846154), 'ddok': np.float64(0.4064516129032258), 'cagr': np.float64(0.3222158846582839), 'worst': np.float64(-0.3754601822812804)}
+{'test': 'placebo seed 13', 'beat': np.float64(0.6014423076923077), 'ddok': np.float64(0.41935483870967744), 'cagr': np.float64(0.31065651247782733), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'placebo seed 14', 'beat': np.float64(0.5798076923076924), 'ddok': np.float64(0.4064516129032258), 'cagr': np.float64(0.30360252970728574), 'worst': np.float64(-0.49700927806576156)}
+{'test': 'placebo seed 15', 'beat': np.float64(0.6019230769230769), 'ddok': np.float64(0.32903225806451614), 'cagr': np.float64(0.30388643099929147), 'worst': np.float64(-0.5627163757990101)}
+{'test': 'cyc/def restart at 75-day average', 'beat': np.float64(0.6024038461538461), 'ddok': np.float64(0.32903225806451614), 'cagr': np.float64(0.31855861308192557), 'worst': np.float64(-0.5312456758671432)}
+{'test': 'cyc/def restart at 90-day average', 'beat': np.float64(0.6365384615384615), 'ddok': np.float64(0.3419354838709677), 'cagr': np.float64(0.3311286624865688), 'worst': np.float64(-0.45593812551083424)}
+{'test': 'cyc/def restart at 125-day average', 'beat': np.float64(0.6538461538461539), 'ddok': np.float64(0.38064516129032255), 'cagr': np.float64(0.3246872638309508), 'worst': np.float64(-0.38248483574798586)}
+{'test': 'cyc/def restart at 150-day average', 'beat': np.float64(0.635576923076923), 'ddok': np.float64(0.5935483870967742), 'cagr': np.float64(0.336788429764987), 'worst': np.float64(-0.45661499497003455)}
+                                         test  beat  ddok  cagr  worst
+                                     System K 0.666 0.400 0.335 -0.367
+K without any crash trigger (I + hurdle only) 0.604 0.419 0.315 -0.367
+                               placebo seed 0 0.645 0.374 0.343 -0.349
+                               placebo seed 1 0.589 0.394 0.297 -0.467
+                               placebo seed 2 0.587 0.432 0.306 -0.367
+                               placebo seed 3 0.577 0.381 0.301 -0.483
+                               placebo seed 4 0.589 0.432 0.308 -0.367
+                               placebo seed 5 0.601 0.426 0.319 -0.377
+                               placebo seed 6 0.601 0.419 0.323 -0.475
+                               placebo seed 7 0.592 0.426 0.315 -0.470
+                               placebo seed 8 0.577 0.361 0.320 -0.560
+                               placebo seed 9 0.558 0.381 0.299 -0.369
+                              placebo seed 10 0.618 0.413 0.325 -0.367
+                              placebo seed 11 0.578 0.400 0.297 -0.367
+                              placebo seed 12 0.615 0.406 0.322 -0.375
+                              placebo seed 13 0.601 0.419 0.311 -0.367
+                              placebo seed 14 0.580 0.406 0.304 -0.497
+                              placebo seed 15 0.602 0.329 0.304 -0.563
+            cyc/def restart at 75-day average 0.602 0.329 0.319 -0.531
+            cyc/def restart at 90-day average 0.637 0.342 0.331 -0.456
+           cyc/def restart at 125-day average 0.654 0.381 0.325 -0.382
+           cyc/def restart at 150-day average 0.636 0.594 0.337 -0.457
+
+K 0.666; no trigger 0.604; placebo mean 0.595, best 0.645; K beats 16 of 16

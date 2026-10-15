@@ -1,0 +1,204 @@
+<title>System K Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column matching the System H audit: verdict, audit checklist, then the trade review in numbered parts with tables. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --ink: #18211d; --muted: #5c6862; --rule: #dde3df;
+  --pass: #17704f; --pass-soft: #e1f0e8; --fail: #a3462d; --fail-soft: #f6e4dd; --warn: #8a6100; --warn-soft: #f6ecd6;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --pass: #4cc392; --pass-soft: #173327; --fail: #e48a6f; --fail-soft: #3a211a; --warn: #e0b04a; --warn-soft: #3a2f16; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --pass: #4cc392; --pass-soft: #173327; --fail: #e48a6f; --fail-soft: #3a211a; --warn: #e0b04a; --warn-soft: #3a2f16; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+.wrap { max-width: 940px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; display: grid; gap: 36px; }
+h1, h2, h3 { font-family: var(--f-display); font-stretch: 85%; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 800; line-height: 1.05; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; max-width: 70ch; }
+.eyebrow { font: 600 0.75rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header, section { display: grid; gap: 12px; min-width: 0; }
+.note { font-size: 0.88rem; color: var(--muted); }
+.verdict { border-left: 3px solid var(--pass); padding: 4px 0 4px 16px; display: grid; gap: 10px; }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { padding: 7px 12px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th { font: 600 0.72rem/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--bg); white-space: nowrap; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td.bad { color: var(--fail); font-weight: 600; }
+td.good { color: var(--pass); font-weight: 600; }
+.pill { font: 600 0.72rem/1 var(--f-mono); padding: 4px 8px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+.pill.pass { background: var(--pass-soft); color: var(--pass); }
+.pill.fail { background: var(--fail-soft); color: var(--fail); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.finding { display: grid; gap: 8px; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; min-width: 0; }
+.finding .head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 70ch; }
+code { font-family: var(--f-mono); font-size: 0.86em; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Audit and trade review · System K · corrected data, Jan 2000 – 12 Oct 2026</div>
+    <h1>System K audit</h1>
+    <p>K's rules use only information available on the day, and its two crash triggers do real work. Its profits, though, come from a handful of long winners. Most short trades lose money, and one inherited rule is tuned to the past.</p>
+  </header>
+
+  <section class="verdict">
+    <h2>Verdict</h2>
+    <ul>
+      <li>No look-ahead: K rerun with the future deleted matched the full run to the cent at all 7 cut-off dates.</li>
+      <li>The crash triggers are real. K beat all 16 runs that held the index on random dates, and random dates added nothing.</li>
+      <li>The cyclicals-vs-defensives restart inherited from H is still tuned to its exact setting. Expect future results 1–3 points of years below the backtest.</li>
+      <li>The survivorship gap from the H audit remains: 2000–11 results are optimistic.</li>
+      <li>Dollar results depend on very few trades: the 10 best of 559 made 98% of all trading profit.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Audit checklist</h2>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Check</th><th scope="col">Result</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Look-ahead: rerun with all data after the cut-off deleted, 7 dates from 2003 to 2025</th><td><span class="pill pass">Pass</span> identical at every date</td></tr>
+        <tr><th scope="row">Crash triggers: 16 placebo runs with the index hold on 69 random days (same count as the real triggers)</th><td><span class="pill pass">Pass</span> K 66.6% of years beating; random average 59.5%, best 64.5%; no trigger 60.4%</td></tr>
+        <tr><th scope="row">Crash triggers: nearby settings (RSI 20–27; falls of 18% in 15–20 days)</th><td><span class="pill pass">Pass</span> same gain throughout</td></tr>
+        <tr><th scope="row">Index hurdle: nearby margins −5 to +10 points</th><td><span class="pill pass">Pass</span> same small gain throughout</td></tr>
+        <tr><th scope="row">Cyclicals-vs-defensives restart at 75/90/125/150-day averages</th><td><span class="pill warn">Warning</span> 60.2 / 63.7 / 65.4 / 63.6% against 66.6% at 100 days</td></tr>
+        <tr><th scope="row">Survivorship: S&amp;P members with no price data</th><td><span class="pill fail">Open</span> 38% in 2000, 13% in 2011, under 6% after 2016</td></tr>
+        <tr><th scope="row">Timing, costs, dividends, price glitches, bad data (SOV)</th><td><span class="pill pass">Pass</span> as in the H audit; $1 buy floor and cost cap in place</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>1. The trades</h2>
+    <p>559 positions closed from 2000 to October 2026, and 675 buys including adds. Trading costs came to $115k.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Winning positions</th><td class="num">45%</td></tr>
+        <tr><th scope="row">Average win / average loss</th><td class="num">+25% / −10%</td></tr>
+        <tr><th scope="row">Median win / median loss</th><td class="num">+13% / −8%</td></tr>
+        <tr><th scope="row">Profit factor (gross profit ÷ gross loss)</th><td class="num">5.1</td></tr>
+        <tr><th scope="row">Median holding time</th><td class="num">63 trading days</td></tr>
+        <tr><th scope="row">Positions that beat SPY over the same period</th><td class="num">40%</td></tr>
+        <tr><th scope="row">Share of profit from the best 10 trades</th><td class="num bad">98%</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="finding">
+      <div class="head"><span class="pill warn">Key finding</span><h3>Short trades lose, long trades make all the money</h3></div>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Held for</th><th scope="col">Positions</th><th scope="col">Won</th><th scope="col">Average return</th><th scope="col">Profit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Under 1 month</th><td class="num">43</td><td class="num bad">2%</td><td class="num">−12.3%</td><td class="num bad">−$157k</td></tr>
+          <tr><th scope="row">1–3 months</th><td class="num">238</td><td class="num bad">23%</td><td class="num">−5.1%</td><td class="num bad">−$192k</td></tr>
+          <tr><th scope="row">3–6 months</th><td class="num">181</td><td class="num">56%</td><td class="num">+2.8%</td><td class="num">+$372k</td></tr>
+          <tr><th scope="row">6–12 months</th><td class="num">88</td><td class="num good">99%</td><td class="num">+35.9%</td><td class="num good">+$2.36M</td></tr>
+          <tr><th scope="row">Over 1 year</th><td class="num">9</td><td class="num good">100%</td><td class="num">+161%</td><td class="num good">+$499k</td></tr>
+        </tbody>
+      </table></div>
+      <p>Half of all positions (281 of 559) are sold within 3 months, and 78% of those lose. This is momentum investing as it should work: cut losers fast, let winners run. Holding is a symptom here, not a cause; winners stay because they keep ranking well. Tests on H that gave new buys more time to recover made things worse.</p>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill warn">Key finding</span><h3>The profit lock exits carry the system</h3></div>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Exit reason</th><th scope="col">Positions</th><th scope="col">Won</th><th scope="col">Average return</th><th scope="col">Profit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Profit lock (up 50%+, then 25% off the peak)</th><td class="num">17</td><td class="num good">100%</td><td class="num">+93%</td><td class="num good">+$2.64M</td></tr>
+          <tr><th scope="row">Fell out of the top 15</th><td class="num">538</td><td class="num">43%</td><td class="num">+3.3%</td><td class="num">+$243k</td></tr>
+          <tr><th scope="row">Delisted (takeovers)</th><td class="num">4</td><td class="num">75%</td><td class="num">+1.5%</td><td class="num">+$2k</td></tr>
+        </tbody>
+      </table></div>
+      <p>The 17 big winners that reached the profit lock made over 90% of the profit. Positions that peaked above +100% still gave back a median 48 points before the lock sold them. A tighter lock was tested and rejected: it cut these winners too early.</p>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill fail">Risk</span><h3>A few trades decide the dollar result</h3></div>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Best trades</th><th scope="col">Held</th><th scope="col">Return</th><th scope="col">Profit</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Western Digital, Aug 2025 – Jul 2026</th><td class="num">220 days</td><td class="num">+527%</td><td class="num">$1.33M</td></tr>
+          <tr><th scope="row">Seagate, Sep 2025 – Jul 2026</th><td class="num">208 days</td><td class="num">+203%</td><td class="num">$562k</td></tr>
+          <tr><th scope="row">Nvidia, Mar 2023 – Aug 2024</th><td class="num">349 days</td><td class="num">+240%</td><td class="num">$279k</td></tr>
+          <tr><th scope="row">Teradyne, Nov 2025 – Apr 2026</th><td class="num">111 days</td><td class="num">+98%</td><td class="num">$144k</td></tr>
+          <tr><th scope="row">Nvidia, Apr 2016 – Mar 2018</th><td class="num">482 days</td><td class="num">+476%</td><td class="num">$138k</td></tr>
+          <tr><th scope="row">Palantir, Oct 2024 – Feb 2025</th><td class="num">88 days</td><td class="num">+70%</td><td class="num">$133k</td></tr>
+        </tbody>
+      </table></div>
+      <p>The account grows over time, so recent winners count for more dollars. 2026 alone added $2.17M of trading profit. The $4.0M ending value depends on the 2025–26 storage and memory rally. The years-beating measure doesn't depend on any one trade.</p>
+      <p class="note">Worst trades were all rank sells after short holds: Super Micro (−30%, Aug 2025), Dow (−17%, 2026), United Airlines (−20%), and the February 2020 buys of Skyworks, Leidos and Nvidia, sold at the COVID low for −33% to −43%.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Pauses, crash holds and restarts</h2>
+    <div class="finding">
+      <div class="head"><span class="pill pass">Works</span><h3>The pauses protect, the crash holds catch rebounds</h3></div>
+      <ul>
+        <li>116 pause episodes, 19 lasting a month or more. Across all pauses SPY made about +4% in total and K +103%: pausing did not cost money overall.</li>
+        <li>2008–09: paused 195 sessions. SPY fell 37%, K made 5%, helped by three crash holds in the index.</li>
+        <li>11 crash-trigger index holds during pauses. SPY rose in the next 21 sessions after 9 of them, on average +4.7%: March 2009 +13%, December 2018 +10%, April 2025 +11%. The two misses were October 2008 (−4%) and August 2011 (−2%).</li>
+        <li>15 cyclicals-vs-defensives restarts during pauses. SPY rose over the next 42 sessions after 80% of them, on average +4.1%.</li>
+      </ul>
+    </div>
+    <div class="finding">
+      <div class="head"><span class="pill warn">Cost</span><h3>Short pauses still flip on and off</h3></div>
+      <p>97 of the 116 pauses lasted less than a month. Each one sells into weakness and buys back higher. Tests that held the pause state longer (on H) cost more in real turns than they saved.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Losing years</h2>
+    <p>K lost to the better of SPY and QQQ in 9 of 26 calendar years: 2006, 2007, 2011, 2013, 2014, 2019, 2020, 2021 and 2023. The average gap was 15.4 points.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Cause of the gap, average losing year</th><th scope="col">Points</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Missing the giants (average S&amp;P stock vs the index)</th><td class="num bad">−9.4</td></tr>
+        <tr><th scope="row">Money idle or in Treasuries during pauses</th><td class="num bad">−5.3</td></tr>
+        <tr><th scope="row">Stock picking (K's stocks vs the average stock)</th><td class="num">−0.7</td></tr>
+      </tbody>
+    </table></div>
+    <p>Missed giants are now the biggest cost. In those years K held only 27% of the 15 best large stocks at any point. They passed the ADX entry filter on only 35% of decision days, against 70% for the OBV filter and 82% for the trend filter. 2020 and 2023 were the clearest cases: QQQ +49% and +55%, K +15% and +27%. Fixes tested on J (skipping filters, a ranking boost, a size tilt) did not help overall.</p>
+    <p class="note">In winning years K beat the index by 19.2 points on average, 13.2 of them from stock picking.</p>
+  </section>
+
+  <section>
+    <h2>Where the money sat</h2>
+    <p class="note">Average share of the account each year. Stocks dominate except in bear markets: 24% in 2008, 55% in 2011, 61% in 2018.</p>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Year</th><th scope="col">Stocks</th><th scope="col">Index ETF</th><th scope="col">Treasuries</th><th scope="col">Paused days</th><th scope="col">K</th><th scope="col">SPY</th><th scope="col">QQQ</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">2008</th><td class="num">24%</td><td class="num">42%</td><td class="num">33%</td><td class="num">75%</td><td class="num">−2.7%</td><td class="num">−36.8%</td><td class="num">−41.7%</td></tr>
+        <tr><th scope="row">2009</th><td class="num">64%</td><td class="num">19%</td><td class="num">16%</td><td class="num">25%</td><td class="num">+62.6%</td><td class="num">+26.4%</td><td class="num">+54.7%</td></tr>
+        <tr><th scope="row">2011</th><td class="num">55%</td><td class="num">24%</td><td class="num">20%</td><td class="num">41%</td><td class="num bad">−14.9%</td><td class="num">+1.9%</td><td class="num">+3.4%</td></tr>
+        <tr><th scope="row">2018</th><td class="num">61%</td><td class="num">12%</td><td class="num">26%</td><td class="num">51%</td><td class="num">+16.3%</td><td class="num">−4.6%</td><td class="num">−0.1%</td></tr>
+        <tr><th scope="row">2020</th><td class="num">75%</td><td class="num">17%</td><td class="num">7%</td><td class="num">18%</td><td class="num bad">+14.7%</td><td class="num">+18.3%</td><td class="num">+48.6%</td></tr>
+        <tr><th scope="row">2021</th><td class="num">91%</td><td class="num">4%</td><td class="num">4%</td><td class="num">14%</td><td class="num bad">+9.5%</td><td class="num">+28.7%</td><td class="num">+27.4%</td></tr>
+        <tr><th scope="row">2022</th><td class="num">68%</td><td class="num">7%</td><td class="num">24%</td><td class="num">37%</td><td class="num">+4.2%</td><td class="num">−18.2%</td><td class="num">−32.6%</td></tr>
+        <tr><th scope="row">2024</th><td class="num">89%</td><td class="num">10%</td><td class="num">1%</td><td class="num">9%</td><td class="num">+65.4%</td><td class="num">+24.9%</td><td class="num">+25.6%</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>What this means</h2>
+    <ul>
+      <li>K is clean of look-ahead, and each added rule has been tested against luck. Its 67% of years beating SPY and QQQ is a fair backtest figure, but treat about 64–66% as the realistic expectation because of the fitted restart rule and the survivorship gap.</li>
+      <li>Expect long stretches of small losing trades, with occasional big winners making up for them. That is how the system works. Most trades, and most months, will feel like losses.</li>
+      <li>The remaining gap to your 75% bar is mostly missed giants in giant-led markets (2019–21, 2023). Nothing tested so far fixes it without costing more elsewhere.</li>
+    </ul>
+    <p class="note">Files: <code>usbt/audit/</code> in the Investment-Agent repo (a12 cut-off test, a13 placebo and restart settings, a14 trade review, k_trades_*.csv tables). The live system was not changed.</p>
+  </section>
+</div>
