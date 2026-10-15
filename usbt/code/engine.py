@@ -995,6 +995,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if "mcclellan" in ue:
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
                 for u_ in ue:
+                    if u_ in ("spymacdup", "qqqmacdup"):     # exp65: the index's MACD crosses back above its signal line
+                        t_ = u_[:3].upper(); fire |= bool(m.etf_macd(t_, i) > 0 and m.etf_macd(t_, i - 1) <= 0)
                     if u_[:3] in ("spy", "qqq") and u_[3:6] == "rsi":  # exp62: a panic (RSI <= NN) ends the pause
                         fire |= bool(m.etf_rsi(u_[:3].upper())[i] <= float(u_[6:]))
                 if "random" in ue and i in cfg.get("_rand_days", ()):
