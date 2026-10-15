@@ -251,6 +251,20 @@ class Market:
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
 
+    def giants(self, i, k, rise=63):
+        """exp58: the k most-traded (median dollar volume) S&P 500 members that day, as a boolean mask, and
+        whether each is above a rising 200-session average (rising over `rise` sessions). Dollar volume only, no caps."""
+        key = (i, k, rise)
+        if getattr(self, "_gk", (None,))[0] != key:
+            P = self.P
+            mem = (self.sp_member[i] if self.sp_member is not None else np.ones(self.N, bool)) & ~self.is_etf
+            mv = np.where(mem & np.isfinite(P["medv"][i]), P["medv"][i], -1)
+            top = np.zeros(self.N, bool); top[np.argsort(-mv)[:k]] = True; top &= mv > 0
+            s2 = P["SMA200"]
+            up = (P["Cf"][i] > s2[i]) & (s2[i] > s2[max(0, i - rise)])
+            self._gk = (key, top, np.nan_to_num(up, nan=0).astype(bool))
+        return self._gk[1], self._gk[2]
+
     def ra_series(self, tok):
         name = tok.rstrip("0123456789"); n = int(tok[len(name):] or 50)
         rr = {**getattr(self, "ra_etf", {}), **getattr(self, "ra", {})}.get(name)
@@ -739,8 +753,32 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     park_state[0] = risk_off
                 risk_off = park_state[0]
             pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target") or cfg.get("mkt_vol_target")) and vf[0] < 0.999))
+            pf, split_done = cfg.get("park_frac"), False
+            if pf and park_tk == "leader_safe" and pk == "SHY":
+                # exp58: during a pause keep part (park_frac) of the parked money in the leading index while it is
+                # above its park_frac_sma-session average; the rest stays in SHY. Rebalanced only on a 10% drift.
+                ld = _park_name("leader", m, i, cfg, False); ps = cfg.get("park_frac_sma", 200)
+                tg = {ld: pf, "SHY": 1 - pf} if (i > ps and m.etf_vs_sma(ld, ps, i - 1) > 0) else {"SHY": 1.0}
+                for k in [k for k in list(parked) if k not in tg]:
+                    park_trade(k, -parked[k], i)
+                keep = 0.01 * navo
+                tot = cash - keep + sum(parked.get(k, 0) * etf_px(k, i, "o") for k in tg if etf_px(k, i, "o") == etf_px(k, i, "o"))
+                if tot > 0.5 * navo / N:
+                    for side in (-1, 1):                         # sells first, then buys
+                        for k, w_ in tg.items():
+                            px = etf_px(k, i, "o")
+                            if px != px or px <= 0:
+                                continue
+                            diff = w_ * tot - parked.get(k, 0) * px
+                            if abs(diff) > 0.10 * tot and np.sign(diff) == side:
+                                n = diff / px
+                                n = (math.floor(n) if n > 0 else -math.floor(-n)) if cfg["whole_etf"] else n
+                                if n < 0:
+                                    n = max(n, -parked.get(k, 0))
+                                park_trade(k, n, i)
+                pk, split_done = None, True
             # rotate: a parking ETF that is no longer the target is sold first
-            for k in [k for k in list(parked) if k != pk]:
+            for k in [k for k in list(parked) if k != pk and not split_done]:
                 park_trade(k, -parked[k], i)
             # park only a meaningful idle balance and keep a buffer, or the account churns a
             # $1-minimum round trip every session (v5 buys a little most days)
@@ -1137,6 +1175,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     continue
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
                     continue
+                if cfg.get("giant_slots") and pos[j].get("meta", {}).get("giant") and not paused:
+                    top_, up_ = m.giants(i, 2 * cfg.get("giant_top", 20))
+                    if top_[j] and up_[j]:
+                        continue                                # exp58: a giant is held while it stays big and above a rising 200-day
+                    pend_stock.append(dict(kind="exit", j=j, why="giant", all=True)); exiting.add(j)
+                    continue
                 if cfg.get("rank_exempt_gain") and not paused and C[i, j] / pos[j]["cost"] - 1 >= cfg["rank_exempt_gain"]:
                     continue
                 if cfg.get("udvr_hold") and not paused and m.P["UDVR"][i, j] > cfg["udvr_hold"]:
@@ -1365,6 +1409,18 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         free = int(round(n_stock / ntr)) - len(mine)
     if cfg.get("narrow_index") and m.narrow[i]:
         free = 0                                                # journal: new buys in narrow markets lagged SPY
+    gs = cfg.get("giant_slots")
+    if gs and free > 0:
+        # exp58: second entry path. Up to giant_slots of the slots hold the giant_top most-traded members that are
+        # above a rising 200-day average, strongest 6-month first; no rank, ADX or volume gate.
+        top_, up_ = m.giants(i, cfg.get("giant_top", 20))
+        have = sum(1 for j in pos if j not in exiting and pos[j].get("meta", {}).get("giant"))
+        cand = [j for j in np.flatnonzero(top_ & up_ & u) if j not in pos]
+        cand.sort(key=lambda j: -np.nan_to_num(P["rs126"][i, j], nan=-9))
+        for j in cand[:max(0, min(gs - have, free))]:
+            out.append(dict(kind="new", j=int(j), dollars=slot, route=1, stop=(P["SMA50"][i, j] - P["ATR"][i, j]),
+                            min_dollars=0.5 * slot, meta={"tr": tr or 0, "w": 1.0, "giant": True}))
+            free -= 1
     order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]
