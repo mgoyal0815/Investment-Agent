@@ -1,0 +1,21 @@
+{'test': 'System G', 'beat': np.float64(0.5663461538461538), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.28948901439175234), 'worst': np.float64(-0.33424366281525153)}
+{'test': 'System H', 'beat': np.float64(0.5961538461538461), 'ddok': np.float64(0.41935483870967744), 'cagr': np.float64(0.3102561049240731), 'worst': np.float64(-0.4562520206460261)}
+{'test': 'G, Coppock window 14 sessions', 'beat': np.float64(0.5644230769230769), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.28666464770869404), 'worst': np.float64(-0.333425016670723)}
+{'test': 'G, Coppock window 30 sessions', 'beat': np.float64(0.5658653846153846), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.28912617999385226), 'worst': np.float64(-0.33539623117534967)}
+{'test': 'G, Coppock window 42 sessions', 'beat': np.float64(0.5673076923076923), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.28912617999385226), 'worst': np.float64(-0.3339922148708482)}
+{'test': 'G, OBV trend >= -0.5', 'beat': np.float64(0.56875), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.3053848021270056), 'worst': np.float64(-0.34189330737302304)}
+{'test': 'G, OBV trend >= 0.5', 'beat': np.float64(0.5629807692307692), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.2881975107903112), 'worst': np.float64(-0.33321859964725065)}
+{'test': 'G, OBV trend >= 1.0', 'beat': np.float64(0.5490384615384616), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.2822896814860336), 'worst': np.float64(-0.3299019869752615)}
+{'test': 'G without OBV filter', 'beat': np.float64(0.5139423076923076), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.2847767989820964), 'worst': np.float64(-0.33920652633475235)}
+{'test': 'G without Coppock restart (System F + OBV)', 'beat': np.float64(0.5495192307692308), 'ddok': np.float64(0.7806451612903226), 'cagr': np.float64(0.2758089030579094), 'worst': np.float64(-0.3519694985931151)}
+                                      test  beat  ddok  cagr  worst
+                                  System G 0.566 0.781 0.289 -0.334
+                                  System H 0.596 0.419 0.310 -0.456
+             G, Coppock window 14 sessions 0.564 0.781 0.287 -0.333
+             G, Coppock window 30 sessions 0.566 0.781 0.289 -0.335
+             G, Coppock window 42 sessions 0.567 0.781 0.289 -0.334
+                      G, OBV trend >= -0.5 0.569 0.781 0.305 -0.342
+                       G, OBV trend >= 0.5 0.563 0.781 0.288 -0.333
+                       G, OBV trend >= 1.0 0.549 0.781 0.282 -0.330
+                      G without OBV filter 0.514 0.781 0.285 -0.339
+G without Coppock restart (System F + OBV) 0.550 0.781 0.276 -0.352

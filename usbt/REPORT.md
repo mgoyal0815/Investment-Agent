@@ -1,3 +1,30 @@
+# STANDARD DATA (15 October 2026): G and H on the corrected panel
+
+`data/panel.pkl` is now the corrected panel (old one kept as `panel_v1.pkl`): Signature Bank, Rite Aid and
+Tupperware are back in; Sovereign Bancorp stays out because FMP's SOV prices are fractions of a cent (bad data,
+found when it broke a held-back G run). Engine safety rules added: no buys below $1 a share, trading cost
+capped at 1% of a trade's value. All numbers below supersede the earlier G and H figures and the audit's
+"corrected" column (which still contained SOV).
+
+| Every monthly start 2000-2025 | System G | System H | live v5 |
+|---|---|---|---|
+| Years beating SPY and QQQ | 56.9% | 60.7% | 34.8% |
+| Starts 2000-11 / 2012-19 / 2020-25 | 56.6 / 54.9 / 69.2 | 61.5 / 55.3 / 72.9 | |
+| Held-back starts (15th) | 56.7% | 60.4% | |
+| Starts with a smaller fall than SPY and QQQ | 78.1% | 42.3% | 76.5% |
+| Worst fall, any start | -38.1% | -45.6% | -37.7% |
+| Median growth a year | 28.9% | 30.8% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $2.04M / 22.0% / -31% | $2.69M / 23.2% / -35% | |
+| Calendar years 2000-2025 beating both | 16 of 26 | 17 of 26 | |
+
+Acceptance test H vs G (`results/accept_H_vs_G_std.txt`): +3.8 points overall, every era better, held-back
++3.7, but REJECT on drawdown (smaller-fall share 78% -> 42%, worst fall 7.5 points deeper).
+Neighbouring settings for G (`audit/a6_g_neighbours.csv`): Coppock window 14-42 sessions and OBV threshold
+-0.5 to 1.0 all give 54.9-56.9% and 78% smaller-fall share: G sits on a plateau. Without OBV 51.4%, without
+the Coppock restart 55.0%. H's neighbours (audit a4) lose 2-6 points and the smaller-fall share swings 31-77%.
+
+---
+
 # AUDIT (15 October 2026): System H
 
 Page: https://claude.ai/artifact/YDcJBzmCxJHV3SWRj5evmQ. Scripts and results in `audit/`.

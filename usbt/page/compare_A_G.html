@@ -1,4 +1,4 @@
-<title>System A vs System G</title>
+<title>System G vs System H</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -65,21 +65,22 @@ figcaption { font-size: 0.85rem; color: var(--muted); padding: 0 6px 6px; }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">US backtest · clean S&amp;P 500 data · calendar years 2000–2025</div>
-    <h1>System A vs System G, year by year</h1>
-    <p>System A is System G plus one change: buying restarts for 42 sessions when cyclical sectors cross back above their 100-day average against defensive ones. Each line is one calendar-year return. A is not adopted; it failed the acceptance test on drawdown only.</p>
+    <div class="eyebrow">US backtest · corrected S&amp;P 500 data (audit standard) · calendar years 2000–2025</div>
+    <h1>System G vs System H, year by year</h1>
+    <p>Both on the corrected data the audit set as the standard. System H is System G plus one change: buying restarts for 42 sessions when cyclical sectors cross back above their 100-day average against defensive ones. H wins more years; G keeps its worst fall smaller than both indexes on far more start dates.</p>
   </header>
 
   <section class="cmp">
     <div class="tbl"><table>
-      <thead><tr><th scope="col"></th><th scope="col">System A</th><th scope="col">System G</th><th scope="col">SPY</th><th scope="col">QQQ</th></tr></thead>
+      <thead><tr><th scope="col"></th><th scope="col">System H</th><th scope="col">System G</th><th scope="col">SPY</th><th scope="col">QQQ</th></tr></thead>
       <tbody>
-        <tr><th scope="row">$10,000 from Jan 2000 becomes</th><td class="num best">$2.92M</td><td class="num">$1.65M</td><td class="num">$86k</td><td class="num">$93k</td></tr>
-        <tr><th scope="row">Growth a year (one run from 2000)</th><td class="num best">23.6%</td><td class="num">21.0%</td><td class="num">8.4%</td><td class="num">8.7%</td></tr>
-        <tr><th scope="row">Worst fall (one run from 2000)</th><td class="num">−35%</td><td class="num best">−32%</td><td class="num">−55%</td><td class="num">−83%</td></tr>
+        <tr><th scope="row">$10,000 from Jan 2000 becomes</th><td class="num best">$2.69M</td><td class="num">$2.04M</td><td class="num">$86k</td><td class="num">$93k</td></tr>
+        <tr><th scope="row">Growth a year (one run from 2000)</th><td class="num best">23.2%</td><td class="num">22.0%</td><td class="num">8.4%</td><td class="num">8.7%</td></tr>
+        <tr><th scope="row">Worst fall (one run from 2000)</th><td class="num">−35%</td><td class="num best">−31%</td><td class="num">−55%</td><td class="num">−83%</td></tr>
         <tr><th scope="row">Calendar years beating SPY and QQQ</th><td class="num best" id="winsA">–</td><td class="num" id="winsG">–</td><td class="num"></td><td class="num"></td></tr>
-        <tr><th scope="row">Years beating both, every monthly start</th><td class="num best">60.4%</td><td class="num">55.9%</td><td class="num"></td><td class="num"></td></tr>
-        <tr><th scope="row">Worst fall, any start</th><td class="num">−46%</td><td class="num best">−42%</td><td class="num"></td><td class="num"></td></tr>
+        <tr><th scope="row">Years beating both, every monthly start</th><td class="num best">60.7%</td><td class="num">56.9%</td><td class="num"></td><td class="num"></td></tr>
+        <tr><th scope="row">Starts with a smaller fall than SPY &amp; QQQ</th><td class="num">42%</td><td class="num best">78%</td><td class="num"></td><td class="num"></td></tr>
+        <tr><th scope="row">Worst fall, any start</th><td class="num">−46%</td><td class="num best">−38%</td><td class="num"></td><td class="num"></td></tr>
       </tbody>
     </table></div>
   </section>
@@ -88,9 +89,9 @@ figcaption { font-size: 0.85rem; color: var(--muted); padding: 0 6px 6px; }
     <h2>Calendar-year returns</h2>
     <figure>
       <div class="legend" id="legend"></div>
-      <div class="chartbox"><svg id="chart" viewBox="0 0 960 420" role="img" aria-label="Line chart of calendar-year returns 2000 to 2025 for System A, System G, SPY, QQQ and SMH"></svg></div>
+      <div class="chartbox"><svg id="chart" viewBox="0 0 960 420" role="img" aria-label="Line chart of calendar-year returns 2000 to 2025 for System H, System G, SPY, QQQ and SMH"></svg></div>
       <div class="tip" id="tip" hidden></div>
-      <figcaption>Percent return each calendar year, fresh $10,000 on 3 January 2000, whole shares, trading costs included. Hover a year for all five values. 2026 (to 12 October) is left off the chart so it keeps its scale: A +145.8%, G +147.5%, SPY +15.0%, QQQ +21.9%, SMH +64.1%, driven by storage and memory stocks.</figcaption>
+      <figcaption>Percent return each calendar year, fresh $10,000 on 3 January 2000, whole shares, trading costs included. Hover a year for all five values. 2026 (to 12 October) is left off the chart so it keeps its scale: H +146.5%, G +147.5%, SPY +15.0%, QQQ +21.9%, SMH +64.1%, driven by storage and memory stocks.</figcaption>
     </figure>
   </section>
 
@@ -98,7 +99,7 @@ figcaption { font-size: 0.85rem; color: var(--muted); padding: 0 6px 6px; }
     <h2>Year ledger</h2>
     <p class="note">A year counts as a win when the system beat both SPY and QQQ.</p>
     <div class="tbl"><table>
-      <thead><tr><th scope="col">Year</th><th scope="col">System A</th><th scope="col">System G</th><th scope="col">SPY</th><th scope="col">QQQ</th><th scope="col">SMH</th><th scope="col">A</th><th scope="col">G</th></tr></thead>
+      <thead><tr><th scope="col">Year</th><th scope="col">System H</th><th scope="col">System G</th><th scope="col">SPY</th><th scope="col">QQQ</th><th scope="col">SMH</th><th scope="col">H</th><th scope="col">G</th></tr></thead>
       <tbody id="ledger"></tbody>
     </table></div>
   </section>
@@ -107,8 +108,8 @@ figcaption { font-size: 0.85rem; color: var(--muted); padding: 0 6px 6px; }
 <script>
 const Y = [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
 const S = [
-  { k: "a",   name: "System A", w: 3,   d: [20.8,-0.4,-13.6,62.2,36.9,14.5,0.4,17.0,-3.1,39.1,16.4,-13.8,42.2,30.6,21.0,19.6,32.4,49.6,9.7,19.5,14.0,14.9,4.2,26.9,63.3,43.4] },
-  { k: "g",   name: "System G", w: 3,   d: [29.7,-3.4,-22.1,50.7,14.5,21.3,-1.3,12.6,-3.9,39.6,9.6,-15.8,43.2,37.3,13.0,17.6,36.5,48.8,9.3,16.8,22.5,18.1,-13.0,22.8,59.7,42.0] },
+  { k: "a",   name: "System H", w: 3,   d: [27.7,-3.6,-13.6,57.8,25.7,11.5,1.0,17.0,-3.2,39.0,24.2,-13.7,41.4,30.3,21.4,17.4,35.1,49.3,12.2,18.6,14.5,9.6,4.2,27.0,63.2,42.7] },
+  { k: "g",   name: "System G", w: 3,   d: [29.7,0.1,-21.2,59.3,21.5,17.5,12.8,10.7,-3.6,39.6,9.8,-15.9,42.6,37.6,12.2,19.1,36.6,48.8,12.0,13.7,23.0,11.9,-13.0,23.9,59.7,42.0] },
   { k: "spy", name: "SPY",      w: 1.6, d: [-8.9,-11.7,-21.6,28.2,10.7,4.8,15.9,5.1,-36.8,26.4,15.1,1.9,16.0,32.3,13.5,1.2,12.0,21.7,-4.6,31.2,18.3,28.7,-18.2,26.2,24.9,17.7] },
   { k: "qqq", name: "QQQ",      w: 1.6, d: [-38.4,-33.3,-37.4,49.7,10.5,1.6,7.2,19.0,-41.7,54.7,19.9,3.4,18.1,36.6,19.2,9.4,7.1,32.7,-0.1,39.0,48.6,27.4,-32.6,54.9,25.6,20.8] },
   { k: "smh", name: "SMH",      w: 1.6, d: [-47.1,-14.6,-47.0,87.3,-19.3,10.8,-6.7,6.0,-44.7,60.5,19.0,6.8,8.6,33.4,30.2,-0.3,35.6,38.5,-9.1,64.4,55.5,42.1,-33.5,73.4,39.1,49.2] },
