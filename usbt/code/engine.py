@@ -145,7 +145,7 @@ class Market:
         m63[63:] = Cf_[63:] / Cf_[:-63] - 1
         P["mom12_1"], P["mom12_7"], P["mom63"] = m121, m127, m63
         # volume indicators (volume_ind.py), matched to this panel by shape
-        for fn in ("../data/vol_panel.npz", "../data/vol_panel_idx.npz"):
+        for fn in ("../data/vol_panel.npz", "../data/vol_panel_idx.npz", "../data/vol_panel_audit.npz"):
             try:
                 z = np.load(fn)
                 if z["UDVR"].shape == (self.T, self.N):
@@ -981,6 +981,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     fire |= m.coppock[i] < 0 and m.coppock[i] > m.coppock[i - 21] and m.coppock[i - 21] <= m.coppock[i - 42]
                 if "mcclellan" in ue:
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
+                if "random" in ue and i in cfg.get("_rand_days", ()):
+                    fire = True                      # audit placebo: restart on random dates at the real signal's frequency
                 for u_ in ue:
                     if u_.startswith("ra_"):         # e.g. ra_hblv50: ratio crosses above its 50-session average
                         rr, nn = m.ra_series(u_[3:])

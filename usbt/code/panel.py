@@ -79,13 +79,15 @@ def main():
         if (c <= 0).any():
             df = df[df["close"] > 0]
             c = df["close"]
-        if c.max() / c.iloc[-1] > 1000:
+        # audit (15 Oct 2026): this gate reads the whole future price path. AUDIT_KEEP lists S&P members it removed
+        # whose data inside their index window is clean, so they can be put back for the survivorship check.
+        if c.max() / c.iloc[-1] > 1000 and s not in os.environ.get("AUDIT_KEEP", "").split(","):
             dropped[s] = "split-span gate (live universe_meta rule)"
             continue
         frames[s] = df
         syms.append(s)
     print(len(syms), "stocks kept,", len(dropped), "dropped", flush=True)
-    json.dump(dropped, open(f"{D}/dropped_ndx.json" if os.environ.get("NDX") else (f"{D}/dropped_idx.json" if os.environ.get("IDX_COLS") else f"{D}/dropped.json"), "w"), indent=0)
+    json.dump(dropped, open(f"{D}/dropped_audit.json" if os.environ.get("AUDIT_KEEP") else f"{D}/dropped_ndx.json" if os.environ.get("NDX") else (f"{D}/dropped_idx.json" if os.environ.get("IDX_COLS") else f"{D}/dropped.json"), "w"), indent=0)
 
     def wide(col):
         return pd.DataFrame({s: frames[s][col] for s in syms}).reindex(idx)
@@ -178,6 +180,8 @@ def main():
              corr_SMH=f32(corr["SMH"]), corr_QQQ=f32(corr["QQQ"]), resmom=f32(resmom), hi52=f32(hi52),
              ADX=f32(ADX), MACDH=f32(MACDH), BO55=BO55.to_numpy(), PDI_GT=(pdi > ndi).to_numpy(),
              RSI=f32(RSI), EMA50=f32(EMA50), VIX=(vix.to_numpy() if vix is not None else None))
+    if os.environ.get("AUDIT_KEEP"):
+        pd.to_pickle(P, f"{D}/panel_audit.pkl"); return
     pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else (f"{D}/panel_idx.pkl" if os.environ.get("IDX_COLS") else f"{D}/panel.pkl"))
     print("panel", C.shape, idx[0].date(), idx[-1].date())
 
