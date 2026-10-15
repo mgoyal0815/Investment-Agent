@@ -1,0 +1,29 @@
+System H
+A. Pause holds each on/off state at least 5 sessions
+A. Pause holds each on/off state at least 10 sessions
+A. Pause holds each on/off state at least 20 sessions
+A. Pause holds each on/off state at least 40 sessions
+B. No rank sell in first 21 sessions unless down 15%+
+B. No rank sell in first 21 sessions unless down 25%+
+B. No rank sell in first 42 sessions unless down 15%+
+B. No rank sell in first 42 sessions unless down 25%+
+B. No rank sell in first 63 sessions unless down 15%+
+B. No rank sell in first 63 sessions unless down 25%+
+C. No rank sells while SPY is 10%+ below its 1-year high
+C. No rank sells while SPY is 15%+ below its 1-year high
+C. No rank sells while SPY is 20%+ below its 1-year high
+                                                    rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                System H                 0.67                 1.00                0.235               0.577               1.000               0.106               0.762               0.042               0.593
+    A. Pause holds each on/off state at least 5 sessions                 0.65                 1.00                0.223               0.503               1.000               0.074               0.714               0.042               0.558
+   A. Pause holds each on/off state at least 10 sessions                 0.68                 1.00                0.246               0.492               1.000               0.077               0.726               0.042               0.595
+   A. Pause holds each on/off state at least 20 sessions                 0.65                 1.00                0.231               0.481               1.000               0.085               0.714               0.042               0.552
+   A. Pause holds each on/off state at least 40 sessions                 0.53                 0.25                0.199               0.460               1.000               0.098               0.738               0.042               0.608
+   B. No rank sell in first 21 sessions unless down 15%+                 0.65                 1.00                0.245               0.497               1.000               0.085               0.750               0.000               0.572
+   B. No rank sell in first 21 sessions unless down 25%+                 0.65                 1.00                0.245               0.492               1.000               0.085               0.762               0.000               0.568
+   B. No rank sell in first 42 sessions unless down 15%+                 0.68                 1.00                0.253               0.497               1.000               0.083               0.774               0.000               0.537
+   B. No rank sell in first 42 sessions unless down 25%+                 0.73                 1.00                0.267               0.519               1.000               0.093               0.714               0.000               0.502
+   B. No rank sell in first 63 sessions unless down 15%+                 0.54                 0.95                0.191               0.513               1.000               0.101               0.750               0.000               0.643
+   B. No rank sell in first 63 sessions unless down 25%+                 0.61                 1.00                0.215               0.519               1.000               0.073               0.702               0.000               0.567
+C. No rank sells while SPY is 10%+ below its 1-year high                 0.67                 1.00                0.235               0.444               0.148               0.052               0.774               0.000               0.598
+C. No rank sells while SPY is 15%+ below its 1-year high                 0.67                 1.00                0.235               0.365               0.074               0.038               0.774               0.042               0.587
+C. No rank sells while SPY is 20%+ below its 1-year high                 0.67                 1.00                0.235               0.529               1.000               0.095               0.762               0.042               0.593
