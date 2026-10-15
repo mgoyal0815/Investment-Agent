@@ -1,0 +1,19 @@
+               incumbent  candidate  incumbent (15th)  candidate (15th)
+2000-11|beat       0.554      0.578             0.556             0.589
+2000-11|ddok       1.000      0.993             1.000             1.000
+2000-11|cagr       0.247      0.252             0.245             0.252
+2000-11|worst     -0.416     -0.398            -0.362            -0.390
+2012-19|beat       0.544      0.547             0.549             0.559
+2012-19|ddok       1.000      1.000             1.000             1.000
+2012-19|cagr       0.304      0.318             0.306             0.317
+2012-19|worst     -0.324     -0.330            -0.325            -0.330
+2020-25|beat       0.679      0.712             0.667             0.692
+2020-25|ddok       0.029      0.029             0.029             0.029
+2020-25|cagr       0.538      0.575             0.544             0.582
+2020-25|worst     -0.336     -0.337            -0.335            -0.337
+all|beat           0.559      0.579             0.560             0.588
+all|ddok           0.781      0.777             0.781             0.781
+all|cagr           0.288      0.298             0.289             0.300
+all|worst         -0.416     -0.398            -0.362            -0.390
+{'overall +2 pts': np.False_, 'no era -1 pt': True, 'drawdown-ok not lower': np.False_, 'worst fall within 3 pts': np.True_, 'held-back starts +1 pt': np.True_}
+REJECT
