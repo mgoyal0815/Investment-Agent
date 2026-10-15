@@ -1322,7 +1322,7 @@ def _park_name(park, m, i, cfg=None, paused=False):
     cfg["leader_lb"] sessions to yesterday's close. "leader_safe": the same, but SHY while the
     buy pause is on, so parked cash does not ride a falling market."""
     if park in ("leader", "leader_safe"):
-        if park == "leader_safe" and paused and (cfg or {}).get("pause_dip_index_rsi"):
+        if park == "leader_safe" and paused and ((cfg or {}).get("pause_dip_index_rsi") or (cfg or {}).get("dip_vix") or (cfg or {}).get("dip_fall")):
             # exp61: during a pause, park in the leading index for dip_hold sessions once SPY's 14-day RSI closes
             # at or below pause_dip_index_rsi (capitulation); otherwise short Treasuries as before
             c_ = cfg
@@ -1330,7 +1330,20 @@ def _park_name(park, m, i, cfg=None, paused=False):
                 c_["_dipx_until"] = -1                      # a new run started: forget the previous run's timer
             c_["_dipx_last"] = i
             if c_.get("_dipx_until", -1) < i:
-                if any(m.etf_rsi(t_)[i - 1] <= c_["pause_dip_index_rsi"] for t_ in c_.get("dip_on", ("SPY",))):
+                trig = bool(c_.get("pause_dip_index_rsi")) and any(m.etf_rsi(t_)[i - 1] <= c_["pause_dip_index_rsi"] for t_ in c_.get("dip_on", ("SPY",)))
+                dv = c_.get("dip_vix")
+                if dv and not trig:
+                    # exp66: VIX spike. VIX peaked at or above dv[0] within 10 sessions and is now dv[1] below that peak
+                    v_ = m.P.get("VIX")
+                    if v_ is not None and i > 12:
+                        pk = np.nanmax(v_[i - 11:i]); trig = bool(pk >= dv[0] and v_[i - 1] <= pk * (1 - dv[1]))
+                df_ = c_.get("dip_fall")
+                if df_ and not trig:
+                    # exp66: steep fall. SPY closed at least df_[0] below its highest close of the last df_[1] sessions
+                    sp_ = m.E["SPY"]["c"]
+                    if i > df_[1] + 1:
+                        trig = bool(sp_[i - 1] <= np.nanmax(sp_[i - 1 - df_[1]:i]) * (1 - df_[0]))
+                if trig:
                     c_["_dipx_until"] = i + c_.get("dip_hold", 42)
             if c_.get("_dipx_until", -1) >= i:
                 lb = c_.get("leader_lb", 126)
