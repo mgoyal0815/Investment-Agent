@@ -1189,6 +1189,14 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             # narrow market: lean the ranking toward the biggest companies (they are carrying the index)
             w_ = cfg["narrow_size_w"]
             sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.where(u, m.size_pct[i], 0.0)) / (1 + w_))
+        gb = cfg.get("giant_bonus")
+        if gb:
+            # exp64: the gb[0] most-traded S&P members get gb[1] added to their rank percentile (missed-giants fix)
+            top_, _ = m.giants(i, gb[0])
+            sc = np.where(np.isnan(sc), np.nan, np.minimum(1.0, sc + np.where(top_, gb[1], 0.0)))
+        if cfg.get("size_w"):
+            w_ = cfg["size_w"]                          # exp64: always lean the ranking toward the most-traded names
+            sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.where(u, m.size_pct[i], 0.0)) / (1 + w_))
         for key_, w_ in (cfg.get("score_mix") or {}).items():
             # blend the rank score with another indicator's cross-sectional percentile (hi52, resmom, ADX, RSI)
             x_ = pct_rank(np.where(u & ~np.isnan(sc), m.P[key_][i].astype(float), np.nan))
@@ -1532,13 +1540,15 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue                                            # more volume on up days than down days (accumulation)
         if cfg.get("cmf_min") is not None and not (P["CMF"][i, j] >= cfg["cmf_min"]):
             continue
-        if cfg.get("obv_min") is not None and not (P["OBVT"][i, j] >= cfg["obv_min"]):
+        gx = cfg.get("giant_gate_exempt")
+        is_g = bool(gx) and m.giants(i, gx)[0][j]          # exp64: the gx most-traded members skip the OBV and ADX gates
+        if cfg.get("obv_min") is not None and not is_g and not (P["OBVT"][i, j] >= cfg["obv_min"]):
             continue
         if cfg.get("rvol_min") and not (P["RVOL"][i, j] >= cfg["rvol_min"]):
             continue
         if cfg.get("adx_max") and not (P["ADX"][i, j] <= cfg["adx_max"]):
             continue                                            # buy only early in a trend (ADX still low)
-        if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
+        if cfg.get("adx_min") and not is_g and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
             ex = cfg.get("adx_exempt_rs")                       # exp57: the strongest stocks skip the ADX gate
             if not ex:
                 continue
