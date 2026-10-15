@@ -1,3 +1,37 @@
+# UPDATE (15 October 2026): System H adopted
+
+System H = System G + resume buying for 42 sessions, even while paused, when the Coppock Curve turns up
+from below zero or when cyclicals (XLY+XLK+XLI+XLF) cross back above their 100-day average against
+defensives (XLP+XLU+XLV) (`system_H.json`, numbers in `results/final_H_*`).
+
+Acceptance test (`results/accept_cd100_42d.txt`): +4.5 points of years beating SPY and QQQ over every
+monthly start, every era better (2000-11 +5.5, 2012-19 +1.4, 2020-25 +5.0), held-back mid-month starts +4.1.
+Failed on drawdown: share of starts with a smaller fall 78.1% -> 76.8% (four 2019 starts fell 34.1-34.4% in
+the COVID crash against SPY's 33.7%), worst fall over any start -41.6% -> -45.8% (bar 3 points). Adopted by
+the owner.
+
+| Clean data, Jan 2000 - 12 Oct 2026 | System H | System G | live v5 | SPY | QQQ |
+|---|---|---|---|---|---|
+| $10,000 becomes | $2,921k | $1,650k | $211k | $86k | $93k |
+| Growth a year (one run from 2000) | 23.6% | 21.0% | 12.1% | 8.4% | 8.7% |
+| Worst fall (one run from 2000) | -35% | -32% | -34% | -55% | -83% |
+| Calendar years 2000-2025 beating SPY and QQQ | 16 of 26 | 15 of 26 | | | |
+| Years beating SPY and QQQ, every monthly start | 60.4% | 55.9% | 33.3% | | |
+| Median growth a year, every monthly start | 30.8% | 28.8% | 13.6% | | |
+| Starts with a worst fall smaller than SPY's and QQQ's | 77% | 78% | 77% | | |
+| Worst fall, any start | -46% | -42% | -38% | | |
+
+Weak years (results/diagH.txt, diag_gap_system_H.csv): 2009 and 2020 (sold at the crash low, missed the
+V-shaped rebound and the giants), 2011 and 2021 (pause switched on and off 16 and 20 times; 2021 energy
+buys stopped out within a month), 2010 and 2019 (new buys sold on rank after about 21 days). Fixes tested
+and rejected on System H (results/fixesH_quick.csv): pause hysteresis, a grace period for new buys, no rank
+sells in a crash. Each helped the targeted years and cost more in 2000-08.
+
+Also tested and rejected since System G: risk-appetite ratios as pause votes or vetoes, full and partial
+index parking during pauses, an ADX exemption, looser profit locks, a giants entry path.
+
+---
+
 # UPDATE (15 October 2026): System G adopted
 
 System G = System F + two changes (`system_G.json`, numbers in `results/final_G_*`):
