@@ -62,7 +62,8 @@ COST_PS, COST_BPS, COST_MIN = 0.005, 0.0010, 1.00
 def tcost(raw_sh, value):
     if raw_sh <= 0:
         return 0.0
-    return max(COST_MIN, COST_PS * raw_sh + COST_BPS * value)
+    # audit: a broker caps per-share commission at a share of the trade value; never more than the trade itself
+    return min(max(COST_MIN, COST_PS * raw_sh + COST_BPS * value), max(COST_MIN, 0.01 * value + COST_BPS * value))
 
 
 def pct_rank(x):
@@ -524,6 +525,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         if px != px or px <= 0:
             return 0.0
         raw_px = px * SF[i, j]
+        if raw_px < cfg.get("min_buy_price", 1.0):
+            return 0.0                                  # audit: never buy below $1 a share (bad data or a penny stock)
         dollars = min(dollars, cash)
         if cfg["adv_cap"] and P["ADV20"][i - 1, j] == P["ADV20"][i - 1, j]:
             dollars = min(dollars, cfg["adv_cap"] * P["ADV20"][i - 1, j])

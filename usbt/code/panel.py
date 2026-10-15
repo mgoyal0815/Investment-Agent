@@ -82,8 +82,9 @@ def main():
         # audit (15 Oct 2026): this gate reads the whole future price path. AUDIT_KEEP lists S&P members it removed
         # whose data inside their index window is clean, so they can be put back for the survivorship check.
         # Standard since the audit: S&P members with clean data inside their index window are kept even if their
-        # later price collapsed (Signature Bank, Sovereign, Rite Aid, Tupperware); the gate only screens the rest.
-        KEEP = {"SBNY", "SOV", "RAD", "TUP"} | set(os.environ.get("AUDIT_KEEP", "").split(","))
+        # later price collapsed (Signature Bank, Rite Aid, Tupperware); the gate only screens the rest. Sovereign
+        # Bancorp (SOV) stays out: FMP's SOV prices are fractions of a cent (bad data, not a collapse).
+        KEEP = {"SBNY", "RAD", "TUP"} | set(os.environ.get("AUDIT_KEEP", "").split(","))
         if c.max() / c.iloc[-1] > 1000 and s not in KEEP:
             dropped[s] = "split-span gate (live universe_meta rule)"
             continue
