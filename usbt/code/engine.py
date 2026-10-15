@@ -1220,7 +1220,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                         continue
                 if cfg.get("crash_no_rank") and m.spy_dd[i] == m.spy_dd[i] and m.spy_dd[i] < -cfg["crash_no_rank"]:
                     continue                                    # exp60: no rank sells while SPY is deep below its 1-year high
-                if cfg.get("giant_slots") and pos[j].get("meta", {}).get("giant") and not paused:
+                if (cfg.get("giant_slots") or cfg.get("pause_giants")) and pos[j].get("meta", {}).get("giant") and (not paused or cfg.get("pause_giants")):
                     top_, up_ = m.giants(i, 2 * cfg.get("giant_top", 20))
                     if top_[j] and up_[j]:
                         continue                                # exp58: a giant is held while it stays big and above a rising 200-day
@@ -1263,7 +1263,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 else:
                     pos[j]["out_n"] = 0
         dip = cfg.get("pause_dip_rsi")
-        if paused and not dip:
+        if paused and not (dip or cfg.get("pause_giants")):
             continue
         park_v = sum(sh * etf_px(k, i) for k, sh in parked.items())
         if cfg["overlay"] in ("v5", "v5_soft"):
@@ -1285,7 +1285,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             _v5_orders(m, ocfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
         else:
             scfg = cfg if not cfg.get("stagger") else dict(cfg, _tr=tranche_of(i), _ntr=len(cfg["stagger"]))
-            if paused:
+            if paused and cfg.get("pause_giants") and not dip:
+                # exp63: during a pause, free slots go only to giants (most-traded members above a rising 200-day)
+                scfg = dict(scfg, giant_slots=cfg["pause_giants"], _giants_only=True)
+            elif paused:
                 # exp61: buy the dip during a pause. Only top-ranked candidates whose RSI is at or below pause_dip_rsi,
                 # and at most pause_dip_slots new names per decision day.
                 scfg = dict(scfg, rsi_max=dip, _dip_max=cfg.get("pause_dip_slots", 2))
@@ -1325,6 +1328,12 @@ def _park_name(park, m, i, cfg=None, paused=False):
                     c = m.E[t]["c"]; a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
                     return a / b - 1 if (a == a and b == b and b > 0) else -999
                 return max(LEADERS, key=mom)
+        pp = (cfg or {}).get("pause_park")
+        if park == "leader_safe" and paused and pp in ("GLD", "GLD_trend"):
+            # exp63: park in gold during a pause (always, or only while gold is above its 200-day average)
+            g = m.E["GLD"]["c"]
+            if g[i] == g[i] and (pp == "GLD" or m.etf_vs_sma("GLD", 200, i - 1) > 0):
+                return "GLD"
         if park == "leader_safe" and paused:
             # exp57: optionally keep idle money in the leading index during a pause while that index is still
             # above its park_sma-session average (the pause stops new stock buys, not index exposure)
@@ -1489,6 +1498,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             out.append(dict(kind="new", j=int(j), dollars=slot, route=1, stop=(P["SMA50"][i, j] - P["ATR"][i, j]),
                             min_dollars=0.5 * slot, meta={"tr": tr or 0, "w": 1.0, "giant": True}))
             free -= 1
+    if cfg.get("_giants_only"):
+        free = 0
     order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]
