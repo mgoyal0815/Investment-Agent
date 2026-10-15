@@ -1,0 +1,124 @@
+     bucket                       indicator    scope          range  days  index next 21d  index next 63d  index up next 63d  J vs index 63d  J beats index 63d
+ lowest 20%                       SPY RSI14 all days   16.8 to 44.5  1284            2.79            6.44               0.74            1.24               0.52
+        low                       SPY RSI14 all days   44.5 to 52.7  1284            1.77            4.49               0.73            2.16               0.55
+     middle                       SPY RSI14 all days   52.7 to 59.1  1283            2.06            5.02               0.74            1.37               0.50
+       high                       SPY RSI14 all days   59.1 to 65.0  1284            1.65            4.43               0.76            1.59               0.52
+highest 20%                       SPY RSI14 all days   65.0 to 87.2  1284            1.78            3.94               0.79            0.29               0.45
+ lowest 20%               SPY MACD hist (%) all days   -3.2 to -0.2  1284            2.33            5.96               0.73            0.99               0.53
+        low               SPY MACD hist (%) all days   -0.2 to -0.1  1284            1.77            4.67               0.77            2.53               0.55
+     middle               SPY MACD hist (%) all days    -0.1 to 0.1  1283            1.59            3.81               0.75            1.46               0.48
+       high               SPY MACD hist (%) all days     0.1 to 0.2  1284            1.61            4.57               0.77            1.11               0.47
+highest 20%               SPY MACD hist (%) all days     0.2 to 2.1  1284            2.75            5.30               0.74            0.56               0.52
+ lowest 20%               SPY vs 50-day (%) all days  -27.4 to -1.7  1284            2.98            6.30               0.72            0.58               0.51
+        low               SPY vs 50-day (%) all days    -1.7 to 0.8  1284            1.72            4.84               0.76            2.63               0.55
+     middle               SPY vs 50-day (%) all days     0.8 to 2.3  1283            1.59            4.17               0.75            2.03               0.53
+       high               SPY vs 50-day (%) all days     2.3 to 3.8  1284            1.91            4.44               0.78            1.03               0.50
+highest 20%               SPY vs 50-day (%) all days    3.8 to 14.4  1284            1.86            4.56               0.76            0.39               0.47
+ lowest 20%              SPY vs 200-day (%) all days  -39.0 to -2.0  1284            2.42            4.60               0.63           -0.38               0.49
+        low              SPY vs 200-day (%) all days    -2.0 to 3.6  1284            1.95            5.84               0.76            2.15               0.54
+     middle              SPY vs 200-day (%) all days     3.6 to 6.7  1283            2.25            5.28               0.79            0.66               0.46
+       high              SPY vs 200-day (%) all days     6.7 to 9.5  1284            1.96            4.63               0.82            2.19               0.56
+highest 20%              SPY vs 200-day (%) all days    9.6 to 21.5  1284            1.47            3.96               0.77            2.03               0.49
+ lowest 20%       SPY below 1-year high (%) all days -51.5 to -11.9  1284            2.48            4.95               0.64           -0.35               0.50
+        low       SPY below 1-year high (%) all days  -11.9 to -3.8  1284            2.50            6.95               0.79            1.46               0.49
+     middle       SPY below 1-year high (%) all days   -3.8 to -1.4  1283            2.32            5.20               0.80            2.10               0.50
+       high       SPY below 1-year high (%) all days   -1.4 to -0.2  1284            1.49            3.74               0.76            2.58               0.55
+highest 20%       SPY below 1-year high (%) all days    -0.2 to 0.0  1284            1.26            3.48               0.77            0.87               0.49
+ lowest 20%                       QQQ RSI14 all days   19.1 to 43.7  1284            2.45            5.80               0.72            1.04               0.51
+        low                       QQQ RSI14 all days   43.7 to 51.7  1284            2.14            5.15               0.73            1.50               0.51
+     middle                       QQQ RSI14 all days   51.7 to 58.5  1283            1.85            4.92               0.76            2.33               0.55
+       high                       QQQ RSI14 all days   58.5 to 65.5  1284            2.09            4.82               0.78            0.86               0.48
+highest 20%                       QQQ RSI14 all days   65.5 to 85.5  1284            1.52            3.64               0.77            0.92               0.50
+ lowest 20%               QQQ MACD hist (%) all days   -2.5 to -0.3  1284            2.16            5.69               0.73            0.91               0.54
+        low               QQQ MACD hist (%) all days   -0.3 to -0.1  1284            2.09            4.83               0.76            2.64               0.55
+     middle               QQQ MACD hist (%) all days    -0.1 to 0.1  1283            1.67            4.60               0.78            1.67               0.49
+       high               QQQ MACD hist (%) all days     0.1 to 0.3  1284            1.80            4.64               0.78            0.50               0.45
+highest 20%               QQQ MACD hist (%) all days     0.3 to 3.5  1284            2.34            4.56               0.72            0.94               0.52
+ lowest 20%               QQQ vs 50-day (%) all days  -32.6 to -2.6  1284            2.47            5.32               0.68            0.72               0.50
+        low               QQQ vs 50-day (%) all days    -2.6 to 0.9  1284            2.31            5.68               0.78            1.64               0.50
+     middle               QQQ vs 50-day (%) all days     0.9 to 3.0  1283            1.62            4.61               0.77            2.53               0.55
+       high               QQQ vs 50-day (%) all days     3.0 to 5.1  1284            1.84            4.89               0.81            1.08               0.50
+highest 20%               QQQ vs 50-day (%) all days    5.1 to 20.1  1284            1.81            3.82               0.72            0.68               0.49
+ lowest 20%              QQQ vs 200-day (%) all days  -54.2 to -3.0  1284            2.12            4.16               0.62           -0.20               0.50
+        low              QQQ vs 200-day (%) all days    -3.0 to 4.4  1284            1.94            5.47               0.75            1.50               0.47
+     middle              QQQ vs 200-day (%) all days     4.4 to 8.7  1283            2.38            5.42               0.80            0.78               0.52
+       high              QQQ vs 200-day (%) all days    8.7 to 12.4  1284            1.93            4.69               0.79            2.57               0.54
+highest 20%              QQQ vs 200-day (%) all days   12.4 to 33.1  1284            1.69            4.58               0.80            2.00               0.52
+ lowest 20%       QQQ below 1-year high (%) all days -70.2 to -14.6  1284            2.04            4.22               0.60            0.15               0.54
+        low       QQQ below 1-year high (%) all days  -14.5 to -5.6  1285            2.79            7.19               0.81            1.26               0.44
+     middle       QQQ below 1-year high (%) all days   -5.6 to -2.3  1282            2.27            5.35               0.78            1.14               0.48
+       high       QQQ below 1-year high (%) all days   -2.3 to -0.5  1284            1.64            3.92               0.77            2.63               0.56
+highest 20%       QQQ below 1-year high (%) all days    -0.5 to 0.0  1284            1.31            3.65               0.79            1.48               0.52
+ lowest 20%                             VIX all days    9.1 to 13.3  1285            1.55            3.91               0.80            0.77               0.50
+        low                             VIX all days   13.3 to 16.1  1283            1.49            3.99               0.75            1.66               0.52
+     middle                             VIX all days   16.1 to 19.3  1284            2.01            4.50               0.76            1.42               0.47
+       high                             VIX all days   19.3 to 24.5  1284            1.13            3.02               0.65            3.77               0.59
+highest 20%                             VIX all days   24.5 to 82.7  1283            3.88            8.90               0.79           -0.97               0.47
+ lowest 20% breadth: % of S&P above 200-day all days    0.7 to 44.0  1288            3.04            6.82               0.71           -0.88               0.49
+        low breadth: % of S&P above 200-day all days   44.0 to 59.2  1281            2.12            4.88               0.72            3.16               0.54
+     middle breadth: % of S&P above 200-day all days   59.2 to 68.6  1283            1.33            3.60               0.73            3.51               0.53
+       high breadth: % of S&P above 200-day all days   68.6 to 76.5  1287            1.73            4.61               0.80            1.33               0.52
+highest 20% breadth: % of S&P above 200-day all days   76.5 to 97.0  1280            1.83            4.40               0.81           -0.46               0.47
+     bucket                       indicator scope          range  days  index next 21d  index next 63d  index up next 63d  J vs index 63d  J beats index 63d
+ lowest 20%                       SPY RSI14 J low   16.8 to 44.5   617            4.44            8.06               0.77            0.65               0.47
+        low                       SPY RSI14 J low   44.5 to 52.7   339            2.71            3.37               0.67            2.49               0.54
+     middle                       SPY RSI14 J low   52.7 to 59.1   215            1.68            2.43               0.62            1.74               0.53
+       high                       SPY RSI14 J low   59.1 to 65.0    77            2.16            3.85               0.75            1.48               0.51
+highest 20%                       SPY RSI14 J low   65.0 to 87.2    37            3.78            5.28               0.86            3.14               0.62
+ lowest 20%               SPY MACD hist (%) J low   -3.2 to -0.2   513            3.77            7.84               0.76            0.99               0.50
+        low               SPY MACD hist (%) J low   -0.2 to -0.1   231            2.75            5.41               0.74            2.29               0.54
+     middle               SPY MACD hist (%) J low    -0.1 to 0.1   178            2.90            3.40               0.71            1.61               0.46
+       high               SPY MACD hist (%) J low     0.1 to 0.2   151            2.88            4.53               0.71            0.93               0.46
+highest 20%               SPY MACD hist (%) J low     0.2 to 2.1   212            3.79            2.67               0.63            1.83               0.53
+ lowest 20%               SPY vs 50-day (%) J low  -27.4 to -1.7   639            4.62            7.75               0.77            0.51               0.48
+        low               SPY vs 50-day (%) J low    -1.7 to 0.8   341            2.20            3.55               0.68            3.01               0.52
+     middle               SPY vs 50-day (%) J low     0.8 to 2.3   192            1.61            2.74               0.65            0.62               0.44
+       high               SPY vs 50-day (%) J low     2.3 to 3.8    99            2.83            3.88               0.75            3.46               0.65
+highest 20%               SPY vs 50-day (%) J low    3.8 to 14.4    14            2.22            4.19               0.50            2.66               0.93
+ lowest 20%              SPY vs 200-day (%) J low  -39.0 to -2.0   462            4.64            5.55               0.68            0.60               0.48
+        low              SPY vs 200-day (%) J low    -2.0 to 3.6   358            2.29            6.71               0.77            2.89               0.61
+     middle              SPY vs 200-day (%) J low     3.6 to 6.7   208            2.87            4.57               0.63           -0.54               0.35
+       high              SPY vs 200-day (%) J low     6.7 to 9.5   163            3.20            5.56               0.81            4.29               0.56
+highest 20%              SPY vs 200-day (%) J low    9.6 to 21.5    94            2.59            3.22               0.79           -0.51               0.45
+ lowest 20%       SPY below 1-year high (%) J low -51.5 to -11.9   373            5.55            5.58               0.67            0.88               0.50
+        low       SPY below 1-year high (%) J low  -11.9 to -3.8   481            2.32            6.60               0.76            2.14               0.54
+     middle       SPY below 1-year high (%) J low   -3.8 to -1.4   233            2.68            4.28               0.69            1.78               0.48
+       high       SPY below 1-year high (%) J low   -1.4 to -0.2   128            3.02            4.80               0.80            0.68               0.47
+highest 20%       SPY below 1-year high (%) J low    -0.2 to 0.0    70            1.81            3.75               0.71           -0.10               0.41
+ lowest 20%                       QQQ RSI14 J low   19.1 to 43.7   626            4.09            7.66               0.77            0.52               0.46
+        low                       QQQ RSI14 J low   43.7 to 51.7   352            3.15            4.38               0.67            1.22               0.51
+     middle                       QQQ RSI14 J low   51.7 to 58.5   186            2.06            2.51               0.62            3.70               0.61
+       high                       QQQ RSI14 J low   58.5 to 65.5    86            2.17            2.05               0.69            4.96               0.69
+highest 20%                       QQQ RSI14 J low   65.5 to 85.5    35            2.40            4.33               0.91           -0.62               0.34
+ lowest 20%               QQQ MACD hist (%) J low   -2.5 to -0.3   514            3.67            7.79               0.75            0.92               0.50
+        low               QQQ MACD hist (%) J low   -0.3 to -0.1   240            3.28            5.06               0.73            2.95               0.53
+     middle               QQQ MACD hist (%) J low    -0.1 to 0.1   158            2.37            4.26               0.75            2.15               0.52
+       high               QQQ MACD hist (%) J low     0.1 to 0.3   176            3.34            3.67               0.71            0.09               0.40
+highest 20%               QQQ MACD hist (%) J low     0.3 to 3.5   197            3.50            3.01               0.61            1.61               0.56
+ lowest 20%               QQQ vs 50-day (%) J low  -32.6 to -2.6   644            4.30            7.21               0.75            0.42               0.45
+        low               QQQ vs 50-day (%) J low    -2.6 to 0.9   362            2.82            5.31               0.73            0.72               0.48
+     middle               QQQ vs 50-day (%) J low     0.9 to 3.0   179            1.78            1.59               0.64            6.34               0.68
+       high               QQQ vs 50-day (%) J low     3.0 to 5.1    60            2.09            4.55               0.72            3.01               0.63
+highest 20%               QQQ vs 50-day (%) J low    5.1 to 20.1    40            2.18            0.13               0.55            0.16               0.55
+ lowest 20%              QQQ vs 200-day (%) J low  -54.2 to -3.0   462            4.78            6.83               0.73           -0.42               0.47
+        low              QQQ vs 200-day (%) J low    -3.0 to 4.4   369            2.36            4.11               0.66            3.04               0.51
+     middle              QQQ vs 200-day (%) J low     4.4 to 8.7   250            2.46            5.14               0.72            0.95               0.52
+       high              QQQ vs 200-day (%) J low    8.7 to 12.4   146            3.03            5.81               0.77            4.20               0.56
+highest 20%              QQQ vs 200-day (%) J low   12.4 to 33.1    58            3.22            5.60               0.91            1.27               0.53
+ lowest 20%       QQQ below 1-year high (%) J low -70.2 to -14.6   361            5.48            5.76               0.65            0.80               0.55
+        low       QQQ below 1-year high (%) J low  -14.5 to -5.6   534            2.56            6.40               0.76            1.69               0.47
+     middle       QQQ below 1-year high (%) J low   -5.6 to -2.3   231            2.44            4.30               0.69            0.16               0.43
+       high       QQQ below 1-year high (%) J low   -2.3 to -0.5   108            2.39            3.21               0.73            4.75               0.66
+highest 20%       QQQ below 1-year high (%) J low    -0.5 to 0.0    51            3.11            5.73               0.92            2.15               0.49
+ lowest 20%                             VIX J low    9.1 to 13.3   106            2.30            3.59               0.60           -0.05               0.41
+        low                             VIX J low   13.3 to 16.1   210            3.58            7.26               0.91            0.97               0.47
+     middle                             VIX J low   16.1 to 19.3   235            2.50            4.94               0.76            0.49               0.44
+       high                             VIX J low   19.3 to 24.5   257            0.82           -0.50               0.54            7.40               0.69
+highest 20%                             VIX J low   24.5 to 82.7   477            5.30            8.79               0.75           -0.76               0.47
+ lowest 20% breadth: % of S&P above 200-day J low    0.7 to 44.0   486            4.33            6.32               0.70            1.22               0.53
+        low breadth: % of S&P above 200-day J low   44.0 to 59.2   290            2.92            6.94               0.81            2.44               0.52
+     middle breadth: % of S&P above 200-day J low   59.2 to 68.6   193            2.16            2.63               0.58            1.69               0.52
+       high breadth: % of S&P above 200-day J low   68.6 to 76.5   141            3.01            5.39               0.72            1.87               0.48
+highest 20% breadth: % of S&P above 200-day J low   76.5 to 97.0   175            3.04            4.44               0.81           -0.21               0.39
+
+All days: index next 63d 4.86%, up 75% of the time; J low on 20% of days
