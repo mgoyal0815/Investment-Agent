@@ -1,0 +1,23 @@
+System J
+Steep fall instead of RSI: SPY 10% below its 10-day high
+Steep fall instead of RSI: SPY 10% below its 20-day high
+Steep fall instead of RSI: SPY 15% below its 20-day high
+Steep fall instead of RSI: SPY 20% below its 40-day high
+RSI 25 or steep fall: SPY 10% below its 10-day high
+RSI 25 or steep fall: SPY 15% below its 20-day high
+VIX spike instead of RSI: VIX peaked 30+ and is 10% off its peak
+VIX spike instead of RSI: VIX peaked 35+ and is 15% off its peak
+VIX spike instead of RSI: VIX peaked 40+ and is 15% off its peak
+RSI 25 or VIX spike (35+, 15% off peak)
+                                                            rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                                        System J                 0.81                  1.0                0.257               0.619               1.000               0.112               0.786               0.042               0.653
+        Steep fall instead of RSI: SPY 10% below its 10-day high                 0.83                  1.0                0.268               0.603               1.000               0.073               0.786               0.042               0.653
+        Steep fall instead of RSI: SPY 10% below its 20-day high                 0.74                  1.0                0.263               0.471               0.444               0.055               0.774               0.042               0.633
+        Steep fall instead of RSI: SPY 15% below its 20-day high                 0.82                  1.0                0.259               0.651               1.000               0.128               0.774               0.042               0.609
+        Steep fall instead of RSI: SPY 20% below its 40-day high                 0.67                  1.0                0.240               0.651               1.000               0.101               0.774               0.042               0.609
+             RSI 25 or steep fall: SPY 10% below its 10-day high                 0.82                  1.0                0.265               0.619               1.000               0.076               0.786               0.042               0.653
+             RSI 25 or steep fall: SPY 15% below its 20-day high                 0.81                  1.0                0.257               0.667               1.000               0.123               0.786               0.042               0.653
+VIX spike instead of RSI: VIX peaked 30+ and is 10% off its peak                 0.80                  1.0                0.263               0.434               0.000               0.029               0.786               0.042               0.635
+VIX spike instead of RSI: VIX peaked 35+ and is 15% off its peak                 0.80                  1.0                0.261               0.550               1.000               0.071               0.786               0.042               0.631
+VIX spike instead of RSI: VIX peaked 40+ and is 15% off its peak                 0.66                  1.0                0.240               0.550               1.000               0.075               0.798               0.042               0.631
+                         RSI 25 or VIX spike (35+, 15% off peak)                 0.82                  1.0                0.266               0.566               1.000               0.075               0.786               0.042               0.653
