@@ -1514,6 +1514,12 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         free = int(round(n_stock / ntr)) - len(mine)
     if cfg.get("_dip_max") is not None:
         free = min(free, cfg["_dip_max"])
+    hh = cfg.get("skip_buys_near_high")
+    if hh is not None:
+        # exp67: no new stock buys while SPY closes within hh of its 1-year high (money waits in the leading index)
+        sp_ = m.E["SPY"]["c"]
+        if i > 252 and sp_[i] >= np.nanmax(sp_[i - 251:i + 1]) * (1 - hh):
+            free = 0
     if cfg.get("narrow_index") and m.narrow[i]:
         free = 0                                                # journal: new buys in narrow markets lagged SPY
     gs = cfg.get("giant_slots")
@@ -1576,6 +1582,10 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
                 continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
             continue
+        if cfg.get("rs_rising") and not (i >= 5 and P["rs126"][i, j] > P["rs126"][i - 5, j]):
+            continue                                            # exp67: 6-month strength vs SPY rising over the last week
+        if cfg.get("dist200_min") is not None and not (P["dist200"][i, j] >= cfg["dist200_min"]):
+            continue                                            # exp67: at least this far above the 200-day average
         if cfg.get("minervini"):                                 # stage-2 trend template (Minervini 2013), RS left to the rank
             c_, s50, s150, s200 = P["Cf"][i, j], P["SMA50"][i, j], P["SMA150"][i, j], P["SMA200"][i, j]
             s200p = P["SMA200"][i - cfg.get("minv_rise", 21), j] if i >= 21 else np.nan

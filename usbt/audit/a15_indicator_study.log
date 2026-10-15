@@ -1,0 +1,75 @@
+candidates: 18899 decision days: 633 base quick-loss rate 0.408, base fwd63 3.33%
+K positions: 559 short-loser rate 0.374
+
+==== A_quickloss: base 0.419 (2000-15) / 0.391 (2016-26); 55 of 274 buckets consistent in both periods
+                             feature      bucket    cut  train  test  n_train  n_test  base_train  base_test  lift_train  lift_test  consistent  strength
+              ATR % of price | level highest 20%  3.903  0.610 0.559     2263    1398       0.419      0.391       0.190      0.167        True     0.167
+              30d volatility | level highest 20%  0.029  0.597 0.538     2263    1548       0.419      0.391       0.177      0.147        True     0.147
+              ATR % of price | level  lowest 20%  1.972  0.259 0.269     2263    1819       0.419      0.391      -0.160     -0.122        True     0.122
+           6m vs SPY (rs126) | level highest 20%  0.545  0.541 0.519     2263    1535       0.419      0.391       0.122      0.127        True     0.122
+              30d volatility | level  lowest 20%  0.014  0.272 0.271     2263    1854       0.419      0.391      -0.148     -0.120        True     0.120
+               near 52w high | level  lowest 20%  0.918  0.540 0.509     2263    1037       0.419      0.391       0.121      0.118        True     0.118
+          SMA200 slope %/21d | level highest 20%  6.110  0.532 0.513     2260    1782       0.419      0.391       0.113      0.122        True     0.113
+                   vs 200d % | level highest 20%  0.380  0.529 0.493     2263    1890       0.419      0.391       0.110      0.101        True     0.101
+           6m vs SPY (rs126) | level  lowest 20%  0.239  0.322 0.301     2263    1233       0.419      0.391      -0.097     -0.090        True     0.090
+       EMA50 slope %/10d | 10d slope  lowest 20% -1.421  0.487 0.453     2263    1563       0.419      0.391       0.067      0.062        True     0.062
+              vs SMA50 % | 10d slope  lowest 20% -4.988  0.482 0.451     2263    1622       0.419      0.391       0.063      0.060        True     0.060
+           EMA50 slope %/10d | level highest 20%  4.776  0.521 0.451     2263    1908       0.419      0.391       0.102      0.060        True     0.060
+                vs 200d % | 5d slope  lowest 20% -0.034  0.479 0.467     2262    1481       0.419      0.391       0.059      0.076        True     0.059
+        EMA50 slope %/10d | 5d slope  lowest 20% -0.817  0.479 0.450     2263    1586       0.419      0.391       0.060      0.059        True     0.059
+               vs EMA50 % | 5d slope  lowest 20% -3.395  0.478 0.461     2263    1475       0.419      0.391       0.058      0.070        True     0.058
+               MACD hist | 10d slope  lowest 20% -0.007  0.475 0.453     2263    1566       0.419      0.391       0.056      0.061        True     0.056
+               vs SMA50 % | 5d slope  lowest 20% -3.643  0.475 0.461     2263    1503       0.419      0.391       0.056      0.070        True     0.056
+              vs EMA20 % | 10d slope  lowest 20% -3.739  0.476 0.446     2263    1584       0.419      0.391       0.056      0.055        True     0.055
+               vs EMA20 % | 5d slope  lowest 20% -3.054  0.474 0.463     2263    1458       0.419      0.391       0.054      0.072        True     0.054
+              vs EMA50 % | 10d slope  lowest 20% -4.439  0.473 0.453     2263    1609       0.419      0.391       0.053      0.062        True     0.053
+                  vs EMA50 % | level highest 20% 11.828  0.523 0.445     2263    1867       0.419      0.391       0.103      0.053        True     0.053
+            near 52w high | 5d slope  lowest 20% -0.020  0.472 0.459     2262    1487       0.419      0.391       0.053      0.068        True     0.053
+        6m vs SPY (rs126) | 5d slope  lowest 20% -0.044  0.472 0.460     2263    1535       0.419      0.391       0.052      0.069        True     0.052
+                   MACD hist | level  lowest 20% -0.004  0.470 0.449     2263    1565       0.419      0.391       0.050      0.057        True     0.050
+       SMA200 slope %/21d | 5d slope  lowest 20% -0.120  0.469 0.452     2260    1296       0.419      0.391       0.050      0.061        True     0.050
+       6m vs SPY (rs126) | 10d slope  lowest 20% -0.050  0.469 0.469     2263    1566       0.419      0.391       0.050      0.078        True     0.050
+      SMA200 slope %/21d | 10d slope highest 20%  0.841  0.491 0.441     2259    1708       0.419      0.391       0.072      0.050        True     0.050
+[mkt] SPY 50d avg slope %/10d | turn   turned up    NaN  0.469 0.456     1770    1230       0.419      0.391       0.049      0.065        True     0.049
+               vs 200d % | 10d slope  lowest 20% -0.042  0.468 0.454     2261    1581       0.419      0.391       0.049      0.062        True     0.049
+           30d volatility | 5d slope highest 20%  0.001  0.469 0.439     2263    1659       0.419      0.391       0.049      0.048        True     0.048
+
+==== A_fwd63vsSPY: base 1.226 (2000-15) / 0.220 (2016-26); 4 of 274 buckets consistent in both periods
+                           feature     bucket     cut  train   test  n_train  n_test  base_train  base_test  lift_train  lift_test  consistent  strength
+                 vs 200d % | level lowest 20%   0.176 -1.710 -1.751     2263     814       1.226       0.22      -2.936     -1.972        True     1.972
+ [mkt] SPY below 1y high % | level lowest 20% -15.193 -0.654 -3.325     2287     447       1.226       0.22      -1.880     -3.545        True     1.880
+       [mkt] SPY vs 200d % | level lowest 20%  -4.254 -1.303 -1.523     2282     627       1.226       0.22      -2.528     -1.743        True     1.743
+[mkt] breadth % above 200d | level lowest 20%  42.169 -1.897 -1.359     2282    1167       1.226       0.22      -3.122     -1.579        True     1.579
+
+==== B_shortloser: base 0.378 (2000-15) / 0.367 (2016-26); 50 of 274 buckets consistent in both periods
+                              feature      bucket    cut  train  test  n_train  n_test  base_train  base_test  lift_train  lift_test  consistent  strength
+         6m vs SPY (rs126) | 5d slope highest 20%  0.160  0.254 0.216       67      37       0.378      0.367      -0.125     -0.151        True     0.125
+ [mkt] SPY below 1y high % | 5d slope  lowest 20% -1.160  0.265 0.250       68      36       0.378      0.367      -0.114     -0.117        True     0.114
+               Relative volume | turn   turned up    NaN  0.213 0.256       47      39       0.378      0.367      -0.166     -0.111        True     0.111
+       [mkt] SPY vs 200d % | 5d slope  lowest 20% -1.267  0.254 0.257       67      35       0.378      0.367      -0.125     -0.110        True     0.110
+            ATR % of price | 5d slope highest 20%  0.358  0.284 0.237       67      38       0.378      0.367      -0.095     -0.130        True     0.095
+ [mkt] K account below peak % | level highest 20% -2.612  0.485 0.462       68      52       0.378      0.367       0.107      0.094        True     0.094
+   [mkt] breadth % above 200d | level highest 20% 75.714  0.471 0.469       68      49       0.378      0.367       0.092      0.102        True     0.092
+        [mkt] SPY vs 50d % | 5d slope  lowest 20% -1.411  0.275 0.278       69      36       0.378      0.367      -0.103     -0.089        True     0.089
+    [mkt] SPY below 1y high % | level highest 20% -0.539  0.478 0.453       69      75       0.378      0.367       0.100      0.086        True     0.086
+        6m vs SPY (rs126) | 10d slope highest 20%  0.264  0.299 0.225       67      40       0.378      0.367      -0.080     -0.142        True     0.080
+      [mkt] SPY 21d move % | 5d slope  lowest 20% -2.273  0.235 0.290       68      31       0.378      0.367      -0.143     -0.077        True     0.077
+        [mkt] SPY MACD hist % | level  lowest 20% -0.227  0.279 0.295       68      44       0.378      0.367      -0.099     -0.072        True     0.072
+        6m vs SPY (rs126) | 10d slope  lowest 20% -0.003  0.478 0.438       67      64       0.378      0.367       0.099      0.070        True     0.070
+                 [mkt] VIX | 5d slope highest 20%  1.670  0.309 0.300       68      40       0.378      0.367      -0.070     -0.067        True     0.067
+               30d volatility | level highest 20%  0.038  0.313 0.176       67      34       0.378      0.367      -0.065     -0.191        True     0.065
+                [mkt] SPY RSI | level  lowest 20% 47.001  0.313 0.283       67      46       0.378      0.367      -0.065     -0.085        True     0.065
+                ATR % of price | turn turned down    NaN  0.315 0.300       73      50       0.378      0.367      -0.063     -0.067        True     0.063
+    [mkt] QQQ below 1y high % | level highest 20% -0.979  0.435 0.423       69      71       0.378      0.367       0.056      0.055        True     0.055
+                       RSI | 5d slope  lowest 20% -5.260  0.299 0.312       67      48       0.378      0.367      -0.080     -0.055        True     0.055
+[mkt] K account 21d move % | 5d slope  lowest 20% -3.567  0.319 0.312       69      32       0.378      0.367      -0.060     -0.055        True     0.055
+      [mkt] QQQ 21d move % | 5d slope highest 20%  2.398  0.433 0.423       67      52       0.378      0.367       0.054      0.056        True     0.054
+                      ADX | 10d slope  lowest 20% -2.167  0.433 0.479       67      48       0.378      0.367       0.054      0.112        True     0.054
+    [mkt] breadth % above 200d | turn turned down    NaN  0.326 0.302       89      53       0.378      0.367      -0.053     -0.065        True     0.053
+                     vs 200d % | turn turned down    NaN  0.324 0.317       74      60       0.378      0.367      -0.054     -0.051        True     0.051
+         [mkt] SPY 21d move % | level  lowest 20% -2.209  0.328 0.281       67      32       0.378      0.367      -0.050     -0.086        True     0.050
+                   21d move % | level highest 20% 24.371  0.328 0.240       67      50       0.378      0.367      -0.050     -0.127        True     0.050
+           30d volatility | 10d slope highest 20%  0.004  0.328 0.300       67      40       0.378      0.367      -0.050     -0.067        True     0.050
+                   vs SMA50 % | level highest 20% 22.712  0.328 0.283       67      46       0.378      0.367      -0.050     -0.085        True     0.050
+            EMA50 slope %/10d | level highest 20%  8.245  0.328 0.244       67      41       0.378      0.367      -0.050     -0.123        True     0.050
+[mkt] breadth % above 200d | 5d slope  lowest 20% -2.773  0.209 0.321       67      56       0.378      0.367      -0.169     -0.046        True     0.046
