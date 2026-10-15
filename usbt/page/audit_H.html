@@ -1,0 +1,160 @@
+<title>System H Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column, like the US System Scorecard: verdict, then the checklist ledger, then each finding with its numbers, then corrected figures and next steps. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --ink: #18211d; --muted: #5c6862; --rule: #dde3df;
+  --pass: #17704f; --pass-soft: #e1f0e8; --fail: #a3462d; --fail-soft: #f6e4dd; --warn: #8a6100; --warn-soft: #f6ecd6;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --pass: #4cc392; --pass-soft: #173327; --fail: #e48a6f; --fail-soft: #3a211a; --warn: #e0b04a; --warn-soft: #3a2f16; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111614; --panel: #171e1b; --ink: #e5ebe8; --muted: #9aa7a0; --rule: #2a3430;
+  --pass: #4cc392; --pass-soft: #173327; --fail: #e48a6f; --fail-soft: #3a211a; --warn: #e0b04a; --warn-soft: #3a2f16; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+.wrap { max-width: 920px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; display: grid; gap: 36px; }
+h1, h2, h3 { font-family: var(--f-display); font-stretch: 85%; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); font-weight: 800; line-height: 1.05; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; }
+p { margin: 0; max-width: 70ch; }
+.eyebrow { font: 600 0.75rem/1 var(--f-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+header, section { display: grid; gap: 12px; min-width: 0; }
+.note { font-size: 0.88rem; color: var(--muted); }
+.verdict { border-left: 3px solid var(--warn); padding: 4px 0 4px 16px; display: grid; gap: 10px; }
+.tbl { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: top; }
+thead th { font: 600 0.72rem/1.2 var(--f-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); background: var(--bg); white-space: nowrap; }
+tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+td.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+td.bad { color: var(--fail); font-weight: 600; }
+.pill { font: 600 0.72rem/1 var(--f-mono); padding: 4px 8px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+.pill.pass { background: var(--pass-soft); color: var(--pass); }
+.pill.fail { background: var(--fail-soft); color: var(--fail); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.finding { display: grid; gap: 8px; padding: 16px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; }
+.finding .head { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+ul, ol { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; max-width: 70ch; }
+code { font-family: var(--f-mono); font-size: 0.86em; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Audit · System H · US backtest 2000 – 12 Oct 2026</div>
+    <h1>System H audit</h1>
+    <p>Eleven checks for look-ahead, survivorship, execution, data errors and overfitting. The engine is clean. The data has a survivorship gap in the early years, and H's drawdown result is fragile.</p>
+  </header>
+
+  <section class="verdict">
+    <h2>Verdict</h2>
+    <p>H's trading rules use only information available on the day, and the trades are executed and costed realistically. Its edge over System G is real: random restart dates do worse every time. But two things make the headline numbers look better than they should:</p>
+    <ul>
+      <li>Up to a third of S&amp;P 500 members in the early 2000s have no price data, so the 2000–11 results are flattered by an unknown amount.</li>
+      <li>H's settings sit on a narrow peak. Its drawdown record collapses with small changes to its settings, or when four extra stocks are added to the market breadth count.</li>
+    </ul>
+    <p>On the corrected data, H beats SPY and QQQ in 59.0% of years from every monthly start (G: 54.8%). But its worst fall is smaller than both indexes' on only 43% of start dates (G: 78%).</p>
+  </section>
+
+  <section>
+    <h2>Checklist</h2>
+    <div class="tbl"><table>
+      <thead><tr><th scope="col">Check</th><th scope="col">How</th><th scope="col">Result</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Look-ahead in the engine</th><td>Deleted all data after a cut-off and reran H at 7 dates from 2003 to 2025</td><td><span class="pill pass">Pass</span> identical to the cent</td></tr>
+        <tr><th scope="row">Look-ahead in indicators</th><td>Read every indicator formula; tested the panel rebuild</td><td><span class="pill pass">Pass</span> all trailing windows</td></tr>
+        <tr><th scope="row">Future-looking stock filter</th><td>Checked the data-cleaning rules for use of later prices</td><td><span class="pill fail">Fail</span> removed 4 S&amp;P stocks that later collapsed</td></tr>
+        <tr><th scope="row">Survivorship</th><td>Counted S&amp;P 500 members with no price data, by year</td><td><span class="pill fail">Fail</span> 38% in 2000, 13% in 2011, under 5% after 2016</td></tr>
+        <tr><th scope="row">Trade timing</th><td>Read the order flow</td><td><span class="pill pass">Pass</span> decide at the close, fill at the next open</td></tr>
+        <tr><th scope="row">Costs</th><td>Read the cost model</td><td><span class="pill pass">Pass</span> $0.005/share + 0.10%, $1 minimum</td></tr>
+        <tr><th scope="row">Dividends</th><td>Compared index and stock returns with known values</td><td><span class="pill pass">Pass</span> both dividend-adjusted (SPY 2008: −36.8%)</td></tr>
+        <tr><th scope="row">Price glitches</th><td>Scanned all 561 holdings for one-day moves over 35%</td><td><span class="pill pass">Pass</span> none</td></tr>
+        <tr><th scope="row">Delisted holdings</th><td>Listed every forced exit</td><td><span class="pill pass">Pass</span> cash takeovers sold near the deal price</td></tr>
+        <tr><th scope="row">Is the signal real?</th><td>16 placebo runs with restarts on random dates</td><td><span class="pill pass">Pass</span> H beat all 16</td></tr>
+        <tr><th scope="row">Is it fitted to the past?</th><td>9 neighbouring settings</td><td><span class="pill warn">Warning</span> narrow peak, drawdown fragile</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Findings</h2>
+
+    <div class="finding">
+      <div class="head"><span class="pill fail">Major</span><h3>Survivorship gap in the early years</h3></div>
+      <p>A stock with no price data can never be bought in the backtest. The share of S&amp;P 500 members with no data by year:</p>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">2000</th><th scope="col">2004</th><th scope="col">2008</th><th scope="col">2011</th><th scope="col">2014</th><th scope="col">2016</th><th scope="col">2019</th><th scope="col">2022+</th></tr></thead>
+        <tbody><tr><td class="num bad">37.5%</td><td class="num bad">28.8%</td><td class="num bad">19.8%</td><td class="num">13.4%</td><td class="num">9.9%</td><td class="num">5.7%</td><td class="num">1.6%</td><td class="num">≤0.5%</td></tr></tbody>
+      </table></div>
+      <p>Most of the 302 missing names were bought out (Heinz, Wyeth, EMC, Red Hat). The list also includes collapses a momentum system could have held: Lehman, Washington Mutual, Countrywide, Wachovia, Merrill Lynch, Kodak and RadioShack. FMP does not carry these tickers, so the gap cannot be filled from the current data source. Treat the 2000–11 results as optimistic and the 2012–25 results as close to clean.</p>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill fail">Fixed in audit</span><h3>A data-cleaning rule looked at future prices</h3></div>
+      <p>The panel builder dropped any stock whose highest price was over 1,000× its final price. That rule uses the stock's entire future, and it removed four S&amp;P members that later collapsed: Signature Bank (failed 2023), Sovereign Bancorp (2008), Rite Aid (2000) and Tupperware. The audit panel puts them back; nothing else changes. H never bought them, but they count in the market breadth that drives the pause.</p>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Every monthly start 2000–2025</th><th scope="col">G before</th><th scope="col">G corrected</th><th scope="col">H before</th><th scope="col">H corrected</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Years beating SPY &amp; QQQ</th><td class="num">55.9%</td><td class="num">54.8%</td><td class="num">60.4%</td><td class="num">59.0%</td></tr>
+          <tr><th scope="row">Starts 2000–11 / 2012–19 / 2020–25</th><td class="num">55.4 / 54.4 / 67.9</td><td class="num">54.0 / 53.9 / 67.9</td><td class="num">60.9 / 55.8 / 72.9</td><td class="num">59.2 / 55.1 / 72.9</td></tr>
+          <tr><th scope="row">Starts with a smaller fall than both</th><td class="num">78.1%</td><td class="num">78.1%</td><td class="num">76.8%</td><td class="num bad">42.9%</td></tr>
+          <tr><th scope="row">Worst fall, any start</th><td class="num">−41.6%</td><td class="num">−39.5%</td><td class="num">−45.8%</td><td class="num">−45.6%</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill pass">Passed</span><h3>The restart signal is real</h3></div>
+      <p>H's cyclicals-vs-defensives signal fired 176 times since 2000. Replacing it with 176 random dates, same 42-session window, 16 times:</p>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Every second monthly start</th><th scope="col">Years beating</th><th scope="col">Smaller fall</th><th scope="col">Worst fall</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">System G</th><td class="num">56.5%</td><td class="num">78%</td><td class="num">−36%</td></tr>
+          <tr><th scope="row">System H</th><td class="num">59.8%</td><td class="num">77%</td><td class="num">−46%</td></tr>
+          <tr><th scope="row">Random restarts, average of 16</th><td class="num">50.4%</td><td class="num">0–78%</td><td class="num">−49% to −72%</td></tr>
+          <tr><th scope="row">Random restarts, best of 16</th><td class="num">55.9%</td><td class="num"></td><td class="num"></td></tr>
+        </tbody>
+      </table></div>
+      <p>Restarting at random hurts. H's gain comes from when the signal fires, not from pausing less.</p>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill warn">Warning</span><h3>H's settings sit on a narrow peak</h3></div>
+      <div class="tbl"><table>
+        <thead><tr><th scope="col">Setting</th><th scope="col">Years beating</th><th scope="col">Smaller fall</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">H: 100-day average, 42 sessions</th><td class="num">59.8%</td><td class="num">77%</td></tr>
+          <tr><th scope="row">75-day average</th><td class="num">54.0%</td><td class="num bad">31%</td></tr>
+          <tr><th scope="row">90-day average</th><td class="num">55.5%</td><td class="num bad">34%</td></tr>
+          <tr><th scope="row">125-day average</th><td class="num">58.2%</td><td class="num">76%</td></tr>
+          <tr><th scope="row">150-day average</th><td class="num">58.1%</td><td class="num bad">34%</td></tr>
+          <tr><th scope="row">30 / 35 sessions</th><td class="num">53.1% / 57.7%</td><td class="num">78% / 77%</td></tr>
+          <tr><th scope="row">50 / 63 sessions</th><td class="num">59.4% / 55.1%</td><td class="num">77% / 77%</td></tr>
+        </tbody>
+      </table></div>
+      <p>The years-beating figure falls 2–6 points with small changes, so part of H's +4.5 over G comes from picking the best settings out of many. A fair expectation for future years is G plus 1 to 2 points. The drawdown record is the weak part. H's worst fall in the COVID crash was within a point of SPY's, so small changes push many start dates past it.</p>
+    </div>
+
+    <div class="finding">
+      <div class="head"><span class="pill warn">Note</span><h3>Profits come from a few trades</h3></div>
+      <p>The 15 best of 561 trades made 104% of all profit. Western Digital and Seagate in 2025–26 made about $1.4M of the $2.9M ending value. The years-beating measure is not driven by this, but the dollar total is.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What should change</h2>
+    <ol>
+      <li>Make the corrected panel the standard: put back the four stocks, and replace the future-looking filter with one that only uses prices up to each day.</li>
+      <li>Rescore G and H on the corrected panel and pick between them on your yardstick. On corrected data H wins more years (59.0% vs 54.8%), but G keeps the smaller-fall record (78% vs 43%).</li>
+      <li>Judge the 2000–11 era with caution until a data source with delisted stocks (for example Norgate or CRSP) can fill the survivorship gap.</li>
+      <li>From now on, test every accepted change on its neighbouring settings as well, and reject it if the result is a lone spike.</li>
+    </ol>
+    <p class="note">Scripts and results: <code>usbt/audit/</code> in the Investment-Agent repo (a1 cut-off test, a3 glitch scan, a4 placebo and settings, a5 corrected panel). The live system was not changed.</p>
+  </section>
+</div>

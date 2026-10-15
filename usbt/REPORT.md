@@ -1,3 +1,21 @@
+# AUDIT (15 October 2026): System H
+
+Page: https://claude.ai/artifact/YDcJBzmCxJHV3SWRj5evmQ. Scripts and results in `audit/`.
+
+- Passed: look-ahead cut-off test at 7 dates (identical to the cent), indicator formulas all trailing,
+  decide-at-close / fill-at-next-open, costs, dividends (stocks and ETFs both adjusted), no price glitches
+  in 561 holdings, delisted exits were cash takeovers, placebo (H beat all 16 random-restart runs).
+- Survivorship gap: S&P 500 members with no price data 37.5% (2000), 19.8% (2008), 13.4% (2011),
+  under 6% from 2016. Includes Lehman, WaMu, Countrywide, Wachovia. 2000-11 results are optimistic.
+- Look-ahead in data cleaning: the panel's split-span gate (max price / last price > 1000) removed four S&P
+  members that later collapsed (SBNY, SOV, RAD, TUP). Restored in `panel_audit.pkl` (AUDIT_KEEP). Corrected,
+  every monthly start: G 54.8% years beating, drawdown-ok 78.1%, worst -39.5%; H 59.0%, 42.9%, -45.6%.
+- Fragility: neighbouring settings lose 2-6 points of years; drawdown-ok falls to 31-34% at 75/90/150-day
+  averages. Expect roughly G + 1-2 points from H going forward, and treat its drawdown record as fragile.
+- Profit concentration: 15 of 561 trades made 104% of profit; WDC+STX 2025-26 about $1.4M of $2.9M.
+
+---
+
 # UPDATE (15 October 2026): System H adopted
 
 System H = System G + resume buying for 42 sessions, even while paused, when the Coppock Curve turns up
