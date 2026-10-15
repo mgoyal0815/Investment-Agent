@@ -1216,6 +1216,17 @@ def _park_name(park, m, i, cfg=None, paused=False):
     buy pause is on, so parked cash does not ride a falling market."""
     if park in ("leader", "leader_safe"):
         if park == "leader_safe" and paused:
+            # exp57: optionally keep idle money in the leading index during a pause while that index is still
+            # above its park_sma-session average (the pause stops new stock buys, not index exposure)
+            ps = (cfg or {}).get("park_sma")
+            if ps and i > ps:
+                lb_ = (cfg or {}).get("leader_lb", 126)
+                def mom_(t):
+                    c = m.E[t]["c"]; a, b = c[i - 1], c[i - 1 - lb_]
+                    return a / b - 1 if (a == a and b == b and b > 0) else -999
+                ld = max(LEADERS, key=mom_)
+                if m.etf_vs_sma(ld, ps, i - 1) > 0:
+                    return ld
             return "SHY" if m.E["SHY"]["c"][i] == m.E["SHY"]["c"][i] else None
         lb = (cfg or {}).get("leader_lb", 126)
         def mom(t):
@@ -1389,7 +1400,13 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         if cfg.get("adx_max") and not (P["ADX"][i, j] <= cfg["adx_max"]):
             continue                                            # buy only early in a trend (ADX still low)
         if cfg.get("adx_min") and not (P["ADX"][i, j] >= cfg["adx_min"] and P["PDI_GT"][i, j]):
-            continue
+            ex = cfg.get("adx_exempt_rs")                       # exp57: the strongest stocks skip the ADX gate
+            if not ex:
+                continue
+            if "_rsp" not in cfg or cfg["_rsp"][0] != i:
+                cfg["_rsp"] = (i, pct_rank(np.where(u, P["rs126"][i].astype(float), np.nan)))
+            if not (cfg["_rsp"][1][j] >= ex):
+                continue
         if cfg.get("hi52_min") and not (P["hi52"][i, j] >= cfg["hi52_min"]):
             continue
         if cfg.get("minervini"):                                 # stage-2 trend template (Minervini 2013), RS left to the rank
