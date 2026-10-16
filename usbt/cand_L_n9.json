@@ -1,0 +1,50 @@
+{
+ "name": "L with 9 holdings",
+ "frozen": "2026-10-16",
+ "description": "System K with Nasdaq-100 members (point-in-time from 2004) added to the S&P 500 universe. Run on data/panel_ndx.pkl. Acceptance test vs K on the same panel: +0.7 pts overall, held-back +2.4, 2012-19 +5.8, drawdown record not worse; below the 2-point bar. Holdings grid: 8 or 10 holdings +2 to +4 pts; the drawdown-share jump (40% -> 76%) appears only at 10 holdings. Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.0,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ]
+ },
+ "panel": "data/panel_ndx.pkl"
+}

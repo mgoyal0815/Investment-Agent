@@ -1,0 +1,41 @@
+System L
+Hold 8 stocks
+Hold 9 stocks
+Hold 11 stocks
+ADX entry filter >= 20
+ADX entry filter >= 30
+No ADX entry filter
+OBV trend >= -0.5
+OBV trend >= 0.5
+Profit lock from +50%, trail 30%
+Profit lock from +75%, trail 25%
+Profit lock from +40%, trail 25%
+Sell below rank 1.3x holdings
+Sell below rank 1.7x holdings
+Cyclicals/defensives restart at 125-day average
+Restart window 35 sessions
+Restart window 50 sessions
+Crash trigger RSI <= 22
+Crash trigger RSI <= 27
+Index hurdle margin 5 pts
+                                           rule  choose 2012-16|beat  choose 2012-16|ddok  choose 2012-16|cagr  check 2000-08|beat  check 2000-08|ddok  check 2000-08|cagr  check 2020-25|beat  check 2020-25|ddok  check 2020-25|cagr
+                                       System L                 0.71                 1.00                0.249               0.646                 1.0               0.114               0.762               0.042               0.599
+                                  Hold 8 stocks                 0.75                 0.95                0.279               0.672                 1.0               0.156               0.774               0.042               0.662
+                                  Hold 9 stocks                 0.72                 0.90                0.264               0.704                 1.0               0.172               0.786               0.042               0.642
+                                 Hold 11 stocks                 0.70                 1.00                0.235               0.614                 1.0               0.121               0.750               0.042               0.555
+                         ADX entry filter >= 20                 0.74                 0.15                0.247               0.672                 1.0               0.119               0.762               0.000               0.569
+                         ADX entry filter >= 30                 0.74                 1.00                0.267               0.566                 1.0               0.118               0.738               0.042               0.592
+                            No ADX entry filter                 0.72                 0.00                0.244               0.608                 1.0               0.138               0.810               0.000               0.631
+                              OBV trend >= -0.5                 0.71                 1.00                0.257               0.651                 1.0               0.123               0.786               0.042               0.673
+                               OBV trend >= 0.5                 0.75                 1.00                0.256               0.651                 1.0               0.123               0.762               0.042               0.599
+               Profit lock from +50%, trail 30%                 0.68                 0.00                0.241               0.651                 1.0               0.108               0.738               0.000               0.527
+               Profit lock from +75%, trail 25%                 0.71                 0.75                0.245               0.646                 1.0               0.121               0.762               0.000               0.587
+               Profit lock from +40%, trail 25%                 0.71                 1.00                0.249               0.651                 1.0               0.117               0.762               0.042               0.599
+                  Sell below rank 1.3x holdings                 0.73                 1.00                0.241               0.619                 1.0               0.111               0.786               0.042               0.594
+                  Sell below rank 1.7x holdings                 0.68                 1.00                0.254               0.619                 1.0               0.108               0.762               0.042               0.598
+Cyclicals/defensives restart at 125-day average                 0.65                 1.00                0.242               0.545                 1.0               0.097               0.762               0.042               0.590
+                     Restart window 35 sessions                 0.69                 1.00                0.245               0.619                 1.0               0.117               0.750               0.042               0.615
+                     Restart window 50 sessions                 0.72                 1.00                0.254               0.640                 1.0               0.112               0.738               0.042               0.598
+                        Crash trigger RSI <= 22                 0.69                 1.00                0.245               0.640                 1.0               0.120               0.762               0.042               0.597
+                        Crash trigger RSI <= 27                 0.71                 0.90                0.249               0.614                 1.0               0.108               0.762               0.042               0.599
+                      Index hurdle margin 5 pts                 0.71                 1.00                0.249               0.651                 1.0               0.117               0.762               0.042               0.599
