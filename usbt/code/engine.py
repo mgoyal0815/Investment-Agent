@@ -147,7 +147,7 @@ class Market:
         m63[63:] = Cf_[63:] / Cf_[:-63] - 1
         P["mom12_1"], P["mom12_7"], P["mom63"] = m121, m127, m63
         # volume indicators (volume_ind.py), matched to this panel by shape
-        for fn in ("../data/vol_panel.npz", "../data/vol_panel_idx.npz", "../data/vol_panel_audit.npz"):
+        for fn in ("../data/vol_panel.npz", "../data/vol_panel_idx.npz", "../data/vol_panel_audit.npz", "../data/vol_panel_ndx.npz"):
             try:
                 z = np.load(fn)
                 if z["UDVR"].shape == (self.T, self.N):
