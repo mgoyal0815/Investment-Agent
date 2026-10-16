@@ -1,3 +1,26 @@
+# UPDATE (16 October 2026): System M adopted
+
+System M = System L with 9 holdings instead of 10 (`system_M.json`, panel_ndx, `results/final_M_*`).
+L audit first: cut-off test at 7 dates identical (`audit/a21_l_truncation.log`). L settings retune
+(`results/tuneL_quick.csv`): only fewer holdings improved all three periods (8 and 9 both). Acceptance test
+vs L (`results/accept_L_n9.txt`): +3.4 points overall, every era better, held-back +3.9, growth +2 points;
+failed only on the smaller-fall share (L's 76% was a knife edge at exactly 10 holdings). Adopted by the owner.
+
+| Every monthly start 2000-2025 | System M | System L | System K | live v5 |
+|---|---|---|---|---|
+| Years beating SPY and QQQ | 71.1% | 67.7% | 67.1% | 34.8% |
+| Held-back starts (15th) | 72.9% | 69.0% | 66.2% | |
+| Starts 2000-11 / 2012-19 / 2020-25 | 69.8 / 72.4 / 80.8 | 66.0 / 70.4 / 77.9 | 67.1 / 64.0 / 78.8 | |
+| 3-year windows beating SMH | 74.2% | 60.7% | 58.1% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 38.7% | 76.1% (fragile) | 39.4% | 76.5% |
+| Worst fall, any start | -47.1% | -46.6% | -46.6% | -37.7% |
+| Median growth a year | 37.5% | 35.5% | 33.6% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $6.12M / 27.1% / -38% | $3.96M / 25.0% / -32% | $4.00M / 25.1% / -35% | $263k / 13.0% / -36% |
+| Calendar years 2000-2025 beating both | 18 of 26 | 17 of 26 | 17 of 26 | |
+| Beating both over 1 / 2 / 3 / 5-year windows (run from 2000) | 70 / 79 / 87 / 94% | 67 / 72 / 79 / 90% | 68 / 74 / 82 / 84% | |
+
+---
+
 # UPDATE (16 October 2026): System L adopted
 
 System L = System K with Nasdaq-100 members (point-in-time from 2004; 2004-2014 reconstructed) added to the
