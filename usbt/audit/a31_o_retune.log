@@ -1,0 +1,55 @@
+{'test': 'System O', 'beat': np.float64(0.746), 'smh3': np.float64(0.796), 'ddok': np.float64(0.4), 'cagr': np.float64(0.302), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.745), 'beat 12-19': np.float64(0.752), 'beat 20-24': np.float64(0.733)}
+{'test': 'Add to winners from +10%', 'beat': np.float64(0.732), 'smh3': np.float64(0.802), 'ddok': np.float64(0.36), 'cagr': np.float64(0.308), 'worst': np.float64(-0.39), 'beat 00-11': np.float64(0.734), 'beat 12-19': np.float64(0.724), 'beat 20-24': np.float64(0.744)}
+{'test': 'Add to winners from +30%', 'beat': np.float64(0.704), 'smh3': np.float64(0.658), 'ddok': np.float64(0.407), 'cagr': np.float64(0.286), 'worst': np.float64(-0.383), 'beat 00-11': np.float64(0.704), 'beat 12-19': np.float64(0.7), 'beat 20-24': np.float64(0.711)}
+{'test': 'Add size 0.25 slot', 'beat': np.float64(0.719), 'smh3': np.float64(0.707), 'ddok': np.float64(0.453), 'cagr': np.float64(0.289), 'worst': np.float64(-0.374), 'beat 00-11': np.float64(0.726), 'beat 12-19': np.float64(0.711), 'beat 20-24': np.float64(0.656)}
+{'test': 'Add size 1.0 slot', 'beat': np.float64(0.741), 'smh3': np.float64(0.804), 'ddok': np.float64(0.367), 'cagr': np.float64(0.312), 'worst': np.float64(-0.398), 'beat 00-11': np.float64(0.723), 'beat 12-19': np.float64(0.785), 'beat 20-24': np.float64(0.789)}
+{'test': 'Add cap 2.0 slots', 'beat': np.float64(0.705), 'smh3': np.float64(0.695), 'ddok': np.float64(0.367), 'cagr': np.float64(0.279), 'worst': np.float64(-0.379), 'beat 00-11': np.float64(0.697), 'beat 12-19': np.float64(0.726), 'beat 20-24': np.float64(0.711)}
+{'test': 'Add cap 4.0 slots', 'beat': np.float64(0.741), 'smh3': np.float64(0.802), 'ddok': np.float64(0.407), 'cagr': np.float64(0.308), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.735), 'beat 12-19': np.float64(0.754), 'beat 20-24': np.float64(0.756)}
+{'test': 'No adding to winners', 'beat': np.float64(0.649), 'smh3': np.float64(0.55), 'ddok': np.float64(0.487), 'cagr': np.float64(0.258), 'worst': np.float64(-0.369), 'beat 00-11': np.float64(0.655), 'beat 12-19': np.float64(0.643), 'beat 20-24': np.float64(0.589)}
+{'test': 'Gold rule 0 slots', 'beat': np.float64(0.676), 'smh3': np.float64(0.573), 'ddok': np.float64(0.373), 'cagr': np.float64(0.244), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.682), 'beat 12-19': np.float64(0.662), 'beat 20-24': np.float64(0.667)}
+{'test': 'Gold rule 2 slots', 'beat': np.float64(0.676), 'smh3': np.float64(0.573), 'ddok': np.float64(0.373), 'cagr': np.float64(0.244), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.682), 'beat 12-19': np.float64(0.662), 'beat 20-24': np.float64(0.667)}
+{'test': 'Gold rule 6 slots', 'beat': np.float64(0.746), 'smh3': np.float64(0.796), 'ddok': np.float64(0.4), 'cagr': np.float64(0.302), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.745), 'beat 12-19': np.float64(0.752), 'beat 20-24': np.float64(0.733)}
+{'test': 'Review month-end only', 'beat': np.float64(0.537), 'smh3': np.float64(0.597), 'ddok': np.float64(0.813), 'cagr': np.float64(0.246), 'worst': np.float64(-0.379), 'beat 00-11': np.float64(0.534), 'beat 12-19': np.float64(0.553), 'beat 20-24': np.float64(0.511)}
+{'test': 'Review month-end + 6th session', 'beat': np.float64(0.57), 'smh3': np.float64(0.607), 'ddok': np.float64(0.76), 'cagr': np.float64(0.249), 'worst': np.float64(-0.485), 'beat 00-11': np.float64(0.585), 'beat 12-19': np.float64(0.537), 'beat 20-24': np.float64(0.5)}
+{'test': 'Review month-end + 16th session', 'beat': np.float64(0.546), 'smh3': np.float64(0.444), 'ddok': np.float64(0.767), 'cagr': np.float64(0.229), 'worst': np.float64(-0.452), 'beat 00-11': np.float64(0.573), 'beat 12-19': np.float64(0.469), 'beat 20-24': np.float64(0.5)}
+{'test': 'Review in thirds (end, 7th, 14th)', 'beat': np.float64(0.664), 'smh3': np.float64(0.722), 'ddok': np.float64(0.8), 'cagr': np.float64(0.294), 'worst': np.float64(-0.396), 'beat 00-11': np.float64(0.65), 'beat 12-19': np.float64(0.708), 'beat 20-24': np.float64(0.656)}
+{'test': 'Mid-month buying on', 'beat': np.float64(0.746), 'smh3': np.float64(0.796), 'ddok': np.float64(0.4), 'cagr': np.float64(0.302), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.745), 'beat 12-19': np.float64(0.752), 'beat 20-24': np.float64(0.733)}
+{'test': 'Sell outside top 1.3x holdings', 'beat': np.float64(0.735), 'smh3': np.float64(0.803), 'ddok': np.float64(0.38), 'cagr': np.float64(0.31), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.734), 'beat 12-19': np.float64(0.741), 'beat 20-24': np.float64(0.722)}
+{'test': 'Sell outside top 1.7x holdings', 'beat': np.float64(0.723), 'smh3': np.float64(0.752), 'ddok': np.float64(0.373), 'cagr': np.float64(0.298), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.718), 'beat 12-19': np.float64(0.739), 'beat 20-24': np.float64(0.711)}
+{'test': 'Pause without credit vote', 'beat': np.float64(0.668), 'smh3': np.float64(0.67), 'ddok': np.float64(0.393), 'cagr': np.float64(0.283), 'worst': np.float64(-0.383), 'beat 00-11': np.float64(0.667), 'beat 12-19': np.float64(0.667), 'beat 20-24': np.float64(0.7)}
+{'test': 'Pause without large-cap vote', 'beat': np.float64(0.722), 'smh3': np.float64(0.724), 'ddok': np.float64(0.353), 'cagr': np.float64(0.289), 'worst': np.float64(-0.388), 'beat 00-11': np.float64(0.715), 'beat 12-19': np.float64(0.743), 'beat 20-24': np.float64(0.722)}
+{'test': 'Pause without breadth vote', 'beat': np.float64(0.745), 'smh3': np.float64(0.792), 'ddok': np.float64(0.4), 'cagr': np.float64(0.299), 'worst': np.float64(-0.382), 'beat 00-11': np.float64(0.744), 'beat 12-19': np.float64(0.752), 'beat 20-24': np.float64(0.733)}
+{'test': 'Pause needs 2 of 3 votes', 'beat': np.float64(0.698), 'smh3': np.float64(0.653), 'ddok': np.float64(0.353), 'cagr': np.float64(0.272), 'worst': np.float64(-0.417), 'beat 00-11': np.float64(0.706), 'beat 12-19': np.float64(0.691), 'beat 20-24': np.float64(0.622)}
+{'test': 'Large-cap vote on 100-day average', 'beat': np.float64(0.736), 'smh3': np.float64(0.748), 'ddok': np.float64(0.387), 'cagr': np.float64(0.3), 'worst': np.float64(-0.368), 'beat 00-11': np.float64(0.726), 'beat 12-19': np.float64(0.757), 'beat 20-24': np.float64(0.789)}
+{'test': 'Large-cap vote on 150-day average', 'beat': np.float64(0.772), 'smh3': np.float64(0.833), 'ddok': np.float64(0.367), 'cagr': np.float64(0.308), 'worst': np.float64(-0.368), 'beat 00-11': np.float64(0.766), 'beat 12-19': np.float64(0.783), 'beat 20-24': np.float64(0.811)}
+{'test': 'Large-cap vote on 200-day average', 'beat': np.float64(0.742), 'smh3': np.float64(0.771), 'ddok': np.float64(0.353), 'cagr': np.float64(0.3), 'worst': np.float64(-0.381), 'beat 00-11': np.float64(0.734), 'beat 12-19': np.float64(0.757), 'beat 20-24': np.float64(0.789)}
+{'test': 'Large-cap vote needs 2% below its 50-day', 'beat': np.float64(0.757), 'smh3': np.float64(0.781), 'ddok': np.float64(0.387), 'cagr': np.float64(0.299), 'worst': np.float64(-0.369), 'beat 00-11': np.float64(0.751), 'beat 12-19': np.float64(0.779), 'beat 20-24': np.float64(0.756)}
+{'test': 'Large-cap vote needs 4% below its 50-day', 'beat': np.float64(0.742), 'smh3': np.float64(0.783), 'ddok': np.float64(0.353), 'cagr': np.float64(0.295), 'worst': np.float64(-0.399), 'beat 00-11': np.float64(0.739), 'beat 12-19': np.float64(0.752), 'beat 20-24': np.float64(0.722)}
+                                    test  beat  smh3  ddok  cagr  worst  beat 00-11  beat 12-19  beat 20-24
+                                System O 0.746 0.796 0.400 0.302 -0.382       0.745       0.752       0.733
+                Add to winners from +10% 0.732 0.802 0.360 0.308 -0.390       0.734       0.724       0.744
+                Add to winners from +30% 0.704 0.658 0.407 0.286 -0.383       0.704       0.700       0.711
+                      Add size 0.25 slot 0.719 0.707 0.453 0.289 -0.374       0.726       0.711       0.656
+                       Add size 1.0 slot 0.741 0.804 0.367 0.312 -0.398       0.723       0.785       0.789
+                       Add cap 2.0 slots 0.705 0.695 0.367 0.279 -0.379       0.697       0.726       0.711
+                       Add cap 4.0 slots 0.741 0.802 0.407 0.308 -0.382       0.735       0.754       0.756
+                    No adding to winners 0.649 0.550 0.487 0.258 -0.369       0.655       0.643       0.589
+                       Gold rule 0 slots 0.676 0.573 0.373 0.244 -0.382       0.682       0.662       0.667
+                       Gold rule 2 slots 0.676 0.573 0.373 0.244 -0.382       0.682       0.662       0.667
+                       Gold rule 6 slots 0.746 0.796 0.400 0.302 -0.382       0.745       0.752       0.733
+                   Review month-end only 0.537 0.597 0.813 0.246 -0.379       0.534       0.553       0.511
+          Review month-end + 6th session 0.570 0.607 0.760 0.249 -0.485       0.585       0.537       0.500
+         Review month-end + 16th session 0.546 0.444 0.767 0.229 -0.452       0.573       0.469       0.500
+       Review in thirds (end, 7th, 14th) 0.664 0.722 0.800 0.294 -0.396       0.650       0.708       0.656
+                     Mid-month buying on 0.746 0.796 0.400 0.302 -0.382       0.745       0.752       0.733
+          Sell outside top 1.3x holdings 0.735 0.803 0.380 0.310 -0.382       0.734       0.741       0.722
+          Sell outside top 1.7x holdings 0.723 0.752 0.373 0.298 -0.382       0.718       0.739       0.711
+               Pause without credit vote 0.668 0.670 0.393 0.283 -0.383       0.667       0.667       0.700
+            Pause without large-cap vote 0.722 0.724 0.353 0.289 -0.388       0.715       0.743       0.722
+              Pause without breadth vote 0.745 0.792 0.400 0.299 -0.382       0.744       0.752       0.733
+                Pause needs 2 of 3 votes 0.698 0.653 0.353 0.272 -0.417       0.706       0.691       0.622
+       Large-cap vote on 100-day average 0.736 0.748 0.387 0.300 -0.368       0.726       0.757       0.789
+       Large-cap vote on 150-day average 0.772 0.833 0.367 0.308 -0.368       0.766       0.783       0.811
+       Large-cap vote on 200-day average 0.742 0.771 0.353 0.300 -0.381       0.734       0.757       0.789
+Large-cap vote needs 2% below its 50-day 0.757 0.781 0.387 0.299 -0.369       0.751       0.779       0.756
+Large-cap vote needs 4% below its 50-day 0.742 0.783 0.353 0.295 -0.399       0.739       0.752       0.722
