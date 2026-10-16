@@ -1296,8 +1296,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         # re-enter at the first session after a pause ends instead of waiting for the next decision day
         fast_re = bool(cfg.get("reenter_fast") and prev_paused[0] and not paused)
         prev_paused[0] = paused
+        fill_only = False
         if not is_decision(i) and not fast_re:
-            continue
+            # exp77: on the last session of each week, fill empty slots without any rank sells (calendar known in advance)
+            if cfg.get("fill_weekly") and m.week_end[i] and cfg.get("stagger"):
+                fill_only = True
+            else:
+                continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
         ks = cfg.get("score_smooth")
@@ -1355,7 +1360,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             ps = pct_rank(0.5 * a_ + 0.5 * b_)
             order = np.argsort(-np.nan_to_num(ps, nan=-np.inf))
             pos_rank = {int(j): k for k, j in enumerate(order[:int((~np.isnan(ps)).sum())])}
-        if use_rank:
+        if use_rank and not fill_only:
             xr = cfg["buffer"] * N
             if paused and cfg.get("pause_tight_exit", True):
                 xr = N                                          # hard-coded India rule: a pause tightens the sell rank
@@ -1436,6 +1441,13 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             _v5_orders(m, ocfg, i, sc, route, u, pos, exiting, sleeve_nav, sleeve_cash, pend_stock)
         else:
             scfg = cfg if not cfg.get("stagger") else dict(cfg, _tr=tranche_of(i), _ntr=len(cfg["stagger"]))
+            if fill_only:
+                # fill the tranche with the most empty slots (each tranche keeps its own slot count)
+                ntr_ = len(cfg["stagger"]); cnt_ = [0] * ntr_
+                for j_, p_ in pos.items():
+                    if j_ not in exiting:
+                        cnt_[p_.get("meta", {}).get("tr", 0) % ntr_] += 1
+                scfg = dict(cfg, _tr=int(np.argmin(cnt_)), _ntr=ntr_)
             if paused and cfg.get("pause_giants") and not dip:
                 # exp63: during a pause, free slots go only to giants (most-traded members above a rising 200-day)
                 scfg = dict(scfg, giant_slots=cfg["pause_giants"], _giants_only=True)
@@ -1700,6 +1712,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         j = int(j)
         if j in pos:
             continue
+        if cfg.get("dedupe") and any(o.get("j") == j and o.get("kind") == "new" for o in out):
+            continue                                            # exp77: the giants slot already took this stock
         if cfg["trend"] and not P["cont"][i, j]:
             continue
         if cfg["zone_gate"] and not (-1.0 <= q[j] <= 2.0):
