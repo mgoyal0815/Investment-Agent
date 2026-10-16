@@ -1,0 +1,50 @@
+{
+ "name": "System N",
+ "frozen": "2026-10-16",
+ "description": "System M with a stricter OBV entry filter (OBV trend >= 0.5 instead of >= 0). Acceptance test vs M: +1.5 pts overall, every era equal or better, held-back +1.0, worst fall -47.1% -> -43.5% (held-back -45.3% -> -38.7%). OBV 0.25-1.0 all gain 2-3 pts (plateau). Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ]
+ },
+ "panel": "data/panel_ndx.pkl"
+}
