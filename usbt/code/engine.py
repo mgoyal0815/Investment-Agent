@@ -509,6 +509,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     C, Cf, O, SF = P["C"], P["Cf"], P["O"], P["SF"]
     SMA50, EMA20, ATR, RV30, SMA200 = P["SMA50"], P["EMA20"], P["ATR"], P["RV30"], P["SMA200"]
     i0 = int(m.dates.searchsorted(pd.Timestamp(start)))
+    if cfg.get("lev_after"):
+        cfg["_i0"] = i0                                       # exp78: run start, for the no-2x-in-a-new-account rule
     i1 = len(m.dates) if end is None else int(m.dates.searchsorted(pd.Timestamp(end), side="right"))
     v5_size = cfg["sizing"] == "v5"
     use_stop = "stop" in cfg["exit"]
@@ -892,6 +894,31 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 tot = cash - keep + sum(parked.get(k, 0) * etf_px(k, i, "o") for k in tg if etf_px(k, i, "o") == etf_px(k, i, "o"))
                 if tot > 0.5 * navo / N:
                     for side in (-1, 1):                         # sells first, then buys
+                        for k, w_ in tg.items():
+                            px = etf_px(k, i, "o")
+                            if px != px or px <= 0:
+                                continue
+                            diff = w_ * tot - parked.get(k, 0) * px
+                            if abs(diff) > 0.10 * tot and np.sign(diff) == side:
+                                n = diff / px
+                                n = (math.floor(n) if n > 0 else -math.floor(-n)) if cfg["whole_etf"] else n
+                                if n < 0:
+                                    n = max(n, -parked.get(k, 0))
+                                park_trade(k, n, i)
+                pk, split_done = None, True
+            lc = cfg.get("lev_cap")
+            if lc and pk and pk.endswith("2x") and not split_done:
+                # exp78: at most lev_cap of the account in the 2x fund; the rest of the parked money in the 1x index.
+                # Rebalanced only on a 10% drift, like park_frac.
+                base_ = pk[:-2]; tg = {pk: 0.0, base_: 1.0}
+                for k in [k for k in list(parked) if k not in tg]:
+                    park_trade(k, -parked[k], i)
+                keep = 0.01 * navo
+                tot = cash - keep + sum(parked.get(k, 0) * etf_px(k, i, "o") for k in tg if etf_px(k, i, "o") == etf_px(k, i, "o"))
+                if tot > 0:
+                    w2 = min(1.0, lc * navo / tot); tg = {pk: w2, base_: 1 - w2}
+                if tot > 0.5 * navo / N:
+                    for side in (-1, 1):
                         for k, w_ in tg.items():
                             px = etf_px(k, i, "o")
                             if px != px or px <= 0:
@@ -1567,6 +1594,9 @@ def _park_name(park, m, i, cfg=None, paused=False):
         vx_ok = True
         if lvx:
             v_ = m.P.get("VIX"); vx_ok = v_ is not None and v_[i - 1] == v_[i - 1] and v_[i - 1] < lvx
+        la = (cfg or {}).get("lev_after")
+        if la and i - (cfg or {}).get("_i0", 0) < la:
+            vx_ok = False                                      # exp78: no 2x in a new account's first lev_after sessions
         ldd = (cfg or {}).get("lev_dd")
         if ldd and (cfg or {}).get("_acct_dd", 0.0) < -ldd:
             vx_ok = False                                      # exp78: no 2x while the account is more than lev_dd below its peak
