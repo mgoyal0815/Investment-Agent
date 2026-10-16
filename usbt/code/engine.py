@@ -877,6 +877,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 if is_decision(i - 1) or park_state[0] is None:
                     park_state[0] = risk_off
                 risk_off = park_state[0]
+            if cfg.get("lev_dd") and curve:
+                cfg["_acct_dd"] = curve[-1] / max(curve) - 1          # exp78: account fall from its peak, known at yesterday's close
             pk = _park_name(park_tk, m, i, cfg, risk_off or (bool(cfg.get("vol_target") or cfg.get("mkt_vol_target")) and vf[0] < 0.999))
             pf, split_done = cfg.get("park_frac"), False
             if pf and park_tk == "leader_safe" and pk == "SHY":
@@ -1565,6 +1567,9 @@ def _park_name(park, m, i, cfg=None, paused=False):
         vx_ok = True
         if lvx:
             v_ = m.P.get("VIX"); vx_ok = v_ is not None and v_[i - 1] == v_[i - 1] and v_[i - 1] < lvx
+        ldd = (cfg or {}).get("lev_dd")
+        if ldd and (cfg or {}).get("_acct_dd", 0.0) < -ldd:
+            vx_ok = False                                      # exp78: no 2x while the account is more than lev_dd below its peak
         lspy = (cfg or {}).get("lev_spy")
         if lspy and not (m.etf_vs_sma("SPY", lspy, i - 1) > 0):
             vx_ok = False
