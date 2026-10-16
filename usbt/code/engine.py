@@ -96,6 +96,11 @@ class Market:
             r126 = cf_ / cf_.shift(126) - 1
             P["fip"] = (-np.sign(r126) * (dn_ - up_)).to_numpy(np.float32)
             P["accel"] = ((cf_ / cf_.shift(63) - 1) - (cf_.shift(63) / cf_.shift(126) - 1)).to_numpy(np.float32)
+        for sd in (1, 2, 3):
+            # audit placebo (exp74): fixed random noise per stock and day, to blend into the ranking at a tiny weight and
+            # measure how much the result depends on the exact ranking (a fair system should barely move)
+            if f"noise{sd}" not in P:
+                P[f"noise{sd}"] = np.random.default_rng(sd).random(P["Cf"].shape, dtype=np.float32)
         self.syms = P["syms"]
         E = {}
         for k, (o, c) in P["etf"].items():
