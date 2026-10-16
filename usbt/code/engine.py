@@ -106,6 +106,20 @@ class Market:
         for k, (o, c) in P["etf"].items():
             c = pd.Series(c, index=self.dates)
             E[k] = dict(raw=c.to_numpy(), c=c.ffill().to_numpy(), o=pd.Series(o, index=self.dates).to_numpy())
+        # exp78 (owner, 16 Oct 2026: leveraged index ETFs allowed if the worst fall does not get worse): synthetic
+        # daily-reset 2x funds "SPY2x", "QQQ2x", "SMH2x": r = 2 r_index - r_cash - 0.95%/252 (lev.py; validated against
+        # SSO, QLD and USD where they trade). The open applies 2x the overnight gap to the previous close.
+        bil_ = pd.Series(E["BIL"]["c"], index=self.dates).pct_change(fill_method=None) if "BIL" in E else None
+        shy_ = pd.Series(E["SHY"]["c"], index=self.dates).pct_change(fill_method=None)
+        rc_ = (bil_.where(bil_.notna(), shy_.rolling(63, min_periods=5).mean()) if bil_ is not None else shy_.rolling(63, min_periods=5).mean()).fillna(0).clip(-0.002, 0.002)
+        for t_ in ("SPY", "QQQ", "SMH"):
+            c_ = pd.Series(E[t_]["c"], index=self.dates)
+            r_ = c_.pct_change(fill_method=None)
+            rl_ = (2 * r_ - rc_ - 0.0095 / 252).where(r_.notna())
+            cl_ = (1 + rl_.fillna(0)).cumprod().where(c_.notna()) * 100
+            o_ = pd.Series(E[t_]["o"], index=self.dates)
+            ol_ = cl_.shift(1) * (1 + 2 * (o_ / c_.shift(1) - 1))
+            E[t_ + "2x"] = dict(raw=cl_.where(pd.Series(E[t_]["raw"], index=self.dates).notna()).to_numpy(), c=cl_.to_numpy(), o=ol_.to_numpy())
         self.E = E
         spy = pd.Series(E["SPY"]["c"], index=self.dates)
         s200 = spy.rolling(200, min_periods=200).mean()
@@ -1544,7 +1558,11 @@ def _park_name(park, m, i, cfg=None, paused=False):
             c = m.E[t]["c"]
             a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
             return a / b - 1 if (a == a and b == b and b > 0) else -999
-        return max(LEADERS, key=mom)
+        ld = max(LEADERS, key=mom)
+        lv = (cfg or {}).get("lev_park")
+        if lv and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + "2x"]["c"][i] == m.E[ld + "2x"]["c"][i]:
+            return ld + "2x"                                    # exp78: idle money in the 2x leader while it is above its lv-day average
+        return ld
     k = park
     if np.isnan(m.E[k]["raw"][i]) and np.isnan(m.E[k]["c"][i]):
         return None
