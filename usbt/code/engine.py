@@ -134,7 +134,8 @@ class Market:
         # exp49: point-in-time industry assignment (sectors.py) and intermediate-horizon momentum
         try:
             import json as _js
-            sec = np.load("../data/sector_idx.npy")
+            import os as _os
+            sec = np.load(_os.environ.get("SECTOR_FILE", "../data/sector_idx.npy"))
             self.sector = sec if sec.shape == (self.T, self.N) else None
             self.sector_list = _js.load(open("../data/sector_list.json"))
         except Exception:
