@@ -1,0 +1,53 @@
+{
+ "name": "System Q",
+ "frozen": "2026-10-16",
+ "description": "System P with a slower large-cap pause vote: it counts only when the large-cap index closes 2% or more below its 50-day average. Calendar-robust yardstick (5 review calendars, runs to Dec 2025): 70.2% vs P 68.2%, worst fall -51% vs -53%. Margins 1.5/2/2.5/3% all 68.9-70.2% (plateau); 1% 66.1%. Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 0.75,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ],
+  "giant_slots": 1,
+  "giant_top": 20,
+  "large_margin": 0.02
+ },
+ "panel": "data/panel_ndx.pkl"
+}
