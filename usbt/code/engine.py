@@ -276,6 +276,66 @@ class Market:
         _s = pd.Series(E["SPY"]["c"])
         self.spy_dd = (_s / _s.rolling(252, min_periods=60).max() - 1).to_numpy()
 
+    def lit(self):
+        """exp75 (owner, 16 Oct 2026): features from the literature review, built once on first use. Everything at
+        row i uses closes up to i only. Universe for the market-level ones: that day's S&P 500 + Nasdaq-100 members."""
+        if hasattr(self, "_lit"):
+            return self._lit
+        import os
+        P = self.P; T, N = self.T, self.N
+        dd_ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", f"lit_{T}x{N}")
+        keys_ = ("stress", "gap", "disp_hi", "gap90", "volr", "on63", "in63", "spy1m", "spy12m", "spy_sma50", "spy_c")
+        if os.path.exists(os.path.join(dd_, "in63.npy")):          # computed once, read-only memory map in every worker
+            self._lit = {k: np.load(os.path.join(dd_, k + ".npy"), mmap_mode="r") for k in keys_}
+            return self._lit
+        cf = pd.DataFrame(np.asarray(P["Cf"], np.float64))
+        r1 = cf.pct_change().to_numpy()
+        mem = (self.sp_member if self.sp_member is not None else np.ones((T, N), bool))
+        if getattr(self, "ndx_member", None) is not None:
+            mem = mem | self.ndx_member
+        mem = mem & ~self.is_etf
+        spy = pd.Series(self.E["SPY"]["c"]).ffill(); spy_r = spy.pct_change().to_numpy()
+        m6 = np.asarray(P["m6"], np.float64)
+        # 1. momentum-stress (Heidari 2015; Barroso & Santa-Clara 2015): top-decile 6m winners (chosen at i-1) minus SPY
+        prox = np.full(T, np.nan)
+        for i in range(1, T):
+            x = np.where(mem[i - 1], m6[i - 1], np.nan)
+            ok = ~np.isnan(x)
+            if ok.sum() < 50:
+                continue
+            top = ok & (x >= np.nanpercentile(x, 90))
+            rr = r1[i, top]
+            prox[i] = np.nanmean(rr) - spy_r[i]
+        ps = pd.Series(prox)
+        v21 = ps.rolling(21, min_periods=15).std(); dv = v21 - v21.shift(21)
+        pct = dv.rolling(1260, min_periods=504).rank(pct=True)
+        stress = ((pct > 0.9) & (ps.rolling(21).sum() < 0)).to_numpy()
+        # 2. mega-cap concentration gap: SPY 63d return minus the equal-weight member average 63d return
+        r63 = (cf / cf.shift(63) - 1).to_numpy()
+        ew63 = np.array([np.nanmean(np.where(mem[i], r63[i], np.nan)) if mem[i].any() else np.nan for i in range(T)])
+        gap = (spy / spy.shift(63) - 1).to_numpy() - ew63
+        # 6. dispersion: cross-sectional std of 21d returns, 63d mean, above its trailing-5y 80th percentile
+        r21 = (cf / cf.shift(21) - 1).to_numpy()
+        dsp = pd.Series([np.nanstd(np.where(mem[i], r21[i], np.nan)) if mem[i].any() else np.nan for i in range(T)]).rolling(63, min_periods=40).mean()
+        disp_hi = (dsp > dsp.rolling(1260, min_periods=504).quantile(0.8)).to_numpy()
+        # 14. largest one-day move in 90 sessions; 12. 50-day vs 250-day average dollar volume (no shares outstanding)
+        gap90 = pd.DataFrame(np.abs(r1)).rolling(90, min_periods=60).max().to_numpy(np.float32)
+        adv = pd.DataFrame(np.asarray(P["ADV20"], np.float64))
+        volr = (adv.rolling(50, min_periods=40).mean() / adv.rolling(250, min_periods=200).mean()).to_numpy(np.float32)
+        # 8. overnight vs intraday split of the 63-day gain (opens adjusted to the adjusted closes)
+        oa = np.asarray(P["O"], np.float64) * (np.asarray(P["Cf"], np.float64) / np.asarray(P["C"], np.float64))
+        with np.errstate(divide="ignore", invalid="ignore"):
+            on = np.log(oa / cf.shift(1).to_numpy()); intra = np.log(cf.to_numpy() / oa)
+        on63 = pd.DataFrame(on).rolling(63, min_periods=50).sum().to_numpy(np.float32)
+        in63 = pd.DataFrame(intra).rolling(63, min_periods=50).sum().to_numpy(np.float32)
+        s1 = spy / spy.shift(21) - 1; s12 = spy / spy.shift(252) - 1
+        self._lit = dict(stress=stress, gap=gap, disp_hi=disp_hi, gap90=gap90, volr=volr, on63=on63, in63=in63,
+                         spy1m=s1.to_numpy(), spy12m=s12.to_numpy(), spy_sma50=spy.rolling(50).mean().to_numpy(), spy_c=spy.to_numpy())
+        os.makedirs(dd_, exist_ok=True)
+        for k in keys_:
+            np.save(os.path.join(dd_, k + ".npy"), np.asarray(self._lit[k]))
+        return self._lit
+
     def etf_rsi(self, t):
         """14-day Wilder RSI of an index ETF from its closes (exp62), cached."""
         if not hasattr(self, "_ersi"):
@@ -1004,7 +1064,19 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     t_, n_ = tok[:3].upper(), int(tok[3:])
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
+            if "momstress" in r:                    # exp75 idea 1: momentum's own volatility shock (Heidari 2015)
+                sig.append(bool(m.lit()["stress"][i]))
+            if cfg.get("state_pause"):
+                # exp75 idea 4 (Goulding-Harvey-Mazzoleni 2023): in a Correction (SPY 12m up, 1m down) ignore the fast
+                # large-cap vote; in a Rebound (12m down, 1m up) a close back above SPY's 50-day lifts the pause
+                L_ = m.lit(); s12_, s1_ = L_["spy12m"][i], L_["spy1m"][i]
+                if s12_ > 0 and s1_ < 0 and "large" in r:
+                    sig[2] = False
             paused = sum(sig) >= (cfg["pause_k"] if cfg.get("pause_k") else (2 if cfg.get("pause_mode", "any") == "two" else 1))
+            if cfg.get("state_pause") and paused:
+                L_ = m.lit()
+                if L_["spy12m"][i] < 0 and L_["spy1m"][i] > 0 and L_["spy_c"][i] > L_["spy_sma50"][i]:
+                    paused = False
             pmd = cfg.get("pause_min_days")
             if pmd:                                     # exp60: once the vote flips, hold the new state at least pmd sessions
                 if paused != hyst[0] and i - hyst[1] < pmd:
@@ -1550,6 +1622,8 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
         # adaptive book: fewer, larger slots when breadth is strong; more, smaller ones when weak
         N = na[0] if m.breadth[i] >= na[2] else na[1]
     n_stock = N
+    if cfg.get("disp_cap") and m.lit()["disp_hi"][i]:
+        n_stock = min(n_stock, cfg["disp_cap"])           # exp75 idea 6: high return dispersion (Stivers & Sun 2010)
     if cfg["gold_slots"]:
         g = m.E["GLD"]["c"]
         if i >= 200 and g[i] == g[i] and g[i - 126] == g[i - 126]:
@@ -1577,6 +1651,9 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
     if cfg.get("narrow_index") and m.narrow[i]:
         free = 0                                                # journal: new buys in narrow markets lagged SPY
     gs = cfg.get("giant_slots")
+    gd = cfg.get("giant_dyn")
+    if gd and m.lit()["gap"][i] > gd[1] and m.E["QQQ"]["c"][i] > m.e_sma50["QQQ"][i] and m.e_sma50["QQQ"][i] > m.e_sma50["QQQ"][i - 5]:
+        gs = gd[0]                                        # exp75 idea 2: mega-cap-led market, more giant slots
     if gs and free > 0:
         # exp58: second entry path. Up to giant_slots of the slots hold the giant_top most-traded members that are
         # above a rising 200-day average, strongest 6-month first; no rank, ADX or volume gate.
@@ -1620,6 +1697,12 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         gx = cfg.get("giant_gate_exempt")
         is_g = bool(gx) and m.giants(i, gx)[0][j]          # exp64: the gx most-traded members skip the OBV and ADX gates
+        if cfg.get("gap_max") and not (m.lit()["gap90"][i, j] <= cfg["gap_max"]):
+            continue                                            # exp75 idea 14: Clenow gap filter
+        if cfg.get("volr_max") and m.lit()["volr"][i, j] > cfg["volr_max"]:
+            continue                                            # exp75 idea 12: late-stage volume surge (Lee & Swaminathan 2000)
+        if cfg.get("overnight_filter") and m.lit()["in63"][i, j] < 0 and m.lit()["on63"][i, j] > cfg["overnight_filter"]:
+            continue                                            # exp75 idea 8: gain made overnight, faded intraday
         if cfg.get("obv_min") is not None and not is_g and not (P["OBVT"][i, j] >= cfg["obv_min"]):
             continue
         if cfg.get("rvol_min") and not (P["RVOL"][i, j] >= cfg["rvol_min"]):
