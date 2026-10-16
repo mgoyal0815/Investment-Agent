@@ -348,7 +348,8 @@ class Market:
             # etf_in_universe: index / sector ETFs (panel columns flagged is_etf) compete for slots like stocks
             return base & (self.sp_member[i] | (self.is_etf if etf_in else False))
         if cfg["universe"] == "sp500+ndx":
-            return base & (self.sp_member[i] | self.ndx_member[i])
+            # etf_in_universe also applies here (fixed 16 Oct 2026: it was silently ignored for this universe)
+            return base & (self.sp_member[i] | self.ndx_member[i] | (self.is_etf if etf_in else False))
         if etf_in:
             return base & ((self.trank[i] <= cfg["universe_n"]) | self.is_etf)
         u = base & (self.trank[i] <= cfg["universe_n"])
