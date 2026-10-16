@@ -1,3 +1,30 @@
+# UPDATE (16 October 2026): System L adopted
+
+System L = System K with Nasdaq-100 members (point-in-time from 2004; 2004-2014 reconstructed) added to the
+S&P 500 universe (`system_L.json`, run on `data/panel_ndx.pkl`, rebuilt with the corrected data rules; numbers
+in `results/final_L_*`). Acceptance test vs K on the same panel (`results/accept_K_ndx.txt`): +0.7 points overall,
+held-back +2.4, 2012-19 +5.8; below the 2-point bar, adopted by the owner. Holdings grid (`audit/a20_ndx.csv`):
+8 or 10 holdings gain 2-4 points; the jump in the smaller-fall share (40% -> 76%) appears only at 10 holdings.
+
+| Every monthly start 2000-2025 | System L | System K | live v5 |
+|---|---|---|---|
+| Years beating SPY and QQQ | 67.7% | 67.1% | 34.8% |
+| Starts 2000-11 / 2012-19 / 2020-25 | 66.0 / 70.4 / 77.9 | 67.1 / 64.0 / 78.8 | |
+| 3-year windows beating SMH | 60.7% | 58.1% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 76.1% (fragile) | 39.4% | 76.5% |
+| Worst fall, any start | -46.6% | -46.6% | -37.7% |
+| Median growth a year | 35.5% | 33.6% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $3.96M / 25.0% / -32% | $4.00M / 25.1% / -35% | $263k / 13.0% / -36% |
+| Calendar years 2000-2025 beating both | 17 of 26 | 17 of 26 | |
+
+2020: L +54.5% (K +14.7%, QQQ +48.6%). Also tested on K and rejected this round (`results/everything_quick.csv`,
+`audit/a18`, `audit/a19`): holdings, buffer, review timing, ranking weights, industry cap (lone spike), correlation
+check, dip and MACD entry timing, sell-in-May, midterm years, dollar, commodities, yield curve, ETF rotation beside K.
+Validation: bootstrap of K's years 46-77% (5-95%); walk-forward pick 72% vs always-K 74% in later periods;
+K beats both indexes over 68% / 74% / 82% / 84% of 1 / 2 / 3 / 5-year windows.
+
+---
+
 # AUDIT AND TRADE REVIEW (15 October 2026): System K
 
 Page: https://claude.ai/artifact/W8yWYGrdyq72x31HBccuzE. Files: `audit/a12-a14`, `audit/k_trades_*`.

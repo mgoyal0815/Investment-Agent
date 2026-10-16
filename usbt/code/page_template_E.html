@@ -69,9 +69,9 @@ li::marker { color: var(--muted); }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">US backtest · corrected S&amp;P 500 data (audit standard) · Jan 2000 – 12 Oct 2026</div>
+    <div class="eyebrow">US backtest · corrected S&amp;P 500 + Nasdaq-100 data (audit standard) · Jan 2000 – 12 Oct 2026</div>
     <h1>{{SYS}} Scorecard</h1>
-    <p class="lede">The best system found after 66 experiments, two Bayesian studies and indicator range checks, each change passed through an acceptance test on every start date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
+    <p class="lede">The best system found after 70 experiments, two Bayesian studies and indicator range checks, each change passed through an acceptance test on every start date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
   </header>
 
   <div class="stats">
@@ -115,7 +115,7 @@ li::marker { color: var(--muted); }
     <section>
       <h2>How {{SYS}} works</h2>
       <ol>
-        <li>Each month, rank stocks that were S&amp;P 500 members that day by 6-month strength against SPY and distance above the 200-day average.</li>
+        <li>Each month, rank stocks that were S&amp;P 500 or Nasdaq-100 members that day by 6-month strength against SPY and distance above the 200-day average.</li>
         <li>Hold 10 equal slots, split into two halves reviewed on the last trading day and on the 11th.</li>
         <li>Buy only stocks in an uptrend whose ADX trend strength is at least 25 with buyers in control, and whose on-balance volume is trending up (more volume on up days). Add half a slot to a winner up 20%, up to 3 slots.</li>
         <li>Sell when a stock drops out of the top 15. A stock up 100% or more is exempt.</li>
@@ -135,6 +135,7 @@ li::marker { color: var(--muted); }
         <li>A fixed QQQ, SPY or SMH share, indexes competing for slots, volatility targeting.</li>
         <li>Re-entry signals (Coppock, McClellan, new highs minus new lows, risk-appetite ratios) with and without confirmation, and a new-low guard on them.</li>
         <li>Buying oversold stocks during a pause (rejected); index hurdle and index dip-buying on an RSI panic or a steep percentage fall (adopted; both hold across nearby settings). VIX spikes, MACD and buying oversold stocks were rejected.</li>
+        <li>Structure, industry caps, correlation checks, calendar effects, dollar, commodities and yield-curve signals, and an ETF rotation beside the stocks: none helped. Adding Nasdaq-100 stocks to the universe did (adopted).</li>
         <li>Index parking during pauses (full and partial), a giants entry path, looser profit locks, pause hysteresis, grace periods for new buys.</li>
         <li>RSI, MACD, ADX, breakouts, 52-week highs, VIX, credit and breadth signals, on both the buy and sell side, across full ranges.</li>
         <li>Industry momentum, a momentum-crash guard, longer momentum windows, the Nasdaq-100 universe.</li>
