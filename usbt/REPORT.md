@@ -1,3 +1,39 @@
+# UPDATE (16 October 2026, evening): System R adopted, and the honest yardstick
+
+**Correction first.** A review-date sweep (`audit/a32_review_day.csv`) showed System O's 74.6% was mostly the luck of
+its second review falling on the 11th session: on sessions 4-19 the same rules scored 50-75% (average 62%). Root cause
+(`audit/a34-a36`): with 4 stocks per review, a one-day filter pass on a big winner (TSLA, 16 Jun 2020) lifts every
+start that passes through that period. Every adopted step A-O had been tuned on that one calendar.
+
+**New standard (owner):** runs stop 31 Dec 2025 (2026 not counted), starts to Dec 2024, no train/test split, and every
+change is scored with `code/robust.py`: the average over 5 review calendars (second review on session 5/8/11/14/17).
+
+| Calendar-robust score (5 calendars) | Years beating SPY and QQQ | Worst fall |
+|---|---|---|
+| System O | 62.4% | -52% |
+| P = O + 1 giants slot (top 20) | 68.2% | -53% |
+| Q = P + large-cap pause vote needs 2% below its 50-day | 70.2% | -51% |
+| **R = Q + no rank sells while SPY is 20%+ below its high + giants from top 10** | **71.3%** (66-79%) | **-48%** |
+
+Each step held at neighbouring settings (a38, a42, a55). System R, single $10,000 account, original calendar, every
+monthly start 2000-2024: 71.3% of years beat both, 3-year windows beat SMH 74%, 36% of starts fall less than both,
+worst fall -44%. One run 2000-2025: $10k -> $2.92M, 24.4% a year, worst fall -40%, 19 of 26 calendar years beat both,
+beats both in 68 / 78 / 86 / 94% of 1/2/3/5-year windows. Live v5 on the same yardstick: 31.6%.
+
+**Tested honestly and rejected after Q** (a44-a54, about 60 tests): volatility filters, v5's stop-loss, ranking
+blends (momentum quality, acceleration, residual momentum, size tilt, giants bonus; a random-noise placebo shows any
+reshuffle of the top ranks costs points), more holdings, thirds/quarters, five calendar sub-accounts (65-66%: path luck
+averages out but $2,000 slots cannot buy high-priced stocks), turn-of-month, mean reversion as a second strategy
+(<= 2%/yr after costs), literature ideas (momentum stress, mega-cap switch, state-dependent pause, dispersion cap,
+overnight/intraday, volume surge, gap filter) and volume rules (pocket pivots, dry-ups, distribution days,
+follow-through days, climax exits). A wider universe was not built: a bias-free list of delisted US stocks needs a
+paid data plan.
+
+**Conclusion:** about 71% of years beating the better of SPY and QQQ is this approach's honest level; 75% was not met
+and no paper account is suggested. The live system was not changed.
+
+---
+
 # UPDATE (16 October 2026): System O adopted
 
 System O = System N with winners exempt from rank sells from a +75% gain instead of +100% (`system_O.json`,
