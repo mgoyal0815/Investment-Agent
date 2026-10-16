@@ -1,0 +1,50 @@
+{
+ "name": "M + OBV 0.5",
+ "frozen": "2026-10-16",
+ "description": "System L with 9 holdings instead of 10 (S&P 500 + Nasdaq-100 universe, panel_ndx). Acceptance test vs L: +3.4 pts overall, every era better (2000-11 +3.8, 2012-19 +2.0, 2020-25 +2.9), held-back +3.9, growth +2 pts; smaller-fall share 76% -> 39% (L's 76% was a knife edge at exactly 10 holdings; K's level is 39-40%). 8 holdings gave nearly the same gain. Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 1.0,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ]
+ },
+ "panel": "data/panel_ndx.pkl"
+}
