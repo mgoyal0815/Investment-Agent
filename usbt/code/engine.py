@@ -84,6 +84,18 @@ class Market:
         self.P = P
         self.dates = P["dates"]
         self.T, self.N = P["C"].shape
+        if "fip" not in P:
+            # exp71 ranking features (owner, 16 Oct 2026), price-only, known at each close:
+            # fip  = momentum quality ("frog in the pan", Da-Gurun-Warachka 2014): -sign(126d return) x (share of down
+            #        days - share of up days) over 126 sessions; high = rose through many small steady gains
+            # accel = momentum acceleration: last 63-session return minus the 63 sessions before that
+            cf_ = pd.DataFrame(np.asarray(P["Cf"], np.float64))
+            r1 = cf_.pct_change()
+            up_ = (r1 > 0).astype(float).rolling(126, min_periods=100).mean()
+            dn_ = (r1 < 0).astype(float).rolling(126, min_periods=100).mean()
+            r126 = cf_ / cf_.shift(126) - 1
+            P["fip"] = (-np.sign(r126) * (dn_ - up_)).to_numpy(np.float32)
+            P["accel"] = ((cf_ / cf_.shift(63) - 1) - (cf_.shift(63) / cf_.shift(126) - 1)).to_numpy(np.float32)
         self.syms = P["syms"]
         E = {}
         for k, (o, c) in P["etf"].items():
@@ -1381,6 +1393,15 @@ def _park_name(park, m, i, cfg=None, paused=False):
                     c = m.E[t]["c"]; a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
                     return a / b - 1 if (a == a and b == b and b > 0) else -999
                 return max(LEADERS, key=mom)
+        if park == "leader_safe" and paused and (cfg or {}).get("tom_park"):
+            # exp72 turn of month: during a pause, idle money holds the leading index over the last 2 and first 3
+            # sessions of each month (the trading calendar is known in advance), short Treasuries otherwise
+            if m.month_end[i] or m.day_in_month[i] <= 2 or (i + 1 < len(m.month_end) and m.month_end[i + 1]):
+                lb = (cfg or {}).get("leader_lb", 126)
+                def mom2(t):
+                    c = m.E[t]["c"]; a, b = c[i - 1], c[i - 1 - lb] if i - 1 - lb >= 0 else np.nan
+                    return a / b - 1 if (a == a and b == b and b > 0) else -999
+                return max(LEADERS, key=mom2)
         pp = (cfg or {}).get("pause_park")
         if park == "leader_safe" and paused and pp and pp not in ("GLD", "GLD_trend") and pp in m.E:
             g = m.E[pp]["c"]                            # exp63: any other ETF as the pause refuge (TLT, IEF ...)
