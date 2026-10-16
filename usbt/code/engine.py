@@ -1186,6 +1186,12 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             continue
         navd = navc
         sc, route, u = m.scores(i, cfg)
+        ks = cfg.get("score_smooth")
+        if ks and ks > 1 and i >= ks:
+            # exp70 (root cause of review-day luck): rank on the score averaged over the last ks sessions, so a stock must
+            # be strong for days, not just on review day. Only stocks eligible today count; past scores use past data only.
+            past = np.vstack([sc] + [m.scores(i - k, cfg)[0] for k in range(1, ks)])
+            sc = np.where(np.isnan(sc), np.nan, np.nanmean(np.where(np.isnan(past), sc, past), axis=0))
         if cfg.get("dm_guard") and m.mom_crash[i] and m.etf_vs_sma("SPY", 50, i) > 0:
             # Daniel-Moskowitz: after a bear market, in a rebound, rank by short-term recovery instead of 6-month momentum
             sc = np.where(np.isnan(sc), np.nan, pct_rank(np.where(u & ~np.isnan(sc), m.P["mom63"][i].astype(float), np.nan)))
