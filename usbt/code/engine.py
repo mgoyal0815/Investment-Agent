@@ -783,9 +783,66 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             return m.week_end[i]
         return m.month_end[i] or m.day_in_month[i] == 10
 
+    # ---------------------------------------------------- live takeover (owner, 16 Oct 2026)
+    # cfg["init"] = {"cash": $, "stocks": {sym: {"shares": raw shares, "cost": raw $ per share, "entry_date": "YYYY-MM-DD"}},
+    #                "etfs": {sym: shares}} starts the run from an existing account instead of cash. The first session
+    # (i0) is held as it stands (no trades at its open); at its close the system makes a full review of the whole book:
+    # carried stocks are kept only if ranked inside the sell buffer (no exemptions for them), the rest are sold at the
+    # next open, ETFs the system does not park in are rotated out, and free slots are filled in both tranches.
+    init = cfg.get("init")
+    carried = set()
+    i_init = i0
+    if init:
+        # the run starts at `start` with no money (a warm-up, so pause / restart state is built from real history);
+        # the account is injected at the open of init["first_session"]
+        i_init = int(m.dates.searchsorted(pd.Timestamp(init["first_session"])))
+        cash = 0.0
+
+    def inject():
+        nonlocal cash
+        cash = float(init.get("cash", 0.0))
+        i0 = i_init
+        J_ = {s: j for j, s in enumerate(m.syms)}
+        for k_, (sym_, h_) in enumerate(sorted((init.get("stocks") or {}).items())):
+            j = J_.get(sym_)
+            if j is None or not (Cf[i0 - 1, j] == Cf[i0 - 1, j]):
+                raise ValueError(f"takeover: no price for carried stock {sym_} at {m.dates[i0 - 1].date()}")
+            sf_ = float(SF[i0 - 1, j]) or 1.0
+            adj_sh = float(h_["shares"]) * sf_
+            cost_ = float(h_.get("cost") or Cf[i0 - 1, j] * sf_) / sf_
+            ei = int(m.dates.searchsorted(pd.Timestamp(h_["entry_date"]))) if h_.get("entry_date") else i0
+            ei = min(max(ei, 0), i0)
+            pk_ = float(np.nanmax(Cf[ei:i0, j])) if ei < i0 else float(Cf[i0 - 1, j])
+            meta_ = {"tr": int(h_.get("tr", k_ % 2)), "carried": bool(h_.get("carried", init.get("mode", "takeover") == "takeover"))}
+            if h_.get("giant"):
+                meta_["giant"] = True
+            pk_ = max(pk_, float(h_["peak"]) / sf_) if h_.get("peak") else pk_
+            pos[j] = dict(sh=adj_sh, cost=cost_, entry_i=ei, route=1, stop=None, rung=0, below=0, peak=max(pk_, cost_),
+                          last=float(Cf[i0 - 1, j]), stale=0, adds=int(h_.get("adds", 0)), hold_done=False, meta=meta_,
+                          px0=cost_, rung_in=0, inv=float(h_["shares"]) * float(h_.get("cost") or 0.0), buyc=0.0)
+            if init.get("mode", "takeover") == "takeover":
+                carried.add(j)
+        # "continue" mode: the orders decided at the previous close are placed at this session's open
+        for o_ in init.get("pending") or []:
+            j = J_.get(o_["sym"])
+            if j is None:
+                continue
+            od = dict(kind=o_["kind"], j=j, why=o_.get("why"), all=o_.get("all"), dollars=o_.get("dollars") or 0.0)
+            if o_.get("frac") is not None:
+                od["frac"] = o_["frac"]
+            if o_["kind"] in ("new", "add"):
+                od.update(route=1, stop=None, min_dollars=o_.get("min_dollars", 0.0),
+                          meta={"tr": int(o_.get("tr", 0)), "giant": bool(o_.get("giant"))} if o_.get("giant") else {"tr": int(o_.get("tr", 0))})
+            pend_stock.append(od)
+        for t_, sh_ in (init.get("etfs") or {}).items():
+            if t_ in m.E and sh_:
+                parked[t_] = float(sh_)
+
     # -------------------------------------------------------------- the loop
     for i in range(i0, i1):
         d = m.dates[i]
+        if init and i == i_init:
+            inject()
         # ===== (1) at the open: overlay allocation, stock exits, funding, ETF legs, stock buys
         navo = cash + sum(p["sh"] * (Cf[i - 1, j] if Cf[i - 1, j] == Cf[i - 1, j] else p["last"]) for j, p in pos.items()) \
             + sum(sh * etf_px(k, i - 1) for k, sh in etf.items() if sh) \
@@ -891,7 +948,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             if sleeve_cash_cap is not None:
                 sleeve_cash_cap -= spent
         # park idle cash (India: at least half a slot idle)
-        if park_tk and not drew:
+        held_open = bool(init) and (i < i_init or (i == i_init and init.get("mode", "takeover") == "takeover"))
+        if park_tk and held_open:
+            _park_name(park_tk, m, i, cfg, paused)               # warm-up / held open: tick the crash-hold timer, no trades
+        if park_tk and not drew and not held_open:
             # money held back by the volatility cap must not ride the market in an index ETF
             risk_off = paused if cfg.get("safe_when", "paused") == "paused" else (not m.b200[i])
             if cfg.get("park_on_decision"):
@@ -1361,7 +1421,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         fast_re = bool(cfg.get("reenter_fast") and prev_paused[0] and not paused)
         prev_paused[0] = paused
         fill_only = False
-        if not is_decision(i) and not fast_re:
+        takeover = bool(init) and i == i_init and init.get("mode", "takeover") == "takeover"
+        if init and i < i_init:
+            continue                                            # warm-up: signals only, no account yet
+        if not is_decision(i) and not fast_re and not takeover:
             # exp77: on the last session of each week, fill empty slots without any rank sells (calendar known in advance)
             if cfg.get("fill_weekly") and m.week_end[i] and cfg.get("stagger"):
                 fill_only = True
@@ -1428,11 +1491,17 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             xr = cfg["buffer"] * N
             if paused and cfg.get("pause_tight_exit", True):
                 xr = N                                          # hard-coded India rule: a pause tightens the sell rank
-            t_now = tranche_of(i) if cfg.get("stagger") else None
+            t_now = tranche_of(i) if (cfg.get("stagger") and not takeover) else None
             for j in list(pos):
                 if j in exiting or pos[j]["stale"]:
                     continue
                 if t_now is not None and pos[j].get("meta", {}).get("tr", 0) != t_now:
+                    continue
+                if takeover and j in carried:
+                    # takeover review: a carried holding stays only if it ranks inside the sell buffer; none of the
+                    # system's hold exemptions apply to it (they protect the system's own winners)
+                    if pos_rank.get(j, 10 ** 9) >= xr:
+                        pend_stock.append(dict(kind="exit", j=j, why="takeover", all=True)); exiting.add(j)
                     continue
                 if (i - pos[j]["entry_i"]) < cfg.get("rank_min_hold", 0):
                     # exp60: a new buy is given time, unless it is already down more than rank_grace_loss
@@ -1519,10 +1588,30 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 # exp61: buy the dip during a pause. Only top-ranked candidates whose RSI is at or below pause_dip_rsi,
                 # and at most pause_dip_slots new names per decision day.
                 scfg = dict(scfg, rsi_max=dip, _dip_max=cfg.get("pause_dip_slots", 2))
-            _slot_orders(m, scfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
+            if takeover and cfg.get("stagger"):
+                # takeover review fills free slots in every tranche, using the cash each tranche's buys leave
+                for tr_ in range(len(cfg["stagger"])):
+                    spent_ = sum(o["dollars"] for o in pend_stock if o.get("kind") in ("new", "add"))
+                    gl_ = any((o.get("meta") or {}).get("giant") for o in pend_stock if o.get("kind") == "new") or \
+                        any(p_.get("meta", {}).get("giant") for p_ in pos.values())
+                    tcfg = dict(scfg, _tr=tr_, _ntr=len(cfg["stagger"]), dedupe=True)
+                    if gl_:
+                        tcfg["giant_slots"] = 0                 # one giants slot for the whole book
+                    _slot_orders(m, tcfg, i, sc, route, u, pos, exiting, navd, max(0.0, sleeve_cash - spent_), pend_stock, pos_rank)
+            else:
+                _slot_orders(m, scfg, i, sc, route, u, pos, exiting, navd, sleeve_cash, pend_stock, pos_rank)
 
     out = dict(curve=pd.Series(curve, index=m.dates[i0:i1]), expo=pd.Series(expo, index=m.dates[i0:i1]),
                costs=costs, final_positions=len(pos))
+    # live (owner, 16 Oct 2026): the book at the last close and the orders the system will place at the next open
+    out["book"] = dict(cash=cash, parked=dict(parked), positions={m.syms[j]: dict(adj_sh=p["sh"], cost=p["cost"], peak=p["peak"],
+                       entry=str(m.dates[p["entry_i"]].date()), tr=p.get("meta", {}).get("tr", 0), giant=bool(p.get("meta", {}).get("giant")),
+                       carried=bool(p.get("meta", {}).get("carried")), adds=p["adds"], sf=float(SF[i1 - 1, j]))
+                       for j, p in pos.items()})
+    out["pending"] = [dict(kind=o["kind"], sym=str(m.syms[o["j"]]), why=o.get("why"), all=o.get("all"), frac=o.get("frac"),
+                           dollars=o.get("dollars"), min_dollars=o.get("min_dollars", 0.0), tr=int((o.get("meta") or {}).get("tr", 0)),
+                           giant=bool((o.get("meta") or {}).get("giant"))) for o in pend_stock]
+    out["paused"] = bool(paused)
     if record:
         out["events"] = events
         out["trades"] = pd.DataFrame(trades, columns=["date", "sym", "side", "value", "why", "ret"])
