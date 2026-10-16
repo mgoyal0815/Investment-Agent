@@ -1,3 +1,26 @@
+# UPDATE (16 October 2026): System N adopted
+
+System N = System M with a stricter OBV entry filter: buy only when the on-balance-volume trend is >= 0.5
+(`system_N.json`, panel_ndx, `results/final_N_*`). M audit first: cut-off test identical at 7 dates; neighbour
+grid (`audit/a23_m_neighbours.csv`) a plateau: 8-9 holdings with buffers 1.3-1.7 all 70-72%. OBV thresholds
+0.25-1.0 all 74.4-74.8% vs M 72.1% (`audit/a24_m_obv.csv`). Acceptance test vs M (`results/accept_M_obv05.txt`):
++1.5 points overall, every era equal or better, held-back +1.0, worst fall -47.1% -> -43.5%. Adopted by the owner.
+
+| Every monthly start 2000-2025 | System N | System M | System K | live v5 |
+|---|---|---|---|---|
+| Years beating SPY and QQQ | 72.6% | 71.1% | 67.1% | 34.8% |
+| Held-back starts (15th) | 73.9% | 72.9% | 66.2% | |
+| Starts 2000-11 / 2012-19 / 2020-25 | 71.5 / 74.1 / 80.8 | 69.8 / 72.4 / 80.8 | 67.1 / 64.0 / 78.8 | |
+| 3-year windows beating SMH | 76.5% | 74.2% | 58.1% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 38.7% | 38.7% | 39.4% | 76.5% |
+| Worst fall, any start | -43.5% | -47.1% | -46.6% | -37.7% |
+| Median growth a year | 38.1% | 37.5% | 33.6% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $7.07M / 27.8% / -36% | $6.12M / 27.1% / -38% | $4.00M / 25.1% / -35% | $263k / 13.0% / -36% |
+| Calendar years 2000-2025 beating both | 18 of 26 | 18 of 26 | 17 of 26 | |
+| Beating both over 1 / 2 / 3 / 5-year windows (run from 2000) | 70 / 80 / 91 / 94% | 70 / 79 / 87 / 94% | 68 / 74 / 82 / 84% | |
+
+---
+
 # UPDATE (16 October 2026): System M adopted
 
 System M = System L with 9 holdings instead of 10 (`system_M.json`, panel_ndx, `results/final_M_*`).
