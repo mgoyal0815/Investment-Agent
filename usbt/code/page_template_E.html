@@ -75,16 +75,16 @@ li::marker { color: var(--muted); }
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">US backtest · corrected S&amp;P 500 + Nasdaq-100 data (audit standard) · Jan 2000 – 12 Oct 2026</div>
+    <div class="eyebrow">US backtest · corrected S&amp;P 500 + Nasdaq-100 data (audit standard) · Jan 2000 – Dec 2025 (2026 not counted)</div>
     <h1>{{SYS}} Scorecard</h1>
-    <p class="lede">The best system found after 70 experiments, two Bayesian studies and indicator range checks, each change passed through an acceptance test on every start date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
+    <p class="lede">The best system found after more than 120 experiments. Every change since System O was scored honestly: averaged over five different review calendars, so no result rests on one lucky date. It turned $10,000 into <b>{{E_END}}</b> since 2000, against {{S_END}} in SPY and {{Q_END}} in QQQ. It beats both SPY and QQQ in about <b>{{BEAT}}</b> of years, not every year.</p>
   </header>
 
   <div class="stats">
     <div class="stat"><span class="v">{{E_CAGR}}</span><span class="k">growth a year, one run from 2000 (SPY {{S_CAGR}}, QQQ {{Q_CAGR}})</span></div>
     <div class="stat"><span class="v">{{E_DD}}</span><span class="k">worst fall in that run (SPY {{S_DD}}, QQQ {{Q_DD}})</span></div>
     <div class="stat"><span class="v">{{WINS}} of 26</span><span class="k">calendar years 2000–2025 beating both SPY and QQQ</span></div>
-    <div class="stat"><span class="v">{{BEAT}}</span><span class="k">years beating both, averaged over all 310 monthly start dates</span></div>
+    <div class="stat"><span class="v">{{BEAT}}</span><span class="k">years beating both from every monthly start 2000–2024 (on 5 review calendars: 71.3%, range 66–79%)</span></div>
   </div>
 
   <section>
@@ -99,7 +99,7 @@ li::marker { color: var(--muted); }
     <h2>Year by year</h2>
     <figure>
       {{YCHART}}
-      <figcaption>Calendar-year return of each, in percent. Shaded years: {{SYS}} beat both SPY and QQQ. *2026 runs to 12 October. Hover a dot for the exact figure.</figcaption>
+      <figcaption>Calendar-year return of each, in percent. Shaded years: {{SYS}} beat both SPY and QQQ. Hover a dot for the exact figure.</figcaption>
     </figure>
     <p class="note">Calendar-year returns in percent. "Beat both" means {{SYS}} beat SPY and QQQ that year.</p>
     <div class="tbl"><table>
@@ -126,15 +126,15 @@ li::marker { color: var(--muted); }
       <h2>How {{SYS}} works</h2>
       <ol>
         <li>Each month, rank stocks that were S&amp;P 500 or Nasdaq-100 members that day by 6-month strength against SPY and distance above the 200-day average.</li>
-        <li>Hold 9 equal slots, split into two halves reviewed on the last trading day and on the 11th.</li>
+        <li>Hold up to 8 stocks in slots of one ninth of the account, split into two halves reviewed on the last trading day and on the 11th session. One slot is reserved for the strongest of the 10 most-traded members above a rising 200-day average (no ADX or volume gate).</li>
         <li>Buy only stocks in an uptrend whose ADX trend strength is at least 25 with buyers in control, and whose on-balance volume is trending up (more volume on up days). Add half a slot to a winner up 20%, up to 3 slots.</li>
-        <li>Sell when a stock drops out of the top 15. A stock up 75% or more is exempt.</li>
+        <li>Sell when a stock drops out of the top 13 (1.5× holdings). A stock up 75% or more is exempt, and no rank sells happen while SPY is 20% or more below its 1-year high.</li>
         <li>Do not sell on rank while the stock is above a rising 50-day average.</li>
         <li>Profit lock: once up 50%, sell if it falls 25% from its peak.</li>
-        <li>Pause new buying when market breadth, high-yield credit or the large-cap index weakens. Resume buying for 42 sessions even while paused when the Coppock Curve turns up from below zero, or when cyclical sectors (discretionary, tech, industrials, financials) cross back above their 100-day average against defensive ones (staples, utilities, health care). Idle money sits in the leading index ETF, or short Treasuries while paused.</li>
+        <li>Pause new buying when market breadth is weak, high-yield credit weakens, or the large-cap index closes 2% or more below its 50-day average. Resume buying for 42 sessions even while paused when the Coppock Curve turns up from below zero, or when cyclical sectors (discretionary, tech, industrials, financials) cross back above their 100-day average against defensive ones (staples, utilities, health care). Idle money sits in the leading index ETF, or short Treasuries while paused.</li>
         <li>A stock is bought only if its 6-month return beats the best of SPY, QQQ and SMH; otherwise the money stays in the leading index.</li>
         <li>During a pause, if SPY's 14-day RSI closes at 25 or below, or SPY falls 18% or more below its 20-day high (a crash), hold the leading index for 21 sessions instead of short Treasuries.</li>
-        <li>When gold is leading, 4 of the 10 slots stay out of stocks.</li>
+        <li>When gold is leading, only 4 stocks are held (the rest waits in the leading index).</li>
       </ol>
     </section>
     <section>
@@ -149,13 +149,14 @@ li::marker { color: var(--muted); }
         <li>Index parking during pauses (full and partial), a giants entry path, looser profit locks, pause hysteresis, grace periods for new buys.</li>
         <li>RSI, MACD, ADX, breakouts, 52-week highs, VIX, credit and breadth signals, on both the buy and sell side, across full ranges.</li>
         <li>Industry momentum, a momentum-crash guard, longer momentum windows, the Nasdaq-100 universe.</li>
-        <li>Two Bayesian studies of 500 and 600 combinations: no enhancement helped in every period. ADX of 25 or more at entry became System F. A Coppock re-entry signal plus rising on-balance volume became System G. A cyclicals-vs-defensives restart with a 42-session window became System H. Later steps, each accepted by the owner: Nasdaq-100 universe (L), 9 holdings (M), on-balance volume of at least 0.5 at entry (N), and winners exempt from rank sells from +75% instead of +100% (O; +50% to +85% all beat N).</li>
+        <li>Two Bayesian studies of 500 and 600 combinations: no enhancement helped in every period. ADX of 25 or more at entry became System F. A Coppock re-entry signal plus rising on-balance volume became System G. A cyclicals-vs-defensives restart with a 42-session window became System H. Later steps, each accepted by the owner: Nasdaq-100 universe (L), 9 holdings (M), on-balance volume of at least 0.5 at entry (N), and winners exempt from rank sells from +75% instead of +100% (O). On 16 Oct 2026 a review-date sweep showed O's 74.6% was mostly the luck of its review date (honest average 62.4%); from then on every change was scored on five calendars: a giants slot (P, 68.2%), a slower large-cap pause vote (Q, 70.2%), and no rank sells in deep crashes with giants from the top 10 (R, 71.3%).</li>
+        <li>Also tested honestly and rejected: momentum quality, acceleration and residual momentum in the ranking; momentum-stress, dispersion, mega-cap and state-dependent pause rules from the research literature; pocket pivots, volume dry-ups, distribution days, follow-through days and climax-run exits; short-term mean reversion as a second strategy; five review calendars as sub-accounts; turn-of-month timing.</li>
       </ul>
     </section>
   </div>
 
   <section class="verdict">
     <h2>Verdict</h2>
-    <p>No long-only system on clean price data beat SPY and QQQ every year from every start date with a smaller fall. Its losing years come from the cost of crash protection in rebounds and from a few giant companies carrying the index. {{SYS}} grows far faster than both indexes over time, and its worst fall is about SPY's. Two earlier data biases, future winners in the stock list and in the pause signals, were found and removed; every number here is after those fixes. The live system was not changed.</p>
+    <p>No long-only system on clean price data reached 75% of years beating SPY and QQQ from every start date. {{SYS}} gets about 71%, about double the live system, and beats both over most 3-year windows; only about 37% of starts fall less than both indexes. Its losing years come from the cost of crash protection in rebounds and from a few giant companies carrying the index. {{SYS}} grows far faster than both indexes over time, and its worst fall is about SPY's. Two earlier data biases, future winners in the stock list and in the pause signals, were found and removed; every number here is after those fixes. The live system was not changed.</p>
   </section>
 </div>

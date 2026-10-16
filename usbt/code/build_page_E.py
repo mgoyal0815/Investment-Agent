@@ -79,7 +79,7 @@ year_table = "\n".join(rows)
 # ---- scorecard
 def pct(v): return f"{v*100:.0f}%"
 sc_rows = []
-for era in ("every start", "starts 2000-11", "starts 2012-19", "starts 2020-25"):
+for era in ("every start", "starts 2000-11", "starts 2012-19", "starts 2020-24"):
     e = sc[(sc.system == NAME) & (sc.era == era)].iloc[0]; v = sc[(sc.system == "live v5") & (sc.era == era)].iloc[0]
     sc_rows.append(f'<tr><th scope="row">{era.replace("starts ", "Starts ").replace("every start", "Every monthly start")}</th>'
                    f'<td class="num hi">{pct(e.beat)}</td><td class="num">{pct(v.beat)}</td><td class="num hi">{pct(e.cagr)}</td><td class="num">{pct(v.cagr)}</td>'
