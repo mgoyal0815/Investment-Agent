@@ -1,0 +1,15 @@
+{'test': 'K, S&P 500 only', 'era': 'all', 'beat': np.float64(0.6682692307692307), 'ddok': np.float64(0.4), 'cagr': np.float64(0.3412850751291223), 'worst': np.float64(-0.3671440216232935)}
+{'test': 'K, S&P 500 + Nasdaq-100', 'era': 'all', 'beat': np.float64(0.6889423076923077), 'ddok': np.float64(0.7612903225806451), 'cagr': np.float64(0.35342265334321943), 'worst': np.float64(-0.38607320182386107)}
+{'test': 'K + Nasdaq-100, 8 holdings', 'era': 'all', 'beat': np.float64(0.7086538461538462), 'ddok': np.float64(0.3548387096774194), 'cagr': np.float64(0.39690496037767087), 'worst': np.float64(-0.4328065862066012)}
+{'test': 'K + Nasdaq-100, 12 holdings', 'era': 'all', 'beat': np.float64(0.6663461538461538), 'ddok': np.float64(0.4064516129032258), 'cagr': np.float64(0.3164810066529684), 'worst': np.float64(-0.4029066531522809)}
+era                          2000-11  2012-19  2020-25    all
+test                                                         
+K + Nasdaq-100, 12 holdings    0.660    0.661    0.767  0.666
+K + Nasdaq-100, 8 holdings     0.693    0.734    0.800  0.709
+K, S&P 500 + Nasdaq-100        0.674    0.710    0.783  0.689
+K, S&P 500 only                0.662    0.659    0.783  0.668
+                       test era  beat  ddok  cagr  worst
+            K, S&P 500 only all 0.668 0.400 0.341 -0.367
+    K, S&P 500 + Nasdaq-100 all 0.689 0.761 0.353 -0.386
+ K + Nasdaq-100, 8 holdings all 0.709 0.355 0.397 -0.433
+K + Nasdaq-100, 12 holdings all 0.666 0.406 0.316 -0.403
