@@ -1,0 +1,52 @@
+{
+ "name": "System P",
+ "frozen": "2026-10-16",
+ "description": "System O plus a giants path: 1 of the 9 slots holds the strongest of the 20 most-traded members above a rising 200-day average (no ADX or volume gate). Scored with the calendar-robust yardstick (average of 5 review calendars, runs to Dec 2025): 68.2% vs O 62.4%, range 65.5-72.6% vs 54.5-70.5%, worst fall -53% vs -52%. 1/2/3 slots and top 10/20/30 all 66-68% (plateau). Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 0.75,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ],
+  "giant_slots": 1,
+  "giant_top": 20
+ },
+ "panel": "data/panel_ndx.pkl"
+}
