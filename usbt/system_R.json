@@ -1,0 +1,54 @@
+{
+ "name": "System R",
+ "frozen": "2026-10-16",
+ "description": "System Q plus: no rank sells while SPY is 20%+ below its 1-year high, and the giants slot drawn from the 10 most-traded members instead of 20. Calendar-robust yardstick (5 review calendars, runs to Dec 2025): 71.3% vs Q 70.2%, worst fall -48% vs -51%, 3-year windows beating SMH 70% vs 67%. Crash levels 15/20/25% all 71.3-71.4% with giants top 10 (plateau). Adopted by the owner.",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 0.75,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ],
+  "giant_slots": 1,
+  "giant_top": 10,
+  "large_margin": 0.02,
+  "crash_no_rank": 0.2
+ },
+ "panel": "data/panel_ndx.pkl"
+}
