@@ -336,6 +336,14 @@ class Market:
             np.save(os.path.join(dd_, k + ".npy"), np.asarray(self._lit[k]))
         return self._lit
 
+    def volf(self):
+        """Volume features from volfeat.py (cached .npy files, read-only memory maps)."""
+        if not hasattr(self, "_volf"):
+            import os
+            dd_ = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", f"volf_{self.T}x{self.N}")
+            self._volf = {k: np.load(os.path.join(dd_, k + ".npy"), mmap_mode="r") for k in ("pp10", "vdry", "climax", "dd25", "ftd")}
+        return self._volf
+
     def etf_rsi(self, t):
         """14-day Wilder RSI of an index ETF from its closes (exp62), cached."""
         if not hasattr(self, "_ersi"):
@@ -1029,7 +1037,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             # index / credit / bond votes: "<ETF><n>" = that ETF closes below its n-session average
             # (e.g. spy200, qqq100, smh50, hyg63); "tlt_up" = TLT above its 63-session average (flight to safety)
             for tok in r:
-                if tok in ("breadth", "hyg", "large", "momstress"):
+                if tok in ("breadth", "hyg", "large", "momstress", "distday"):
                     continue
                 if tok == "tlt_up":
                     sig.append(m.etf_vs_sma("TLT", 63, i) > 0)
@@ -1064,6 +1072,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     t_, n_ = tok[:3].upper(), int(tok[3:])
                     sig.append(m.etf_vs_sma(t_, n_, i) < 0)
             # "any": one signal pauses (India v8); "two": two must agree, so buying resumes sooner
+            if "distday" in r:                      # exp76: O'Neil distribution days on SPY/QQQ
+                sig.append(bool(m.volf()["dd25"][i] >= cfg.get("dd_n", 6)))
             if "momstress" in r:                    # exp75 idea 1: momentum's own volatility shock (Heidari 2015)
                 sig.append(bool(m.lit()["stress"][i]))
             if cfg.get("state_pause"):
@@ -1103,6 +1113,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 fire = False
                 if "coppock" in ue and m.coppock[i] == m.coppock[i]:
                     fire |= m.coppock[i] < 0 and m.coppock[i] > m.coppock[i - 21] and m.coppock[i - 21] <= m.coppock[i - 42]
+                if "ftd" in ue:                       # exp76: O'Neil follow-through day restarts buying
+                    fire |= bool(m.volf()["ftd"][i])
                 if "mcclellan" in ue:
                     fire |= m.mcc_osc[i] > 0 and np.nanmin(m.mcc_osc[i - 30:i]) < -cfg.get("mcc_depth", 50)
                 for u_ in ue:
@@ -1230,6 +1242,18 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                     else:
                         pend_stock.append(dict(kind="exit", j=j, why="lock", all=True))
                     exiting.add(j)
+        if cfg.get("climax_exit"):
+            # exp76: O'Neil climax run with a stall day: sell half once ("half") or all ("all")
+            cx_ = m.volf()["climax"]
+            for j, p in pos.items():
+                if p["stale"] or j in exiting or not cx_[i, j]:
+                    continue
+                if cfg["climax_exit"] == "half":
+                    if p.get("climaxed"):
+                        continue
+                    pend_stock.append(dict(kind="exit", j=j, why="climax1", all=False, frac=0.5)); p["climaxed"] = True
+                else:
+                    pend_stock.append(dict(kind="exit", j=j, why="climax", all=True)); exiting.add(j)
         if cfg.get("chand_k"):
             # chandelier: sell when the close falls more than k ATRs below the highest close since entry
             for j, p in pos.items():
@@ -1697,6 +1721,10 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             continue
         gx = cfg.get("giant_gate_exempt")
         is_g = bool(gx) and m.giants(i, gx)[0][j]          # exp64: the gx most-traded members skip the OBV and ADX gates
+        if cfg.get("pocket_pivot") and not m.volf()["pp10"][i, j]:
+            continue                                            # exp76: pocket pivot in the last 10 sessions
+        if cfg.get("vdry_max") and not (m.volf()["vdry"][i, j] <= cfg["vdry_max"]):
+            continue                                            # exp76: volume dry-up (quiet base) before buying
         if cfg.get("gap_max") and not (m.lit()["gap90"][i, j] <= cfg["gap_max"]):
             continue                                            # exp75 idea 14: Clenow gap filter
         if cfg.get("volr_max") and m.lit()["volr"][i, j] > cfg["volr_max"]:
