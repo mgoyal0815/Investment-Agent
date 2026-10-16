@@ -41,6 +41,12 @@ figure { margin: 0; background: var(--panel); border: 1px solid var(--rule); bor
 figure svg { width: 100%; min-width: 620px; height: auto; display: block; }
 figcaption { font-size: 0.85rem; color: var(--muted); padding: 6px 8px 8px; }
 .grid { stroke: var(--rule); stroke-width: 1; }
+.grid.zero { stroke: var(--muted); stroke-width: 1.2; }
+.winband { fill: var(--c-e); opacity: .07; }
+.dot { stroke: var(--panel); stroke-width: 1; } .dot.e { fill: var(--c-e); } .dot.v5 { fill: var(--c-v5); } .dot.spy { fill: var(--c-spy); } .dot.qqq { fill: var(--c-qqq); } .dot.smh { fill: var(--c-smh); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font: 12px var(--f-mono); color: var(--muted); padding: 0 6px 8px; }
+.lg i { display: inline-block; width: 16px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+.lg.e i { background: var(--c-e); height: 4px; } .lg.v5 i { background: var(--c-v5); } .lg.spy i { background: var(--c-spy); } .lg.qqq i { background: var(--c-qqq); } .lg.smh i { background: var(--c-smh); } .lg.band i { background: var(--c-e); opacity: .2; height: 10px; }
 .ax { fill: var(--muted); font: 11px var(--f-mono); }
 .ln { fill: none; stroke-width: 1.6; stroke-linejoin: round; }
 .ln.e { stroke: var(--c-e); stroke-width: 2.6; } .ln.v5 { stroke: var(--c-v5); stroke-dasharray: 4 3; }
@@ -91,6 +97,10 @@ li::marker { color: var(--muted); }
 
   <section>
     <h2>Year by year</h2>
+    <figure>
+      {{YCHART}}
+      <figcaption>Calendar-year return of each, in percent. Shaded years: {{SYS}} beat both SPY and QQQ. *2026 runs to 12 October. Hover a dot for the exact figure.</figcaption>
+    </figure>
     <p class="note">Calendar-year returns in percent. "Beat both" means {{SYS}} beat SPY and QQQ that year.</p>
     <div class="tbl"><table>
       <thead><tr><th scope="col">Year</th><th scope="col">{{SYS}}</th><th scope="col">SPY</th><th scope="col">QQQ</th><th scope="col">SMH</th><th scope="col">Live v5</th><th scope="col">Result</th></tr></thead>

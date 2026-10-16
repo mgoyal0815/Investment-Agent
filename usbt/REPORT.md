@@ -1,3 +1,30 @@
+# UPDATE (16 October 2026): System O adopted
+
+System O = System N with winners exempt from rank sells from a +75% gain instead of +100% (`system_O.json`,
+panel_ndx, `results/final_O_*`). Found by the N retune grid (`audit/a26_n_retune.csv`): the only setting that
+improved. Acceptance test vs N (`results/accept_N_ex75.txt`): +1.8 points overall (gate +2, near-pass), every era
+equal or better, held-back 73.9% -> 75.8%, worst fall unchanged. Neighbours (`audit/a27_n_exempt.csv`): +50% / +60% /
++75% / +85% all beat N (75.0 / 76.7 / 76.2 / 75.1% vs 74.5%), so a plateau; fixed at +75% (the fully tested value,
+mid-plateau, not the single best). Adopted by the owner. The scorecard page now also has a year-by-year line chart
+of System O against SPY, QQQ, SMH and live v5.
+
+| Every monthly start 2000-2025 | System O | System N | live v5 |
+|---|---|---|---|
+| Years beating SPY and QQQ | 74.4% | 72.6% | 34.8% |
+| Held-back starts (15th) | 75.8% | 73.9% | |
+| Starts 2000-11 / 2012-19 / 2020-25 | 73.9 / 74.6 / 80.8 | 71.5 / 74.1 / 80.8 | |
+| 3-year windows beating SMH | 80.4% | 76.5% | 19.5% |
+| Starts with a smaller fall than SPY and QQQ | 38.7% | 38.7% | 76.5% |
+| Worst fall, any start | -43.5% | -43.5% | -37.7% |
+| Median growth a year | 38.3% | 38.1% | 14.1% |
+| One run from 2000: $10k becomes / growth / worst fall | $7.77M / 28.2% / -36% | $7.07M / 27.8% / -36% | $263k / 13.0% / -36% |
+| Calendar years 2000-2025 beating both | 18 of 26 | 18 of 26 | |
+| Beating both over 1 / 2 / 3 / 5-year windows (run from 2000) | 72 / 85 / 94 / 99% | 70 / 80 / 91 / 94% | |
+
+Still open: the smaller-fall goal (39% of starts) and the 75% bar on day-1 starts (74.4%; held-back starts 75.8%).
+
+---
+
 # UPDATE (16 October 2026): System N adopted
 
 System N = System M with a stricter OBV entry filter: buy only when the on-balance-volume trend is >= 0.5

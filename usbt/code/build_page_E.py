@@ -37,6 +37,30 @@ for y, name, cls, v in ends:
     lab.append(f'<text class="end {cls}" x="{W-Rt+8}" y="{y+4:.1f}">{name} ${v/1000:,.0f}k</text>')
 chart = f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="Growth of $10,000 from January 2000, log scale">{"".join(g)}{"".join(paths)}{"".join(lab)}</svg>'
 
+# ---- year-by-year line chart (calendar-year returns, %)
+YW, YH, YL, YR, YT, YB = 920, 380, 56, 20, 30, 34
+yv = yrs.copy(); yv.index = yv.index.astype(int)
+ymin = math.floor(min(-60, yv.min().min()) / 20) * 20; ymax = math.ceil(max(80, yv.max().max()) / 20) * 20
+yrs_i = list(yv.index); fxy = lambda y: YL + (y - yrs_i[0]) / (yrs_i[-1] - yrs_i[0]) * (YW - YL - YR)
+fyy = lambda v: YT + (ymax - v) / (ymax - ymin) * (YH - YT - YB)
+yg = []
+for v in range(int(ymin), int(ymax) + 1, 20):
+    yy = fyy(v); yg.append(f'<line class="grid{" zero" if v == 0 else ""}" x1="{YL}" x2="{YW-YR}" y1="{yy:.1f}" y2="{yy:.1f}"/><text class="ax" x="{YL-6}" y="{yy+4:.1f}" text-anchor="end">{v:+d}%</text>')
+for y in yrs_i:
+    if y % 2 == 0 or y == yrs_i[-1]:
+        yg.append(f'<text class="ax" x="{fxy(y):.1f}" y="{YH-12}" text-anchor="middle">{"’26*" if y == 2026 else y}</text>')
+for y, r in yv.iterrows():                      # shade years where the system beat both SPY and QQQ
+    if r[NAME] > max(r["SPY"], r["QQQ"]):
+        w_ = (YW - YL - YR) / (len(yrs_i) - 1)
+        yg.append(f'<rect class="winband" x="{fxy(y)-w_/2:.1f}" y="{YT}" width="{w_:.1f}" height="{YH-YT-YB}"/>')
+ylines = []
+for name, cls in SER[::-1]:
+    s_ = yv[name].dropna()
+    ylines.append(f'<polyline class="ln {cls}" points="{" ".join(f"{fxy(y):.1f},{fyy(v):.1f}" for y, v in s_.items())}"/>')
+    ylines.append("".join(f'<circle class="dot {cls}" cx="{fxy(y):.1f}" cy="{fyy(v):.1f}" r="{3.2 if cls == "e" else 2.2}"><title>{y} {name}: {v:+.1f}%</title></circle>' for y, v in s_.items()))
+leg = "".join(f'<span class="lg {cls}"><i></i>{name}</span>' for name, cls in SER)
+ychart = f'<div class="legend">{leg}<span class="lg band"><i></i>{NAME} beat SPY and QQQ</span></div><svg viewBox="0 0 {YW} {YH}" role="img" aria-label="Calendar-year returns, {NAME} vs SPY, QQQ, SMH and live v5">{"".join(yg)}{"".join(ylines)}</svg>'
+
 # ---- year table
 rows = []
 full = yrs.loc[[y for y in yrs.index if y <= 2025]]
@@ -64,7 +88,7 @@ sc_table = "\n".join(sc_rows)
 E, S, Q, M, V = (sm[k] for k in (NAME, "SPY", "QQQ", "SMH", "live v5"))
 every = sc[(sc.system == NAME) & (sc.era == "every start")].iloc[0]
 html = open("page_template_E.html").read()
-for k, v in {"{{CHART}}": chart, "{{YEARS}}": year_table, "{{SCORE}}": sc_table, "{{WINS}}": str(int(wins)),
+for k, v in {"{{CHART}}": chart, "{{YCHART}}": ychart, "{{YEARS}}": year_table, "{{SCORE}}": sc_table, "{{WINS}}": str(int(wins)),
              "{{E_CAGR}}": f"{E['cagr']*100:.1f}%", "{{E_END}}": f"${E['end']/1000:,.0f}k", "{{E_DD}}": f"{E['maxdd']*100:.0f}%",
              "{{S_CAGR}}": f"{S['cagr']*100:.1f}%", "{{Q_CAGR}}": f"{Q['cagr']*100:.1f}%", "{{S_DD}}": f"{S['maxdd']*100:.0f}%", "{{Q_DD}}": f"{Q['maxdd']*100:.0f}%",
              "{{S_END}}": f"${S['end']/1000:,.0f}k", "{{Q_END}}": f"${Q['end']/1000:,.0f}k", "{{V_CAGR}}": f"{V['cagr']*100:.1f}%", "{{V_END}}": f"${V['end']/1000:,.0f}k",

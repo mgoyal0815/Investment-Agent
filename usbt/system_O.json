@@ -1,7 +1,7 @@
 {
  "name": "System O",
  "frozen": "2026-10-16",
- "description": "System N with winners exempt from rank sells from +75% gain (was +100%). Acceptance test vs N: +1.3 pts overall (gate +2, near-pass), every era better, held-back +1.4, worst fall -43.5% -> -38.7%. Neighbours +50/60/85% all beat N (plateau). Fixed at +75% (the fully tested value, mid-plateau). Adopted by the owner.",
+ "description": "System N with winners exempt from rank sells from +75% gain (was +100%). Acceptance test vs N: +1.8 pts overall (gate +2, near-pass; 72.6% -> 74.4%), every era equal or better, held-back 73.9% -> 75.8%, worst fall unchanged (-43.5%; held-back -38.7%). Neighbours +50/60/85% all beat N (plateau). Fixed at +75% (the fully tested value, mid-plateau). Adopted by the owner.",
  "cfg": {
   "sizing": "slot",
   "N": 9,
