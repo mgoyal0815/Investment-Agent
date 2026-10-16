@@ -17,8 +17,8 @@ def job(a):
 
 if __name__ == "__main__":
     Y._init(PATH); pool = mp.get_context("fork").Pool(4, initializer=Y._init, initargs=(PATH,))
-    R = dict(json.load(open("../system_R.json"))["cfg"], stagger=[-1, 13])
-    L = dict(R, lev_park=200)
+    R = dict(json.load(open("../system_R.json"))["cfg"], stagger=[-1, int(sys.argv[1]) if len(sys.argv) > 1 else 13])
+    L = dict(R, lev_park=200, lev_after=126)
     for lab, c in (("R", R), ("R + 2x", L)):
         T = pd.DataFrame(pool.map(job, [(c, s) for s in Y.starts(step=3)]))
         w = T.sort_values("dd").head(5)
