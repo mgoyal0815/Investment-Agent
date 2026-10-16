@@ -136,8 +136,10 @@ class Market:
             sc_ = pd.Series(E[t_ + "2x"]["c"], index=self.dates); so_ = pd.Series(E[t_ + "2x"]["o"], index=self.dates)
             if first_ is None:                                 # data ends before the fund launched: synthetic only
                 E[t_ + "2xr"] = dict(E[t_ + "2x"]); continue
-            k_ = rc_r[first_] / sc_[first_]
-            cc_ = (sc_ * k_).where(self.dates < first_, rc_r); oo_ = (so_ * k_).where(self.dates < first_, ro_r)
+            # keep the synthetic price level and rescale the real fund to it (fixed 16 Oct 2026: rescaling the synthetic
+            # part to the real fund's launch price used a future price level, which changed whole-share counts)
+            k_ = sc_[first_] / rc_r[first_]
+            cc_ = sc_.where(self.dates < first_, rc_r * k_); oo_ = so_.where(self.dates < first_, ro_r * k_)
             E[t_ + "2xr"] = dict(raw=cc_.to_numpy(), c=cc_.ffill().to_numpy(), o=oo_.to_numpy())
         self.E = E
         spy = pd.Series(E["SPY"]["c"], index=self.dates)
