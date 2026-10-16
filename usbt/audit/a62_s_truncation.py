@@ -5,7 +5,7 @@ import sys; sys.path.insert(0, "/home/user/Investment-Agent/usbt/code")
 import json, numpy as np, pandas as pd, engine as X
 from exp24_timing import mat
 P = pd.read_pickle("../data/panel_ndx.pkl")
-cfg = mat(dict(json.load(open("../system_R.json"))["cfg"], lev_park=200, lev_after=126, lev_real=True))
+cfg = mat(dict(json.load(open("../system_R.json"))["cfg"], lev_park=200, lev_after=126, lev_real=True, lev_only=["SPY", "QQQ"]))
 _load = np.load
 def cut_market(T):
     n = int((P["dates"] <= pd.Timestamp(T)).sum())

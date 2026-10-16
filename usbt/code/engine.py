@@ -134,6 +134,8 @@ class Market:
             rc_r, ro_r = j_["adjClose"], j_["adjOpen"]
             first_ = rc_r.first_valid_index()
             sc_ = pd.Series(E[t_ + "2x"]["c"], index=self.dates); so_ = pd.Series(E[t_ + "2x"]["o"], index=self.dates)
+            if first_ is None:                                 # data ends before the fund launched: synthetic only
+                E[t_ + "2xr"] = dict(E[t_ + "2x"]); continue
             k_ = rc_r[first_] / sc_[first_]
             cc_ = (sc_ * k_).where(self.dates < first_, rc_r); oo_ = (so_ * k_).where(self.dates < first_, ro_r)
             E[t_ + "2xr"] = dict(raw=cc_.to_numpy(), c=cc_.ffill().to_numpy(), o=oo_.to_numpy())
@@ -1620,6 +1622,9 @@ def _park_name(park, m, i, cfg=None, paused=False):
         if lspy and not (m.etf_vs_sma("SPY", lspy, i - 1) > 0):
             vx_ok = False
         sfx = "2xr" if (cfg or {}).get("lev_real") else "2x"
+        lo_ = (cfg or {}).get("lev_only")
+        if lo_ and ld not in lo_:
+            vx_ok = False                                      # exp78: 2x only through these leaders (QLD/SSO track well; USD does not)
         if lv and vx_ok and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + sfx]["c"][i] == m.E[ld + sfx]["c"][i]:
             return ld + sfx                                    # exp78: idle money in the 2x leader while it is above its lv-day average
         return ld
