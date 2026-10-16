@@ -437,6 +437,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
     thrust_until = [-1]
     if cfg.get("pit_signals"):
         BREADTH, LARGE, LSMA_PIT = m.breadth_pit, m.large_idx_pit, m.large_sma50_pit
+        if cfg.get("large_n", 50) != 50:          # exp69: longer average for the large-cap pause vote (whipsaw test)
+            LSMA_PIT = pd.Series(m.large_idx_pit).rolling(cfg["large_n"], min_periods=cfg["large_n"]).mean().to_numpy()
     else:
         BREADTH, LARGE, LSMA_PIT = m.breadth, m.large_idx, None
     prev_paused = [False]
@@ -945,7 +947,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             r = cfg["pause_rules"]
             ls_ = LSMA_PIT if LSMA_PIT is not None else lsma
             sig = [("breadth" in r and BREADTH[i] < cfg.get("breadth_level", 0.40)), ("hyg" in r and not m.hyg_ok[i]),
-                   ("large" in r and ls_[i] == ls_[i] and LARGE[i] < ls_[i])]
+                   ("large" in r and ls_[i] == ls_[i] and LARGE[i] < ls_[i] * (1 - cfg.get("large_margin", 0.0)))]   # exp69: margin below the average
             # index / credit / bond votes: "<ETF><n>" = that ETF closes below its n-session average
             # (e.g. spy200, qqq100, smh50, hyg63); "tlt_up" = TLT above its 63-session average (flight to safety)
             for tok in r:

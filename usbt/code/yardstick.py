@@ -14,6 +14,9 @@ import engine as X
 from exp24_timing import mat
 
 MM = None
+# Owner, 16 Oct 2026: 2026 is not counted. Every run stops at 31 Dec 2025 and starts run to Dec 2024 (so every start
+# has at least one full year). Results before this date (systems up to O, a01-a28) used runs to 12 Oct 2026.
+STD_END = "2025-12-31"
 
 
 def _init(path):
@@ -21,7 +24,7 @@ def _init(path):
     MM = X.Market(pd.read_pickle(path))
 
 
-def starts(a="2000-01-01", b="2025-10-31", step=1, day=1):
+def starts(a="2000-01-01", b="2024-12-31", step=1, day=1):
     """First session on/after `day` of each month. day=1 is the standard set; day=15 is the held-back
     second sample used only to confirm a system before it is accepted (iterative protocol, 15 Oct 2026)."""
     d = MM.dates if MM is not None else pd.read_pickle("../data/panel.pkl")["dates"]
@@ -84,7 +87,7 @@ def _job(a):
     return judge(r["curve"], MM)
 
 
-def evaluate(pool, cfg, st, end=None):
+def evaluate(pool, cfg, st, end=STD_END):
     return pd.DataFrame(pool.map(_job, [(cfg, s, end) for s in st], chunksize=4))
 
 
