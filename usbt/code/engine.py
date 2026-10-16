@@ -115,7 +115,8 @@ class Market:
         for t_ in ("SPY", "QQQ", "SMH"):
             c_ = pd.Series(E[t_]["c"], index=self.dates)
             r_ = c_.pct_change(fill_method=None)
-            rl_ = (2 * r_ - rc_ - 0.0095 / 252).where(r_.notna())
+            fee_ = 0.0095 + (0.035 if t_ == "SMH" else 0.0)    # SMH: +3.5%/yr so the synthetic matches the real USD fund
+            rl_ = (2 * r_ - rc_ - fee_ / 252).where(r_.notna())
             cl_ = (1 + rl_.fillna(0)).cumprod().where(c_.notna()) * 100
             o_ = pd.Series(E[t_]["o"], index=self.dates)
             ol_ = cl_.shift(1) * (1 + 2 * (o_ / c_.shift(1) - 1))
@@ -1560,7 +1561,14 @@ def _park_name(park, m, i, cfg=None, paused=False):
             return a / b - 1 if (a == a and b == b and b > 0) else -999
         ld = max(LEADERS, key=mom)
         lv = (cfg or {}).get("lev_park")
-        if lv and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + "2x"]["c"][i] == m.E[ld + "2x"]["c"][i]:
+        lvx = (cfg or {}).get("lev_vix")
+        vx_ok = True
+        if lvx:
+            v_ = m.P.get("VIX"); vx_ok = v_ is not None and v_[i - 1] == v_[i - 1] and v_[i - 1] < lvx
+        lspy = (cfg or {}).get("lev_spy")
+        if lspy and not (m.etf_vs_sma("SPY", lspy, i - 1) > 0):
+            vx_ok = False
+        if lv and vx_ok and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + "2x"]["c"][i] == m.E[ld + "2x"]["c"][i]:
             return ld + "2x"                                    # exp78: idle money in the 2x leader while it is above its lv-day average
         return ld
     k = park
