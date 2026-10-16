@@ -121,6 +121,22 @@ class Market:
             o_ = pd.Series(E[t_]["o"], index=self.dates)
             ol_ = cl_.shift(1) * (1 + 2 * (o_ / c_.shift(1) - 1))
             E[t_ + "2x"] = dict(raw=cl_.where(pd.Series(E[t_]["raw"], index=self.dates).notna()).to_numpy(), c=cl_.to_numpy(), o=ol_.to_numpy())
+        # "SPY2xr", "QQQ2xr", "SMH2xr": the real funds (SSO, QLD, USD; FMP dividend-adjusted) from their first trading
+        # day, with the synthetic series before that, rescaled to join at the first real close
+        import json as _json, os as _os
+        _ld = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "data", "lev")
+        for t_, f_ in (("SPY", "SSO"), ("QQQ", "QLD"), ("SMH", "USD")):
+            fp_ = _os.path.join(_ld, f_ + ".json")
+            if not _os.path.exists(fp_):
+                continue
+            j_ = pd.DataFrame(_json.load(open(fp_)))
+            j_["date"] = pd.to_datetime(j_["date"]); j_ = j_.drop_duplicates("date").set_index("date").sort_index().reindex(self.dates)
+            rc_r, ro_r = j_["adjClose"], j_["adjOpen"]
+            first_ = rc_r.first_valid_index()
+            sc_ = pd.Series(E[t_ + "2x"]["c"], index=self.dates); so_ = pd.Series(E[t_ + "2x"]["o"], index=self.dates)
+            k_ = rc_r[first_] / sc_[first_]
+            cc_ = (sc_ * k_).where(self.dates < first_, rc_r); oo_ = (so_ * k_).where(self.dates < first_, ro_r)
+            E[t_ + "2xr"] = dict(raw=cc_.to_numpy(), c=cc_.ffill().to_numpy(), o=oo_.to_numpy())
         self.E = E
         spy = pd.Series(E["SPY"]["c"], index=self.dates)
         s200 = spy.rolling(200, min_periods=200).mean()
@@ -907,10 +923,10 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                                 park_trade(k, n, i)
                 pk, split_done = None, True
             lc = cfg.get("lev_cap")
-            if lc and pk and pk.endswith("2x") and not split_done:
+            if lc and pk and "2x" in pk and not split_done:
                 # exp78: at most lev_cap of the account in the 2x fund; the rest of the parked money in the 1x index.
                 # Rebalanced only on a 10% drift, like park_frac.
-                base_ = pk[:-2]; tg = {pk: 0.0, base_: 1.0}
+                base_ = pk.split("2x")[0]; tg = {pk: 0.0, base_: 1.0}
                 for k in [k for k in list(parked) if k not in tg]:
                     park_trade(k, -parked[k], i)
                 keep = 0.01 * navo
@@ -1603,8 +1619,9 @@ def _park_name(park, m, i, cfg=None, paused=False):
         lspy = (cfg or {}).get("lev_spy")
         if lspy and not (m.etf_vs_sma("SPY", lspy, i - 1) > 0):
             vx_ok = False
-        if lv and vx_ok and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + "2x"]["c"][i] == m.E[ld + "2x"]["c"][i]:
-            return ld + "2x"                                    # exp78: idle money in the 2x leader while it is above its lv-day average
+        sfx = "2xr" if (cfg or {}).get("lev_real") else "2x"
+        if lv and vx_ok and not paused and park != "leader_safe_1x" and i > lv and m.etf_vs_sma(ld, lv, i - 1) > 0 and m.E[ld + sfx]["c"][i] == m.E[ld + sfx]["c"][i]:
+            return ld + sfx                                    # exp78: idle money in the 2x leader while it is above its lv-day average
         return ld
     k = park
     if np.isnan(m.E[k]["raw"][i]) and np.isnan(m.E[k]["c"][i]):
