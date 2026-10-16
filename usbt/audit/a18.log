@@ -1,0 +1,10 @@
+{'map': '-', 'cap': 'none (System K)', 'beat': np.float64(0.6658653846153846), 'ddok': np.float64(0.4), 'cagr': np.float64(0.33463824350611104), 'worst': np.float64(-0.3671440216232935)}
+{'map': '6 months', 'cap': 2, 'beat': np.float64(0.6129807692307693), 'ddok': np.float64(0.7741935483870968), 'cagr': np.float64(0.2939241447571508), 'worst': np.float64(-0.47676624064003503)}
+{'map': '6 months', 'cap': 3, 'beat': np.float64(0.6956730769230769), 'ddok': np.float64(0.6), 'cagr': np.float64(0.34665509832701735), 'worst': np.float64(-0.43466549353318173)}
+{'map': '6 months', 'cap': 4, 'beat': np.float64(0.6649038461538461), 'ddok': np.float64(0.4), 'cagr': np.float64(0.34709067831252094), 'worst': np.float64(-0.4306169783299961)}
+{'map': '3 months', 'cap': 2, 'beat': np.float64(0.6850961538461539), 'ddok': np.float64(0.36129032258064514), 'cagr': np.float64(0.3406860738068971), 'worst': np.float64(-0.43735001691314546)}
+{'map': '3 months', 'cap': 3, 'beat': np.float64(0.7158653846153846), 'ddok': np.float64(0.36774193548387096), 'cagr': np.float64(0.33797281578641325), 'worst': np.float64(-0.36885732324620124)}
+{'map': '3 months', 'cap': 4, 'beat': np.float64(0.6528846153846154), 'ddok': np.float64(0.3870967741935484), 'cagr': np.float64(0.3455526384919074), 'worst': np.float64(-0.3861937739681135)}
+{'map': '12 months', 'cap': 2, 'beat': np.float64(0.5793269230769231), 'ddok': np.float64(0.832258064516129), 'cagr': np.float64(0.29730938747823066), 'worst': np.float64(-0.45048972610325877)}
+{'map': '12 months', 'cap': 3, 'beat': np.float64(0.6293269230769231), 'ddok': np.float64(0.3741935483870968), 'cagr': np.float64(0.31139456136276067), 'worst': np.float64(-0.39838812245961397)}
+{'map': '12 months', 'cap': 4, 'beat': np.float64(0.6581730769230769), 'ddok': np.float64(0.36774193548387096), 'cagr': np.float64(0.33805011434301524), 'worst': np.float64(-0.3861937739681135)}
