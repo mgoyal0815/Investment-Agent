@@ -1029,7 +1029,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             # index / credit / bond votes: "<ETF><n>" = that ETF closes below its n-session average
             # (e.g. spy200, qqq100, smh50, hyg63); "tlt_up" = TLT above its 63-session average (flight to safety)
             for tok in r:
-                if tok in ("breadth", "hyg", "large"):
+                if tok in ("breadth", "hyg", "large", "momstress"):
                     continue
                 if tok == "tlt_up":
                     sig.append(m.etf_vs_sma("TLT", 63, i) > 0)
