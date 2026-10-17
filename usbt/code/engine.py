@@ -1749,6 +1749,9 @@ def _park_name(park, m, i, cfg=None, paused=False):
                 if m.etf_vs_sma(ld, ps, i - 1) > 0:
                     return ld
             return "SHY" if m.E["SHY"]["c"][i] == m.E["SHY"]["c"][i] else None
+        psm = (cfg or {}).get("park_smh")
+        if psm and m.E["SMH"]["c"][i] == m.E["SMH"]["c"][i] and (psm == "always" or (psm == "trend" and m.etf_vs_sma("SMH", 200, i - 1) > 0)):
+            return "SMH"                                       # a74 (owner, 17 Oct 2026): idle money in SMH outside pauses
         lb = (cfg or {}).get("leader_lb", 126)
         def mom(t):
             c = m.E[t]["c"]
