@@ -1,0 +1,73 @@
+{
+ "system": "R",
+ "day": 1,
+ "step": 3,
+ "head": {
+  "alpha cal": 0.7110000000000001,
+  "alpha beat": 0.71,
+  "alpha smh3": 0.7012395727761752,
+  "alpha ddok": 0.368,
+  "alpha cagr": 0.29562908610376126,
+  "alpha worst": -0.49135749323394073,
+  "cal med": 0.6992857142857143,
+  "cal lo": 0.6901428571428572,
+  "cal hi": 0.7081428571428571,
+  "cal spread": 0.017999999999999905,
+  "beat med": 0.7043846153846154,
+  "beat lo": 0.6887692307692308,
+  "beat hi": 0.7092307692307692,
+  "beat spread": 0.02046153846153842,
+  "smh3 med": 0.6818118032275668,
+  "smh3 lo": 0.6460279098776018,
+  "smh3 hi": 0.7071333905044048,
+  "smh3 spread": 0.06110548062680299,
+  "ddok med": 0.368,
+  "ddok lo": 0.366,
+  "ddok hi": 0.374,
+  "ddok spread": 0.008000000000000007,
+  "cagr med": 0.2892856208790303,
+  "cagr lo": 0.27802519634148626,
+  "cagr hi": 0.29476802938351293,
+  "cagr spread": 0.016742833042026672,
+  "worst med": -0.5011016153566944,
+  "worst lo": -0.507088770625949,
+  "worst hi": -0.47932450969175144,
+  "worst spread": 0.027764260934197593,
+  "worst all": -0.507088770625949
+ },
+ "provenance": {
+  "scored_utc": "2026-10-17T13:10:16+00:00",
+  "tie_seeds": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "tie_default": "alphabetical symbol (engine.rank_desc)",
+  "calendar_shifts": [
+   -6,
+   -3,
+   0,
+   3,
+   6
+  ],
+  "env": {
+   "python": "3.13.16",
+   "numpy": "2.5.3",
+   "pandas": "3.0.5",
+   "panel": "panel_ndx.pkl",
+   "panel_sha256": "c2d9f773639cf695c7a097ad4bff46399db078079380baa9f794d8a87c9bfb99",
+   "panel_shape": [
+    6986,
+    1556
+   ],
+   "fetched_utc": null
+  },
+  "panel": "../data/panel_ndx.pkl",
+  "system_file": "system_R.json"
+ }
+}
