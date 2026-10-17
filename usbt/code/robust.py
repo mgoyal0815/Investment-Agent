@@ -31,3 +31,36 @@ def rscore(pool, cfg, step=3, day=1):
                 ddok_min=R.ddok.min(), cagr=R.cagr.mean(), worst=R.worst.min(),
                 **{c: R[c].mean() for c in R.columns if c.startswith("beat ") or c.startswith("cal ")})
     return head, R
+
+
+# ---------------------------------------------------------------- tie luck (owner, 17 Oct 2026)
+# A system's ranks tie often (percentile scores). engine.rank_desc breaks ties by symbol (alphabetical) by default;
+# cfg["tie_seed"] = s breaks them by a fixed random order of the symbols instead. A path's luck in those ties moved
+# System R 2000-2025 between $1.8M and $3.3M. tscore() scores a system over TIE_SEEDS x the 5 review calendars and
+# reports, per measure, the median over seeds (each seed's value is its average over the 5 calendars), the seed range
+# (the tie-luck spread) and the alphabetical tie-break (the deterministic system that would run live).
+TIE_SEEDS = tuple(range(1, 9))
+MEASURES = ("cal", "beat", "smh3", "ddok", "cagr", "worst")
+
+
+def tscore(pool, cfg, seeds=TIE_SEEDS, step=3, day=1):
+    rows, grid = [], []
+    for sd in (None,) + tuple(seeds):
+        h, Rr = rscore(pool, dict(cfg, tie_seed=sd), step=step, day=day)
+        rows.append(dict(tie_seed="alpha" if sd is None else sd, **h))
+        Rr.insert(0, "tie_seed", "alpha" if sd is None else sd); grid.append(Rr)
+    S = pd.DataFrame(rows)
+    sd_ = S[S.tie_seed != "alpha"]
+    head = {"alpha " + k: float(S[k].iloc[0]) for k in MEASURES}
+    for k in MEASURES:
+        head[f"{k} med"] = float(sd_[k].median()); head[f"{k} lo"] = float(sd_[k].min()); head[f"{k} hi"] = float(sd_[k].max())
+        head[f"{k} spread"] = head[f"{k} hi"] - head[f"{k} lo"]
+    head["worst all"] = float(min(S["worst"]))                       # worst single path over every seed and calendar
+    return head, S, pd.concat(grid, ignore_index=True)
+
+
+def provenance(seeds=TIE_SEEDS, **kw):
+    """What to store with every result (owner, 17 Oct 2026): seeds, library versions, panel BUILD.json fingerprint."""
+    import datetime as dt
+    return dict(scored_utc=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"), tie_seeds=list(seeds),
+                tie_default="alphabetical symbol (engine.rank_desc)", calendar_shifts=list(SHIFTS), env=Y.ENV, **kw)

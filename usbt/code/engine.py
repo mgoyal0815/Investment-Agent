@@ -77,6 +77,13 @@ def pct_rank(x):
     return out
 
 
+def rank_desc(x, key):
+    """Indices ordering x from highest to lowest; NaN last; ties broken by `key` ascending (Market.tie_key). np.lexsort
+    is a stable sort, so the order is fully determined by (x, key) on every numpy version."""
+    x = np.nan_to_num(np.asarray(x, dtype=float), nan=-np.inf)
+    return np.lexsort((key, -x))
+
+
 class Market:
     """Panel plus the date-level series both systems read."""
 
@@ -102,6 +109,13 @@ class Market:
             if f"noise{sd}" not in P:
                 P[f"noise{sd}"] = np.random.default_rng(sd).random(P["Cf"].shape, dtype=np.float32)
         self.syms = P["syms"]
+        # Tie-break (owner, 17 Oct 2026; REBUILD.md cause 3). Percentile scores tie often and np.argsort's order for
+        # ties is not fixed (it changed between numpy 1.26 and 2.5). Every ranking now sorts with rank_desc(): score
+        # first, then an explicit key. Default key = alphabetical rank of the symbol, so the same names break ties the
+        # same way in any panel (backtest or live) on any numpy. cfg["tie_seed"] = s replaces it with a fixed random
+        # order of the symbols (seeded), to measure how much a result owes to tie luck (robust.py).
+        self.tie_alpha = np.argsort(np.argsort(np.asarray(self.syms, dtype=str), kind="stable"), kind="stable")
+        self._tie = {}
         E = {}
         for k, (o, c) in P["etf"].items():
             c = pd.Series(c, index=self.dates)
@@ -389,6 +403,14 @@ class Market:
             self._ersi[t] = (100 - 100 / (1 + up / dn)).to_numpy()
         return self._ersi[t]
 
+    def tie_key(self, cfg):
+        sd = (cfg or {}).get("tie_seed")
+        if sd is None:
+            return self.tie_alpha
+        if sd not in self._tie:
+            self._tie[sd] = np.random.default_rng(int(sd)).permutation(self.N)
+        return self._tie[sd]
+
     def giants(self, i, k, rise=63):
         """exp58: the k most-traded (median dollar volume) S&P 500 members that day, as a boolean mask, and
         whether each is above a rising 200-session average (rising over `rise` sessions). Dollar volume only, no caps."""
@@ -397,7 +419,7 @@ class Market:
             P = self.P
             mem = (self.sp_member[i] if self.sp_member is not None else np.ones(self.N, bool)) & ~self.is_etf
             mv = np.where(mem & np.isfinite(P["medv"][i]), P["medv"][i], -1)
-            top = np.zeros(self.N, bool); top[np.argsort(-mv)[:k]] = True; top &= mv > 0
+            top = np.zeros(self.N, bool); top[rank_desc(mv, self.tie_alpha)[:k]] = True; top &= mv > 0
             s2 = P["SMA200"]
             up = (P["Cf"][i] > s2[i]) & (s2[i] > s2[max(0, i - rise)])
             self._gk = (key, top, np.nan_to_num(up, nan=0).astype(bool))
@@ -1458,7 +1480,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             sid = m.sector[i]
             ok_s = sid >= 0
             if cfg.get("sector_top_k"):
-                top = np.argsort(-smom)[:cfg["sector_top_k"]]
+                top = rank_desc(smom, np.arange(len(smom)))[:cfg["sector_top_k"]]
                 good = ok_s & np.isin(sid, top)
                 sc = np.where(good | m.is_etf, sc, np.nan)          # new buys and rank only inside leading industries
             if cfg.get("sector_w"):
@@ -1483,7 +1505,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             x_ = pct_rank(np.where(u & ~np.isnan(sc), m.P[key_][i].astype(float), np.nan))
             sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.nan_to_num(x_, nan=0.0)) / (1 + w_))
         if use_rank or not v5_size:
-            order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
+            order = rank_desc(sc, m.tie_key(cfg))
             nvalid = int((~np.isnan(sc)).sum())
             pos_rank = {int(j): k for k, j in enumerate(order[:nvalid])}
         if use_rank and cfg.get("exit_score") == "pool":
@@ -1491,7 +1513,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             a_ = pct_rank(np.where(u, P_["rs126"][i], np.nan))
             b_ = pct_rank(np.where(u, P_["dist200"][i], np.nan))
             ps = pct_rank(0.5 * a_ + 0.5 * b_)
-            order = np.argsort(-np.nan_to_num(ps, nan=-np.inf))
+            order = rank_desc(ps, m.tie_key(cfg))
             pos_rank = {int(j): k for k, j in enumerate(order[:int((~np.isnan(ps)).sum())])}
         if use_rank and not fill_only:
             xr = cfg["buffer"] * N
@@ -1883,7 +1905,7 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             free -= 1
     if cfg.get("_giants_only"):
         free = 0
-    order = np.argsort(-np.nan_to_num(sc, nan=-np.inf))
+    order = rank_desc(sc, m.tie_key(cfg))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]
     for j in order[:nvalid]:
