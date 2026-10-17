@@ -78,10 +78,12 @@ def pct_rank(x):
 
 
 def rank_desc(x, key):
-    """Indices ordering x from highest to lowest; NaN last; ties broken by `key` ascending (Market.tie_key). np.lexsort
-    is a stable sort, so the order is fully determined by (x, key) on every numpy version."""
+    """Indices ordering x from highest to lowest; NaN last; ties broken by `key` ascending (Market.tie_key: an array,
+    or a tuple of arrays, the first one deciding first). np.lexsort is a stable sort, so the order is fully determined
+    by (x, key) on every numpy version."""
     x = np.nan_to_num(np.asarray(x, dtype=float), nan=-np.inf)
-    return np.lexsort((key, -x))
+    keys = tuple(key) if isinstance(key, tuple) else (key,)
+    return np.lexsort(tuple(reversed(keys)) + (-x,))
 
 
 class Market:
@@ -403,8 +405,29 @@ class Market:
             self._ersi[t] = (100 - 100 / (1 + up / dn)).to_numpy()
         return self._ersi[t]
 
-    def tie_key(self, cfg):
-        sd = (cfg or {}).get("tie_seed")
+    # cfg["tie_key"]: break ties on information first (alphabetical after it). Higher value wins unless noted.
+    TIE_KEYS = {"rs126": lambda P, i: P["rs126"][i], "dist200": lambda P, i: P["dist200"][i],
+                "medv": lambda P, i: P["medv"][i],                                   # more traded first
+                "lowvol": lambda P, i: -(P["ATR"][i] / P["Cf"][i]),                   # calmer first
+                "hi52": lambda P, i: P["hi52"][i] if "hi52" in P else None,           # nearer the 1-year high first
+                "m12": lambda P, i: P["m12"][i] if "m12" in P else None,
+                "zsum": None}                                                         # raw z-score sum, see tie_key
+
+    def tie_key(self, cfg, i=None):
+        cfg = cfg or {}
+        tk = cfg.get("tie_key")
+        if tk and i is not None:
+            P = self.P
+            if tk == "rev_alpha":                                 # control: reverse alphabetical (no information)
+                return -self.tie_alpha
+            if tk == "zsum":
+                # the two inputs of the robust score as raw z-scores (continuous, so they almost never tie)
+                z = lambda x: (x - np.nanmean(x)) / np.nanstd(x)
+                v = z(np.asarray(P["rs126"][i], float)) + z(np.asarray(P["dist200"][i], float))
+            else:
+                v = np.asarray(self.TIE_KEYS[tk](P, i), float)
+            return (-np.nan_to_num(v, nan=-np.inf), self.tie_alpha)
+        sd = cfg.get("tie_seed")
         if sd is None:
             return self.tie_alpha
         if sd not in self._tie:
@@ -1505,7 +1528,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             x_ = pct_rank(np.where(u & ~np.isnan(sc), m.P[key_][i].astype(float), np.nan))
             sc = np.where(np.isnan(sc), np.nan, (sc + w_ * np.nan_to_num(x_, nan=0.0)) / (1 + w_))
         if use_rank or not v5_size:
-            order = rank_desc(sc, m.tie_key(cfg))
+            order = rank_desc(sc, m.tie_key(cfg, i))
             nvalid = int((~np.isnan(sc)).sum())
             pos_rank = {int(j): k for k, j in enumerate(order[:nvalid])}
         if use_rank and cfg.get("exit_score") == "pool":
@@ -1513,7 +1536,7 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
             a_ = pct_rank(np.where(u, P_["rs126"][i], np.nan))
             b_ = pct_rank(np.where(u, P_["dist200"][i], np.nan))
             ps = pct_rank(0.5 * a_ + 0.5 * b_)
-            order = rank_desc(ps, m.tie_key(cfg))
+            order = rank_desc(ps, m.tie_key(cfg, i))
             pos_rank = {int(j): k for k, j in enumerate(order[:int((~np.isnan(ps)).sum())])}
         if use_rank and not fill_only:
             xr = cfg["buffer"] * N
@@ -1905,7 +1928,7 @@ def _slot_orders(m, cfg, i, sc, route, u, pos, exiting, nav, cash, out, pos_rank
             free -= 1
     if cfg.get("_giants_only"):
         free = 0
-    order = rank_desc(sc, m.tie_key(cfg))
+    order = rank_desc(sc, m.tie_key(cfg, i))
     nvalid = int((~np.isnan(sc)).sum())
     q = (P["Cf"][i] - P["EMA20"][i]) / P["ATR"][i]
     for j in order[:nvalid]:
