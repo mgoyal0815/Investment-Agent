@@ -1,0 +1,2 @@
+{'tie_key': 'rs126', 'cal': np.float64(0.712), 'cal_min': np.float64(0.614), 'cal_max': np.float64(0.79), 'beat': np.float64(0.708), 'smh3': np.float64(0.708), 'ddok': np.float64(0.38), 'cagr': np.float64(0.298), 'worst': np.float64(-0.467)}
+{'tie_key': 'lowvol', 'cal': np.float64(0.7), 'cal_min': np.float64(0.594), 'cal_max': np.float64(0.788), 'beat': np.float64(0.702), 'smh3': np.float64(0.709), 'ddok': np.float64(0.38), 'cagr': np.float64(0.294), 'worst': np.float64(-0.48)}
