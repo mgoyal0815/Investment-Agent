@@ -3,6 +3,60 @@
 > "$10k -> $2.92M" below is the curve rescaled to $10,000 at the first close: the account itself ends at $2.87M
 > (growth rates unchanged). Results depended on how tied ranks are broken: resolved 17 Oct 2026 (System R1, below; `REBUILD.md`).
 
+# UPDATE (17 October 2026, evening): how to start an account, SMH gap, 2026
+
+All on System R1, research engine only (the live account is unchanged). Files: `audit/a72-a78_*`.
+
+**Start by copying the running account, not from cash (a76-a78).** A fresh account builds slowly: in its first three
+months only 14-48% is in stocks (a74; the ramp setting is not the cause, a75). Copying the running account's book on
+day one, scaled to the new money, puts 90-98% to work at once and then tracks the running account.
+
+| Copy R1 at $10k on 120 monthly starts 2016-2025 (a77) | Whole shares | Fractional |
+|---|---|---|
+| Calendar years beating SPY and QQQ | 80.4% | 81.9% |
+| First partial year (start to December) beating SPY and QQQ | 75.8% | 77.5% |
+| 3-year windows beating SMH | 43.2% | 53.6% |
+| Worst fall | -39.2% | -39.3% |
+
+Fair check (a78): running accounts 2000-2025 on all 5 review calendars, R1's tie-break, and 8 random tie orders per
+calendar as the luck range. A copier's record is the running account's record.
+
+| Running R1 account | 5 calendars: mean (range) | 40 random-tie runs: median (range) |
+|---|---|---|
+| Calendar years beating SPY and QQQ, 2000-2025 | 71.5% (61.5-80.8%) | 65.4% (53.8-80.8%) |
+| Same, 2016-2025 | 84% (80-90%) | 80% (70-90%) |
+| 3-year windows beating SMH | 78.5% (69.7-88.2%) | 76.0% (64.6-88.2%) |
+| Worst fall (smaller than SPY's and QQQ's in every run) | -40.8% (-37.7 to -45.3%) | -40.4% (-37.7 to -47.7%) |
+| Growth a year | 23.7% (21.4-25.6%) | 23.0% (20.5-26.1%) |
+
+So the 77% of calendar years seen for one running account (a76) was its review calendar (the 11th session scores
+76.9%; the 5th to 17th range 61.5-80.8%). **Over 2000-2025 the honest figure is about 71%; over 2016-2025 it is
+80-90%.** The 75% goal is met for the last ten years, not over the whole period.
+
+**2026 to 16 Oct (a72, fresh start, live panel).** $10k whole +49.1%, $10k fractional +58.0%, $1k whole +15.4% (its
+$111 slots buy few whole shares, so it sat mostly in the parking ETF), $1k fractional +52.3% (costs 7.2% of capital at
+the $1 minimum a trade). SPY +12.6%, QQQ +16.2%, SMH +44.6%.
+
+**Fresh start each calendar year 2016-2025 (a73):** beats SPY and QQQ 7 of 10 years, SMH 3 of 10. Copy on day one
+(a76): 8 of 10 and 7 of 10.
+
+**Why R1 trails SMH (a74):** on average 47-77% of a fresh account is in stocks, the rest parked or in cash/SHY;
+semiconductors are 4-32% of its buys against 100% of SMH; rank and profit-lock sells cut long runs.
+
+**Closing the gap (a75, calendar-robust, day-1 and day-15 starts):**
+
+| Variant on R1 | Calendar years | 3-year windows vs SMH | Growth | Worst fall |
+|---|---|---|---|---|
+| R1 | 71.2% / 71.2% | 70.6% / 70.8% | 29.9% / 29.8% | -47.9% / -46.7% |
+| No ramp, or 2-month ramp | 71.2% | 70.5% | 29.9% | -44.5% |
+| Park idle money in SMH always (outside pauses) | 71.8% | 77.8% | 31.8% | **-53.7% (fails the drawdown rule)** |
+| **Park in SMH while it is above its 200-day** | 71.7% / 71.4% | **74.5% / 74.5%** | 30.9% / 30.9% | -47.9% / -46.7% |
+| No ramp + park in SMH by trend | 71.4% / 71.3% | 74.5% / 74.6% | 30.9% / 30.9% | -44.5% / -46.5% |
+| Leader lookback 3 months | 69.9% | 69.1% | 29.1% | -48.9% |
+
+SMH parking by trend is the one change that held on both start samples with no deeper fall; it is a candidate for
+System R2 (owner's approval needed; not live). No variant moves calendar years by more than R1's tie-luck spread.
+
 # UPDATE (17 October 2026): System R1, deterministic, adopted
 
 System R's results were partly **tie luck**: its score ties often and `np.argsort` broke ties in an order that
