@@ -3,7 +3,10 @@
     python fetch.py <data_dir>
 
 Candidates = every name the live v5 store has ever used as a universe (active and delisted)
-UNION every ticker that was ever in the S&P 500 since 1996 (fja05680/sp500). Two calls per
+UNION every ticker that was ever in the S&P 500 since 1996 (fja05680/sp500) UNION every point-in-time Nasdaq-100
+name (../data/ndx_tickers.txt, from ndx_members.py) UNION the sector / index ETFs panel.py puts in the panel
+(REBUILD.md: before 17 Oct 2026 the last two were fetched by hand, and a rebuild without them gave a different
+System R). Writes <data_dir>/FETCH.json (date, versions, counts). Two calls per
 symbol (FMP returns at most 5,000 rows): 1999-2012 and 2013-today. Resumable: a symbol whose
 parquet exists is skipped. A symbol FMP has no data for is recorded in missing.txt.
 """
@@ -15,8 +18,10 @@ import pandas as pd
 D = sys.argv[1]
 KEY = os.environ["FMP_API_KEY"]
 BASE = "https://financialmodelingprep.com/stable/historical-price-eod/dividend-adjusted"
-KEYS = "/home/user/v5-forward-test/keys"
+KEYS = os.environ.get("V5_KEYS", "/home/user/v5-forward-test/keys")     # clone of mgoyal0815/v5-forward-test
 ETFS = ["SPY", "QQQ", "SMH", "TLT", "GLD", "UUP", "DBC", "SHY", "HYG", "BIL", "XLK", "IEF", "MTUM"]
+# must match panel.py SECTOR_ETFS (+ the IDX_COLS index ETFs): System R's restart signal reads XLY / XLP
+SECTOR_ETFS = ["SMH", "SOXX", "XLK", "IGV", "XLE", "XLV", "XLF", "XLI", "XLY", "XLP", "XLU", "XLB", "XLC", "QQQ", "SPY", "DIA", "IWM"]
 WINDOWS = [("1999-01-01", "2012-12-31"), ("2013-01-01", "2026-10-12")]
 
 
@@ -84,6 +89,11 @@ def candidates():
             s |= {l.strip() for l in open(p) if l.strip()}
     sp = pd.read_csv(f"{D}/sp500_ticker_start_end.csv")
     s |= {t.replace(".", "-") for t in sp["ticker"]}
+    ndx = f"{D}/ndx_tickers.txt"
+    if not os.path.exists(ndx):
+        raise SystemExit(f"{ndx} missing: run ndx_members.py first (the Nasdaq-100 names are part of the universe)")
+    s |= {l.strip() for l in open(ndx) if l.strip()}
+    s |= set(SECTOR_ETFS)
     return sorted(s)
 
 
@@ -106,4 +116,11 @@ if __name__ == "__main__":
 
     with ThreadPoolExecutor(8) as ex:
         list(ex.map(job, syms))
-    print("done")
+    import datetime as dt, numpy as np
+    have = sum(os.path.exists(f"{D}/raw/{s}.parquet") for s in syms)
+    none = sum(os.path.exists(f"{D}/raw/{s}.none") for s in syms)
+    json.dump(dict(fetched_utc=dt.datetime.utcnow().isoformat(timespec="seconds") + "Z", windows=WINDOWS, symbols=len(syms),
+                   with_data=have, no_data=none, failed=len(syms) - have - none, numpy=np.__version__, pandas=pd.__version__,
+                   note="FMP's dividend-adjusted history is recalculated whenever a stock pays a dividend: a later fetch differs slightly"),
+              open(f"{D}/FETCH.json", "w"), indent=1)
+    print("done", have, "with data,", none, "without,", len(syms) - have - none, "failed")

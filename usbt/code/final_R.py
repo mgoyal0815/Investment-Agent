@@ -28,5 +28,7 @@ if __name__ == "__main__":
             s = Y.summary(T[(T.start.dt.year >= a) & (T.start.dt.year <= bb)])
             rows.append(dict(system=lab, era=era, beat=s["yrs_beat_SPY_QQQ"], cal=s["cal_years_beat"], smh3=s["r3_beat_SMH"], ddok=s["dd_ok"], cagr=s["med_cagr"], worst=s["worst_dd"]))
     pd.DataFrame(rows).to_csv("../results/final_R_scorecard.csv", index=False)
+    summ["_env"] = Y.ENV                    # REBUILD.md: versions and panel fingerprint behind these numbers
+    summ["_note"] = "curves are rescaled so the first close = $10,000; the account's own end value is curve[-1] * c[0] / 10000"
     json.dump(summ, open("../results/final_R_summary.json", "w"), indent=1)
     print(json.dumps(summ, indent=1)); print(pd.DataFrame(rows).round(3).to_string(index=False)); print(Yt.to_string())

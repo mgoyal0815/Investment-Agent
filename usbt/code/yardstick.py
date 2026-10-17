@@ -10,18 +10,22 @@ Total returns (dividend-adjusted) for the indexes; the system pays costs, whole 
 import multiprocessing as mp
 import numpy as np
 import pandas as pd
+import envinfo
+envinfo.check()          # REBUILD.md: tie-breaking depends on the numpy version
 import engine as X
 from exp24_timing import mat
 
 MM = None
+ENV = None
 # Owner, 16 Oct 2026: 2026 is not counted. Every run stops at 31 Dec 2025 and starts run to Dec 2024 (so every start
 # has at least one full year). Results before this date (systems up to O, a01-a28) used runs to 12 Oct 2026.
 STD_END = "2025-12-31"
 
 
 def _init(path):
-    global MM
+    global MM, ENV
     MM = X.Market(pd.read_pickle(path))
+    ENV = envinfo.stamp(path)              # store with every result (versions + panel fingerprint)
 
 
 def starts(a="2000-01-01", b="2024-12-31", step=1, day=1):

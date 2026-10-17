@@ -14,7 +14,7 @@ import pandas as pd
 
 D = sys.argv[1]
 ETFS = ["SPY", "QQQ", "SMH", "TLT", "GLD", "UUP", "DBC", "SHY", "HYG", "BIL", "XLK", "IEF", "MTUM"]
-KEYS = "/home/user/v5-forward-test/keys"
+KEYS = os.environ.get("V5_KEYS", "/home/user/v5-forward-test/keys")     # clone of mgoyal0815/v5-forward-test
 # sector / industry ETFs the stock picker may hold like a stock (engine switch etf_in_universe)
 SECTOR_ETFS = ["SMH", "SOXX", "XLK", "IGV", "XLE", "XLV", "XLF", "XLI", "XLY", "XLP", "XLU", "XLB", "XLC"]
 # broad index ETFs that may also compete for slots (exp48); written to a separate panel so older results stay reproducible
@@ -26,7 +26,33 @@ def load(sym):
     return pd.read_parquet(f"{D}/raw/{sym}.parquet").set_index("date").sort_index()
 
 
+def preflight():
+    """REBUILD.md: refuse to build from an incomplete download (a panel without the sector ETFs or the Nasdaq-100
+    names silently changes every result)."""
+    miss = [s for s in ETFS + SECTOR_ETFS if not os.path.exists(f"{D}/raw/{s}.parquet")]
+    if os.environ.get("NDX"):
+        t = [l.strip() for l in open(f"{D}/ndx_tickers.txt") if l.strip()]
+        miss += [s for s in t if not (os.path.exists(f"{D}/raw/{s}.parquet") or os.path.exists(f"{D}/raw/{s}.none"))]
+    if miss:
+        raise SystemExit(f"panel: {len(miss)} symbols never fetched ({', '.join(sorted(set(miss))[:20])} ...): run fetch.py again")
+
+
+def stamp(path, shape, kept, dropped):
+    """Write <panel>.BUILD.json next to the panel: what was built, from which fetch, with which libraries."""
+    import datetime as dt, hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for b in iter(lambda: f.read(1 << 24), b""):
+            h.update(b)
+    fetch = json.load(open(f"{D}/FETCH.json")) if os.path.exists(f"{D}/FETCH.json") else None
+    info = dict(built_utc=dt.datetime.utcnow().isoformat(timespec="seconds") + "Z", panel=os.path.basename(path), shape=list(shape),
+                stocks_kept=kept, dropped=dropped, sha256=h.hexdigest(), numpy=np.__version__, pandas=pd.__version__, fetch=fetch)
+    json.dump(info, open(path + ".BUILD.json", "w"), indent=1)
+    print("stamp", path + ".BUILD.json", info["sha256"][:16])
+
+
 def main():
+    preflight()
     spy = load("SPY")
     idx = spy.index[(spy.index >= "1999-01-01")]
     # ---- ETFs (not forward-filled here; the overlay forward-fills prices and reads raw NaN
@@ -186,8 +212,10 @@ def main():
              RSI=f32(RSI), EMA50=f32(EMA50), VIX=(vix.to_numpy() if vix is not None else None))
     if os.environ.get("AUDIT_KEEP"):
         pd.to_pickle(P, f"{D}/panel_audit.pkl"); return
-    pd.to_pickle(P, f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else (f"{D}/panel_idx.pkl" if os.environ.get("IDX_COLS") else f"{D}/panel.pkl"))
+    out = f"{D}/panel_ndx.pkl" if os.environ.get("NDX") else (f"{D}/panel_idx.pkl" if os.environ.get("IDX_COLS") else f"{D}/panel.pkl")
+    pd.to_pickle(P, out)
     print("panel", C.shape, idx[0].date(), idx[-1].date())
+    stamp(out, C.shape, len(syms), len(dropped))
 
 
 if __name__ == "__main__":

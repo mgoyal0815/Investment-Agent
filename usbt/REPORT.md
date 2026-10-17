@@ -1,3 +1,8 @@
+> **Rebuild note (17 Oct 2026).** A from-scratch rebuild reproduces System R within 0.05% only with the full
+> download (Nasdaq-100 names and sector ETFs included) and numpy 2.5.3 / pandas 3.0.5; see `REBUILD.md`. The
+> "$10k -> $2.92M" below is the curve rescaled to $10,000 at the first close: the account itself ends at $2.87M
+> (growth rates unchanged). Results depend on how tied ranks are broken (`REBUILD.md`, open decision).
+
 # UPDATE (16 October 2026, evening): System R adopted, and the honest yardstick
 
 **Correction first.** A review-date sweep (`audit/a32_review_day.csv`) showed System O's 74.6% was mostly the luck of
