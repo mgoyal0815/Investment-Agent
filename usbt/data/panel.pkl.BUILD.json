@@ -1,0 +1,17 @@
+{
+ "built_utc": "2026-10-15T15:25:58+00:00",
+ "panel": "panel.pkl",
+ "shape": [
+  6986,
+  1521
+ ],
+ "stocks_kept": 1521,
+ "dropped": 180,
+ "sha256": "88bbe1ca85a2309acbefdcbd162b3649ba742623cbafc475ca4c81bb7b58262b",
+ "numpy": "unknown (built before stamping)",
+ "pandas": "unknown (built before stamping)",
+ "fetch": null,
+ "first_date": "1999-01-04",
+ "last_date": "2026-10-12",
+ "note": "stamped after the fact on 2026-10-17 by stamp_existing.py; built_utc is the file time"
+}
