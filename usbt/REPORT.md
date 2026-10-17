@@ -1,7 +1,27 @@
 > **Rebuild note (17 Oct 2026).** A from-scratch rebuild reproduces System R within 0.05% only with the full
 > download (Nasdaq-100 names and sector ETFs included) and numpy 2.5.3 / pandas 3.0.5; see `REBUILD.md`. The
 > "$10k -> $2.92M" below is the curve rescaled to $10,000 at the first close: the account itself ends at $2.87M
-> (growth rates unchanged). Results depend on how tied ranks are broken (`REBUILD.md`, open decision).
+> (growth rates unchanged). Results depended on how tied ranks are broken: resolved 17 Oct 2026 (System R1, below; `REBUILD.md`).
+
+# UPDATE (17 October 2026): System R1, deterministic, adopted
+
+System R's results were partly **tie luck**: its score ties often and `np.argsort` broke ties in an order that
+depends on the numpy version (the live account and the backtest made different trades). Every ranking now breaks
+ties explicitly (`engine.rank_desc`). **System R1** = System R + ties go to the higher 6-month strength, then the
+symbol. It was the only tie-break that beat the range of 8 random tie orders on both start samples (rule fixed in
+advance; `REBUILD.md`, audit a69-a71).
+
+| Owner's yardstick, calendar-robust (5 review calendars, runs to Dec 2025) | System R, 8 random tie orders: median (range) | **System R1** |
+|---|---|---|
+| Calendar years beating SPY and QQQ, day-1 starts | 69.9% (69.0-70.8%) | **71.2%** |
+| Same, held-back day-15 starts | 69.9% (68.9-70.5%) | **71.2%** |
+| Median growth of a start | 28.9% | **29.9%** |
+| One account 2000-2025: end / growth / worst fall | $2.55M ($2.06-3.59M) / 23.8% / -41.4% | **$3.15M / 24.8% / -40.2%** |
+
+R's headline is restated as above: **about 70% of calendar years, not 71.3%**, and the 75% goal is still not met.
+R1 replaces R on the live account (same book and money, recorded switch). `results/final_R1_*`; check:
+`check_rebuild.py system_R1` -> REBUILD OK. (`final_R1_scorecard.csv` "every start" columns use one review calendar;
+the calendar-robust figures above are the honest ones.)
 
 # UPDATE (16 October 2026, evening): System R adopted, and the honest yardstick
 
