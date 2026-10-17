@@ -771,11 +771,17 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 return t
         return None
 
+    def whole_review(i):
+        """India round 11 (17 Oct 2026): extra review days (day_in_month) on which the WHOLE book is reviewed - rank
+        sells across both halves, then each half's free slots filled. A tranche's own review day takes precedence."""
+        ex = cfg.get("extra_reviews")
+        return bool(ex) and m.day_in_month[i] in ex and tranche_of(i) is None
+
     def is_decision(i):
         if cfg["cadence"] == "daily":
             return True
         if cfg.get("stagger"):
-            return tranche_of(i) is not None
+            return tranche_of(i) is not None or whole_review(i)
         if cfg["cadence"] == "monthly":
             dd_ = cfg.get("decide_day")
             return m.month_end[i] if dd_ is None or dd_ < 0 else m.day_in_month[i] == dd_
@@ -1588,8 +1594,8 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
                 # exp61: buy the dip during a pause. Only top-ranked candidates whose RSI is at or below pause_dip_rsi,
                 # and at most pause_dip_slots new names per decision day.
                 scfg = dict(scfg, rsi_max=dip, _dip_max=cfg.get("pause_dip_slots", 2))
-            if takeover and cfg.get("stagger"):
-                # takeover review fills free slots in every tranche, using the cash each tranche's buys leave
+            if (takeover or whole_review(i)) and cfg.get("stagger") and not fill_only:
+                # takeover review (and an extra whole-book review) fills free slots in every tranche, using the cash each tranche's buys leave
                 for tr_ in range(len(cfg["stagger"])):
                     spent_ = sum(o["dollars"] for o in pend_stock if o.get("kind") in ("new", "add"))
                     gl_ = any((o.get("meta") or {}).get("giant") for o in pend_stock if o.get("kind") == "new") or \
