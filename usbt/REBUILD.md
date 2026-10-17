@@ -115,3 +115,11 @@ far more. Full results: `audit/a69_*`, `audit/a70_R_paths.*`, `audit/a71_*` (eac
 1.26.4), same run twice identical, stepping one session at a time = one continuous run (30 sessions: same trades, NAV
 gap 0), switch table accepts only its approved row. `r_live.py` runs the tie self-test at every start and stops with
 `TIE-BREAK SELFTEST` if this machine would order ties differently.
+
+## Research engine vs live engine (17 Oct 2026)
+
+The live engine (mgoyal0815/v5-forward-test `claude/r/engine.py`, fingerprint `adc7fd2c4dc83239` with `rconf.CONFIG`)
+is a copy of this engine at the System R1 commit. Options added here since are off unless a configuration sets them,
+so System R1's numbers are unchanged (`check_rebuild.py system_R1`: REBUILD OK, +0.0000%, after every addition):
+`extra_reviews` (a68), `fractional` (a72), `park_smh` (a75). They reach the live account only through an approved
+switch (`rconf.SWITCHES`) after the owner's approval.
