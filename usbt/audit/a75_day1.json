@@ -1,0 +1,51 @@
+{
+ "variants": {
+  "R1": {},
+  "ramp 1 month (no ramp)": {
+   "ramp": 1
+  },
+  "ramp 2 months": {
+   "ramp": 2
+  },
+  "park SMH always (outside pauses)": {
+   "park_smh": "always"
+  },
+  "park SMH while above its 200-day": {
+   "park_smh": "trend"
+  },
+  "leader lookback 3 months": {
+   "leader_lb": 63
+  },
+  "ramp 1 + park SMH trend": {
+   "ramp": 1,
+   "park_smh": "trend"
+  }
+ },
+ "day": 1,
+ "provenance": {
+  "scored_utc": "2026-10-17T16:52:07+00:00",
+  "tie_seeds": [],
+  "tie_default": "alphabetical symbol (engine.rank_desc)",
+  "calendar_shifts": [
+   -6,
+   -3,
+   0,
+   3,
+   6
+  ],
+  "env": {
+   "python": "3.13.16",
+   "numpy": "2.5.3",
+   "pandas": "3.0.5",
+   "panel": "panel_ndx.pkl",
+   "panel_sha256": "c2d9f773639cf695c7a097ad4bff46399db078079380baa9f794d8a87c9bfb99",
+   "panel_shape": [
+    6986,
+    1556
+   ],
+   "fetched_utc": null
+  },
+  "panel": "../data/panel_ndx.pkl",
+  "system_file": "system_R1.json"
+ }
+}
