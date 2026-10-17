@@ -1,0 +1,3 @@
+{'test': 'R1', 'cal': np.float64(0.712), 'cal_min': np.float64(0.614), 'beat': np.float64(0.708), 'smh3': np.float64(0.708), 'ddok': np.float64(0.38), 'cagr': np.float64(0.298), 'worst': np.float64(-0.467)}
+{'test': 'park SMH while above its 200-day', 'cal': np.float64(0.714), 'cal_min': np.float64(0.632), 'beat': np.float64(0.71), 'smh3': np.float64(0.745), 'ddok': np.float64(0.374), 'cagr': np.float64(0.309), 'worst': np.float64(-0.467)}
+{'test': 'ramp 1 + park SMH trend', 'cal': np.float64(0.713), 'cal_min': np.float64(0.632), 'beat': np.float64(0.708), 'smh3': np.float64(0.746), 'ddok': np.float64(0.372), 'cagr': np.float64(0.309), 'worst': np.float64(-0.465)}
