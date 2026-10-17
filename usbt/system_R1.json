@@ -1,0 +1,56 @@
+{
+ "name": "System R1",
+ "frozen": "2026-10-17",
+ "description": "System R with a fixed, information-based tie-break: tied ranks go to the higher 6-month strength (rs126), then alphabetical symbol (engine.rank_desc). Before this, np.argsort broke ties in an order that changed with the numpy version, so R's results were partly tie luck. Chosen by a rule fixed beforehand: beat the tie-seed range (8 random tie orders x 5 calendars) on day-1 and day-15 starts; highest growth among those that do. Only rs126 qualified: 71.2% / 71.2% of calendar years vs seed ranges 69.0-70.8% / 68.9-70.5% (audit a69, a71). Adopted on the owner's instruction (17 Oct 2026).",
+ "cfg": {
+  "sizing": "slot",
+  "N": 9,
+  "score": "robust",
+  "trend": true,
+  "exit": "rank",
+  "buffer": 1.5,
+  "adds": "india",
+  "cadence": "monthly",
+  "overlay": "pause",
+  "intramonth": false,
+  "park": "leader_safe",
+  "gold_slots": 4,
+  "ramp": 3,
+  "zone_gate": false,
+  "rank_min_hold": 0,
+  "lock_at": 0.5,
+  "lock_trail": 0.25,
+  "breadth_level": 0.2,
+  "universe": "sp500+ndx",
+  "stagger": [
+   -1,
+   10
+  ],
+  "rank_exempt_gain": 0.75,
+  "trend_hold": true,
+  "pit_signals": true,
+  "adx_min": 25,
+  "obv_min": 0.5,
+  "unpause_on": [
+   "coppock",
+   "ra_cd100"
+  ],
+  "unpause_days": 42,
+  "index_hurdle": true,
+  "index_hurdle_lb": 126,
+  "index_hurdle_margin": 0.0,
+  "pause_dip_index_rsi": 25,
+  "dip_hold": 21,
+  "dip_fall": [
+   0.18,
+   20
+  ],
+  "giant_slots": 1,
+  "giant_top": 10,
+  "large_margin": 0.02,
+  "crash_no_rank": 0.2,
+  "tie_key": "rs126"
+ },
+ "panel": "data/panel_ndx.pkl",
+ "based_on": "system_R.json"
+}

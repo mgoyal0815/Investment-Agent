@@ -46,11 +46,72 @@ holds about 3.6 GB; on a 15 GB container use 3 workers, or the out-of-memory kil
 - Archive the raw parquet files (about 1 GB, too large for git; a release asset or cloud storage) whenever a
   system is adopted, so the exact inputs exist after FMP revises its history.
 
-## Open decision: fixed tie-break
+## Tie-break: decided 17 Oct 2026 (System R1)
 
-Cause 3 is a fragility in the engine itself, not just in the environment: the live paper account runs on a
-different numpy (the v5 venv, 1.26.4) and a smaller panel (different column set), so its ties can resolve
-differently from the backtest whatever the versions. `np.argsort(..., kind="stable")` breaks ties by column
-order (alphabetical symbol in both panels) and gives identical results on numpy 1.26.4 and 2.5.3. It also changes
-the numbers (System R 2000-2025: $2.64M, 24.0% a year, worst fall -44.1%, against $2.87M / 24.4% / -39.4%), so it
-needs re-scoring with `robust.py` and the owner's approval before the engine (and the live fingerprint) changes.
+Cause 3 was a fragility in the engine itself: `np.argsort` left the order of tied scores to the numpy version, and
+R's score (a percentile of the average of two percentiles) ties often. The live account runs numpy 1.26.4, the
+backtest 2.5.3: on the live panel 2020-06 to 2026-10 the old engine made **different trades** on the two (253 vs 252
+trades, $132,603 vs $131,729), so the live account was not running the backtested path.
+
+**Now:** every ranking sorts with `engine.rank_desc(score, key)` (`np.lexsort`, a stable sort): highest score first,
+NaN last, ties broken by `Market.tie_key(cfg, i)`. Default key: alphabetical symbol. `cfg["tie_key"]` puts an
+information key first (alphabetical after it); `cfg["tie_seed"]` uses a fixed random symbol order instead (only to
+measure tie luck). **System R1 = System R + `tie_key: "rs126"`**: a tie goes to the higher 6-month strength.
+
+How it was chosen (rule fixed before the day-15 results were seen): a key must beat the tie-seed range (8 random
+tie orders x 5 review calendars) on both day-1 and day-15 starts; among keys that do, the highest growth wins.
+
+| Calendar years beating SPY and QQQ (owner's measure) | Day-1 starts | Day-15 starts | Growth (median start) |
+|---|---|---|---|
+| Random tie orders, 8 seeds (tie-luck range) | 69.0-70.8% (median 69.9%) | 68.9-70.5% (median 69.9%) | 28.8-28.9% |
+| Alphabetical | 71.1% | 71.1% | |
+| **6-month strength (rs126) = System R1** | **71.2%** | **71.2%** | **29.9% / 29.8%** |
+| Low volatility | 70.1% | 70.0% | 29.5% |
+| 52-week high | 70.7% | 70.4% | 28.3% |
+| Raw z-sum / 200-day distance / turnover / 12-month / reverse alphabetical | 69.0-69.6% | not run (failed day 1) | 27.8-29.2% |
+
+One account 2000-01-03 to 2025-12-31 (audit a70; account values, not rescaled):
+
+| | End value | Growth/yr | Worst fall |
+|---|---|---|---|
+| System R, 40 random tie orders: median (range) | $2.55M ($2.06-3.59M) | 23.8% (22.8-25.4%) | -41.4% (-38.3 to -44.9%) |
+| System R, alphabetical | $2.64M | 23.9% | -44.0% |
+| **System R1** | **$3.15M** | **24.8%** | **-40.2%** |
+| (stored System R before the fix, numpy 2.5.3 argsort) | $2.87M | 24.4% | -39.4% |
+
+All seven information keys ended above the random-order median; the reverse-alphabetical control ended below it.
+Over about 100 start dates tie luck moves the calendar-year score by under 2 points; a single 26-year path moves by
+far more. Full results: `audit/a69_*`, `audit/a70_R_paths.*`, `audit/a71_*` (each with seeds, versions, panel hash).
+
+## Replication and determinism checks
+
+| Check | Command (from `usbt/code`) | Expected |
+|---|---|---|
+| Tie order is version-proof | `python3 check_ties.py` on two numpy versions | `rank_desc 9264628e7fa85137` on both |
+| Same decisions on every environment | `python3 test_determinism.py <panel> ../system_R1.json [start] [end]` on two environments, twice each | identical `decisions_sha`; `curve_sha_exact` identical within an environment; end value within a cent across environments (pandas 2 vs 3 float32 rounding) |
+| Rebuild matches the stored result | `python3 check_rebuild.py system_R1` | `REBUILD OK` (account end $3,146,326 on panel_ndx c2d9f773) |
+| Tie luck of a system | `python3 ../audit/a69_tie_luck.py R1` | median and seed range per measure, `a69_R1_day1.json` |
+
+17 Oct 2026, live panel (`/home/claude/r/data/panel.pkl`, 771 symbols, 2018-06 to 2026-10-16), System R1 2020-06-01 to
+2026-10-16: numpy 2.5.3 / pandas 3.0.5 and numpy 1.26.4 / pandas 2.2.2, twice each: 246 trades, decisions
+`4c473d8f559cd271` on all four, $139,778.37 / $139,778.38.
+
+## The data sets
+
+- **Research panel** (`../data/panel_ndx.pkl`): steps 1-4 above. The panel behind every result here was built on 16 Oct
+  2026, before the guards; `stamp_existing.py` gave it a `BUILD.json` after the fact: 6,986 sessions x 1,556 stocks,
+  185 dropped, SHA-256 `c2d9f773639cf695...`. The S&P-only `panel.pkl` (systems A-K): 1,521 stocks, `88bbe1ca85a2309a...`.
+  `stamp_existing.py` refuses to overwrite a `BUILD.json` that panel.py wrote.
+- **Live panel** (mgoyal0815/v5-forward-test `claude/r/r_data.py`, run each evening by `bash claude/run_daily.sh prep`):
+  FMP dividend-adjusted daily bars from 2018-06-01 for every S&P 500 / Nasdaq-100 member since 2018 (membership: the
+  fja05680 S&P 500 history and jmccarrell Nasdaq-100 lists from GitHub, the committed `claude/r/seed/` copies as
+  fallback), splits from the seed plus FMP's split calendar, the day's partial bar dropped before 16:45 New York.
+  Writes `panel.pkl`, `vol_panel.npz` and `meta.json` (last session, membership dates, missing symbols). It runs on
+  the pinned live environment (`claude/v5_env.py`: numpy 1.26.4, pandas 2.2.2).
+
+## Live system tests (v5-forward-test)
+
+`claude/r/test_r.py` (live environment, after `prep`): tie self-test (`216e04a18afecb7e`, identical on numpy 2.5.3 and
+1.26.4), same run twice identical, stepping one session at a time = one continuous run (30 sessions: same trades, NAV
+gap 0), switch table accepts only its approved row. `r_live.py` runs the tie self-test at every start and stops with
+`TIE-BREAK SELFTEST` if this machine would order ties differently.
