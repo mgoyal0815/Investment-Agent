@@ -718,9 +718,15 @@ def run(m, cfg=None, start="2001-01-02", end=None, record=False):
         dollars = min(dollars, cash)
         if cfg["adv_cap"] and P["ADV20"][i - 1, j] == P["ADV20"][i - 1, j]:
             dollars = min(dollars, cfg["adv_cap"] * P["ADV20"][i - 1, j])
-        n = int(dollars // raw_px)
-        while n > 0 and n * raw_px + tcost(n, n * raw_px) > cash:
-            n -= 1
+        if cfg.get("fractional"):
+            # owner, 17 Oct 2026: fractional-share test. Shares to 6 decimals; the same cost model (min $1 a trade)
+            n = math.floor(dollars / raw_px * 1e6) / 1e6
+            while n > 0 and n * raw_px + tcost(n, n * raw_px) > cash:
+                n = math.floor(n * 0.999 * 1e6) / 1e6
+        else:
+            n = int(dollars // raw_px)
+            while n > 0 and n * raw_px + tcost(n, n * raw_px) > cash:
+                n -= 1
         if n <= 0 or n * raw_px < min_val:
             return 0.0
         val = n * raw_px

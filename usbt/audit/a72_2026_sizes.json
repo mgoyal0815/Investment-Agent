@@ -1,0 +1,63 @@
+{
+ "start": "2026-01-02",
+ "end": "2026-10-16",
+ "bench": {
+  "SPY": 0.12595335388791362,
+  "QQQ": 0.16160706979788886,
+  "SMH": 0.4459951781409053
+ },
+ "rows": [
+  {
+   "run": "$10,000 whole shares",
+   "start_value": 10000.0,
+   "end_value": 14910.65,
+   "ret": 0.49106530170800844,
+   "worst": -0.27715575182147667,
+   "trades": 34,
+   "costs": 166.04,
+   "cost_pct": 0.016603653112148287,
+   "holdings_end": 8,
+   "cash_end": 238.52
+  },
+  {
+   "run": "$10,000 fractional",
+   "start_value": 10000.0,
+   "end_value": 15801.81,
+   "ret": 0.5801814748109448,
+   "worst": -0.2948837031674215,
+   "trades": 33,
+   "costs": 173.35,
+   "cost_pct": 0.01733543354404689,
+   "holdings_end": 8,
+   "cash_end": 155.93
+  },
+  {
+   "run": "$1,000 whole shares",
+   "start_value": 1000.0,
+   "end_value": 1154.47,
+   "ret": 0.15446873603271483,
+   "worst": -0.22559935317071833,
+   "trades": 4,
+   "costs": 38.26,
+   "cost_pct": 0.03826126,
+   "holdings_end": 0,
+   "cash_end": 614.68
+  },
+  {
+   "run": "$1,000 fractional",
+   "start_value": 1000.0,
+   "end_value": 1522.73,
+   "ret": 0.5227282215243252,
+   "worst": -0.3084834924054922,
+   "trades": 33,
+   "costs": 72.08,
+   "cost_pct": 0.07207636249068375,
+   "holdings_end": 8,
+   "cash_end": 42.81
+  }
+ ],
+ "panel": "/home/claude/r/data/panel.pkl",
+ "panel_sha256": "9f890697cb0c54ed782cd185346cd602c368a31692a5c370093d14054f89b2de",
+ "numpy": "2.5.3",
+ "pandas": "3.0.5"
+}
