@@ -1,0 +1,40 @@
+{
+ "keys": [
+  "rev_alpha",
+  "rs126",
+  "dist200",
+  "zsum",
+  "m12",
+  "hi52",
+  "medv",
+  "lowvol"
+ ],
+ "day": 1,
+ "step": 3,
+ "provenance": {
+  "scored_utc": "2026-10-17T13:30:28+00:00",
+  "tie_seeds": [],
+  "tie_default": "alphabetical symbol (engine.rank_desc)",
+  "calendar_shifts": [
+   -6,
+   -3,
+   0,
+   3,
+   6
+  ],
+  "env": {
+   "python": "3.13.16",
+   "numpy": "2.5.3",
+   "pandas": "3.0.5",
+   "panel": "panel_ndx.pkl",
+   "panel_sha256": "c2d9f773639cf695c7a097ad4bff46399db078079380baa9f794d8a87c9bfb99",
+   "panel_shape": [
+    6986,
+    1556
+   ],
+   "fetched_utc": null
+  },
+  "panel": "../data/panel_ndx.pkl",
+  "system_file": "system_R.json"
+ }
+}
